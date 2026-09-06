@@ -1,19 +1,19 @@
-# Update our repository coding standards
+# リポジトリのコーディング標準を更新する
 
-Clear, documented coding standards keep the codebase consistent and make it easier for new contributors (and Copilot) to produce correct changes. Our current guidance on comments and documentation is thin, which leads to inconsistent commenting — some files are over-commented with restated code, others lack any explanation of intent. We want a single, well-understood convention that says what to document, where, and how, with emphasis on comments and documentation.
+明確で文書化されたコーディング標準は、コードベースの一貫性を保ち、新しいコントリビューター（および Copilot）が正しい変更を生み出しやすくします。現状のコメントとドキュメントに関するガイダンスは不十分で、そのためコメントの付け方に一貫性がありません。コードをそのまま繰り返すだけの過剰なコメントが付いたファイルもあれば、意図の説明がまったくないファイルもあります。私たちは、何を・どこに・どのように文書化するかを定めた、単一で誰もが理解できる規約を求めています。特にコメントとドキュメントに重点を置きます。
 
-## What we want
+## 目指すこと
 
-- **Comment intent, not mechanics.** Comments should explain *why* a piece of code exists or the reasoning behind a non-obvious decision, not restate *what* the code already says. Remove comments that merely paraphrase the line below them.
-- **Document the data layer.** Every exported function in `db/` and `src/lib/` must have a TSDoc/JSDoc comment describing its purpose, parameters, and return value. Helpers should keep their injectable `db` argument documented so the testing pattern stays clear.
-- **Document component contracts.** Each reusable `.astro` component should document its `Props` interface so the component API is self-explanatory.
-- **Keep comments current.** Treat outdated comments as bugs — update or delete them in the same change that touches the related code.
+- **仕組みではなく意図をコメントする。** コメントは、そのコードが*なぜ*存在するのか、あるいは自明でない判断の背後にある理由を説明すべきであり、コードがすでに示している*何をしているか*を繰り返すべきではありません。直下の行を言い換えているだけのコメントは削除しましょう。
+- **データ層を文書化する。** `db/` と `src/lib/` 内のすべてのエクスポート済み関数には、目的・引数・戻り値を説明する TSDoc/JSDoc コメントを付けなければなりません。ヘルパーは、テストのパターンが明確に伝わるよう、注入可能な `db` 引数を文書化したままにしておくべきです。
+- **コンポーネントの契約を文書化する。** 再利用可能な各 `.astro` コンポーネントは、その `Props` インターフェースを文書化し、コンポーネントの API がそれ自体で説明されるようにすべきです。
+- **コメントを最新に保つ。** 古くなったコメントはバグとして扱いましょう。関連するコードに手を入れる際に、同じ変更の中で更新または削除してください。
 
-## Acceptance criteria
+## 受け入れ基準
 
-- [ ] `.github/instructions` files document a clear comment philosophy: comment *why* (intent/decisions), not *what*, and avoid restating code
-- [ ] TSDoc/JSDoc expectations are documented for exported functions in `db/` and `src/lib/`, including describing parameters and return values
-- [ ] Documentation expectations for `.astro` component `Props` interfaces are documented
-- [ ] TypeScript formatting rules are documented and, where possible, enforced through ESLint
-- [ ] The README links to or summarizes the updated coding standards
-- [ ] Linting passes with any newly added rules (run through the `quality-checks` skill / `npm run lint`)
+- [ ] `.github/instructions` のファイルに、明確なコメントの考え方が文書化されている: コードを繰り返すのではなく、*なぜ*（意図／判断）をコメントし、*何をしているか*は書かない
+- [ ] `db/` と `src/lib/` 内のエクスポート済み関数について、引数と戻り値の説明を含む TSDoc/JSDoc の期待事項が文書化されている
+- [ ] `.astro` コンポーネントの `Props` インターフェースに対するドキュメントの期待事項が文書化されている
+- [ ] TypeScript のフォーマットルールが文書化され、可能な場合は ESLint によって強制されている
+- [ ] README が更新されたコーディング標準へのリンクまたは要約を含んでいる
+- [ ] 新たに追加したルールを含めて Lint が通過する（`quality-checks` スキル／`npm run lint` を通じて実行）
