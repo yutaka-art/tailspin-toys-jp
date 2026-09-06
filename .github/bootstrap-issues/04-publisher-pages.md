@@ -1,11 +1,11 @@
-# Add a publisher page listing that publisher's games
+# 出版社（パブリッシャー）ごとに、その出版社のゲームを一覧表示するページを追加する
 
-When a backer likes a game, a natural next step is to see what else the same publisher has made. Adding a dedicated, prerendered page for each publisher that lists their games improves catalog navigation. The data model already links games to publishers, so this is a focused addition that follows the existing dynamic-route pattern used for game detail pages.
+支援者（バッカー）があるゲームを気に入ったとき、次に自然と気になるのは「同じ出版社が他にどんなゲームを作っているか」です。出版社ごとに専用のプリレンダリングされたページを追加し、その出版社のゲームを一覧表示することで、カタログのナビゲーションが向上します。データモデルではすでにゲームと出版社が関連付けられているため、これはゲーム詳細ページで使われている既存の動的ルートのパターンに沿った、的を絞った追加になります。
 
-## Acceptance criteria
+## 受け入れ基準
 
-- [ ] Each publisher has a prerendered page (using `getStaticPaths()` + `export const prerender = true`) listing all of their games
-- [ ] The page shows the publisher name and description, and reuses the existing game card for the listing
-- [ ] Publisher names on the game card and/or game detail page link to the publisher page
-- [ ] The page follows the project's styling and accessibility guidelines and includes `data-testid` attributes
-- [ ] A data-access helper returns games for a given publisher with unit test coverage, and Playwright e2e tests cover the publisher page
+- [ ] 各出版社に、その出版社のすべてのゲームを一覧表示するプリレンダリングされたページがある（`getStaticPaths()` + `export const prerender = true` を使用）
+- [ ] ページに出版社の名前と説明を表示し、一覧には既存のゲームカードを再利用する
+- [ ] ゲームカードやゲーム詳細ページ上の出版社名から、出版社ページへのリンクを張る
+- [ ] ページがプロジェクトのスタイリングおよびアクセシビリティのガイドラインに従い、`data-testid` 属性を含んでいる
+- [ ] 指定した出版社のゲームを返すデータアクセスヘルパーがあり、ユニットテストでカバーされている。また、Playwright の E2E テストで出版社ページをカバーする
