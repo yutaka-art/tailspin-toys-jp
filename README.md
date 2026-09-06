@@ -1,140 +1,139 @@
 # Tailspin Toys
 
-Tailspin Toys is a crowdfunding platform for games with a developer theme. The project is a website for a fictional game crowd-funding company, built as a single [Astro](https://astro.build/) site (fully prerendered/static output) styled with [Tailwind CSS](https://tailwindcss.com/). Its data lives in a local SQLite database accessed through [Drizzle ORM](https://orm.drizzle.team/) and Node.js's built-in SQLite driver; pages query the database directly in frontmatter at build time, so there is no separate backend service.
+Tailspin Toys は、開発者向けをテーマにしたゲームのクラウドファンディングプラットフォームです。本プロジェクトは架空のゲームクラウドファンディング企業のWebサイトであり、[Astro](https://astro.build/) を用いた単一サイト（完全にプリレンダリングされた静的出力）として構築され、[Tailwind CSS](https://tailwindcss.com/) でスタイリングされています。データはローカルの SQLite データベースに保存され、[Drizzle ORM](https://orm.drizzle.team/) と Node.js 組み込みの SQLite ドライバーを介してアクセスします。各ページはビルド時にフロントマターから直接データベースへクエリを実行するため、独立したバックエンドサービスは存在しません。
 
-## Architecture
+## アーキテクチャ
 
-- **Astro 7** — pages, layouts, components, and routing. `output: 'static'`, so the whole site is prerendered to HTML at build time.
-- **Drizzle ORM + Node SQLite** — the data layer. The schema lives in `db/schema.ts`; data is seeded from `db/games.csv`. Migrations are managed with `drizzle-kit`.
-- **Tailwind CSS v4** — styling via utility classes (dark theme).
-- **Vitest** — unit tests for the data layer and pure transforms.
-- **Playwright** — end-to-end tests run against the built static site.
+- **Astro 7** — ページ、レイアウト、コンポーネント、ルーティングを担当します。`output: 'static'` を使用しているため、サイト全体がビルド時に HTML へプリレンダリングされます。
+- **Drizzle ORM + Node SQLite** — データ層です。スキーマは `db/schema.ts` に定義され、データは `db/games.csv` からシードされます。マイグレーションは `drizzle-kit` で管理します。
+- **Tailwind CSS v4** — ユーティリティクラスによるスタイリング（ダークテーマ）です。
+- **Vitest** — データ層と純粋な変換処理のユニットテストです。
+- **Playwright** — ビルド済みの静的サイトに対して実行するエンドツーエンドテストです。
 
-The database is migrated and seeded automatically before `dev`/`build` (via the `predev`/`prebuild` npm scripts) and is written to the gitignored `tailspin.db` file.
+データベースは `dev`/`build` の前に（`predev`/`prebuild` の npm スクリプトを通じて）自動的にマイグレーションおよびシードされ、gitignore 対象の `tailspin.db` ファイルに書き込まれます。
 
-## Using this template
+## このテンプレートの利用
 
-This repository is a GitHub template. When you create a new repository from it, a one-time **Bootstrap template issues** workflow (`.github/workflows/bootstrap-issues.yml`) runs automatically on the first push to `main` and opens a set of starter issues describing suggested first features. Each issue is defined by a Markdown file in `.github/bootstrap-issues/` — the first heading becomes the issue title and the remaining content becomes the body — so you can edit, add, or remove files there to control which issues are created.
+このリポジトリは GitHub テンプレートです。テンプレートから新しいリポジトリを作成すると、一度だけ実行される **Bootstrap template issues** ワークフロー（`.github/workflows/bootstrap-issues.yml`）が `main` への最初のプッシュ時に自動的に実行され、最初に取り組むおすすめ機能を説明する一連のスターター issue を作成します。各 issue は `.github/bootstrap-issues/` 内の Markdown ファイルで定義されており、最初の見出しが issue のタイトルに、残りの内容が本文になります。これらのファイルを編集・追加・削除することで、作成される issue を制御できます。
 
-The workflow only runs on repositories created from the template (the `if: ${{ !github.event.repository.is_template }}` guard skips the template itself), and after creating the issues it removes itself and the `.github/bootstrap-issues/` folder in a cleanup commit so it never runs again.
+このワークフローはテンプレートから作成されたリポジトリでのみ実行されます（`if: ${{ !github.event.repository.is_template }}` のガードによってテンプレート自身では実行されません）。issue の作成後は、クリーンアップコミットでワークフロー自身と `.github/bootstrap-issues/` フォルダーを削除するため、二度と実行されることはありません。
 
-## Getting started
+## はじめに
 
-Install dependencies once with Node.js 22.13 or later:
+Node.js 22.13 以降を使用して、依存関係を一度だけインストールします。
 
 ```bash
 npm ci
-npx playwright install chromium   # only needed to run the E2E tests
+npx playwright install chromium   # E2E テストの実行時にのみ必要です
 ```
 
-## Launch the site
+## サイトの起動
 
 ```bash
 npm run dev
 ```
 
-`predev` migrates and seeds the local database first. Then navigate to the [website](http://localhost:4321) to see the site!
+`predev` が最初にローカルデータベースのマイグレーションとシードを行います。その後、[Webサイト](http://localhost:4321) にアクセスするとサイトを確認できます。
 
-To preview a production build instead:
+代わりに本番ビルドをプレビューする場合は、次のようにします。
 
 ```bash
-npm run build      # prebuild migrates + seeds, then builds the static site
+npm run build      # prebuild がマイグレーション + シードを行い、静的サイトをビルドします
 npm run preview
 ```
 
-## Database
+## データベース
 
-The SQLite database is built from `db/games.csv` — there is no live data to migrate.
+SQLite データベースは `db/games.csv` から構築されます。移行が必要なライブデータはありません。
 
 ```bash
-npm run db:generate   # generate a migration after editing db/schema.ts
-npm run db:migrate    # apply migrations
-npm run db:seed       # seed from games.csv (idempotent)
-npm run db:setup      # migrate + seed (run automatically by predev/prebuild)
+npm run db:generate   # db/schema.ts の編集後にマイグレーションを生成します
+npm run db:migrate    # マイグレーションを適用します
+npm run db:seed       # games.csv からシードします（冪等）
+npm run db:setup      # マイグレーション + シード（predev/prebuild により自動実行されます）
 ```
 
 > [!NOTE]
-> Seeding is idempotent — it skips games that already exist (matched by title) rather than reconciling changed rows. CI always starts from a clean database, so it reflects `games.csv` exactly. Locally, if you edit or remove rows in `games.csv`, delete `tailspin.db` and re-run `npm run db:setup` to fully regenerate.
+> シード処理は冪等です。変更された行を照合し直すのではなく、（タイトルで一致する）既に存在するゲームをスキップします。CI は常にクリーンなデータベースから開始するため、`games.csv` を正確に反映します。ローカルで `games.csv` の行を編集または削除した場合は、`tailspin.db` を削除して `npm run db:setup` を再実行し、完全に再生成してください。
 
-## Running tests
+## テストの実行
 
 ```bash
-npm run test:unit   # Vitest unit tests (transforms + data-access helpers)
-npm run test:e2e    # Playwright E2E tests (builds + previews the static site first)
+npm run test:unit   # Vitest ユニットテスト（変換処理 + データアクセスヘルパー）
+npm run test:e2e    # Playwright E2E テスト（先に静的サイトをビルド + プレビューします）
 ```
 
-## Linting
+## Lint
 
-The frontend uses ESLint to enforce code quality across TypeScript and Astro files. Run it with:
+フロントエンドでは ESLint を使用して、TypeScript と Astro ファイル全体のコード品質を担保します。次のコマンドで実行します。
 
 ```bash
 npm run lint
 ```
 
-ESLint is also run automatically in CI on pull requests to `main`.
+ESLint は `main` へのプルリクエスト時に CI でも自動的に実行されます。
 
-## Type checking
+## 型チェック
 
-The project runs on **TypeScript 7** (the native Go compiler, `tsgo`) for type checking, adopted side-by-side via the [`@typescript/native-preview`](https://www.npmjs.com/package/@typescript/native-preview) package. The classic `typescript` package is intentionally kept at v6 so ESLint + `typescript-eslint` and `astro check` keep working unchanged — TypeScript 7's programmatic API isn't ready for those tools yet.
+本プロジェクトは型チェックに **TypeScript 7**（ネイティブの Go コンパイラー `tsgo`）を使用しており、[`@typescript/native-preview`](https://www.npmjs.com/package/@typescript/native-preview) パッケージを通じて併用しています。従来の `typescript` パッケージは意図的に v6 に固定しています。これは ESLint + `typescript-eslint` と `astro check` を変更なしで動作させ続けるためで、TypeScript 7 のプログラム的 API はまだこれらのツールに対応していないためです。
 
 ```bash
-npm run typecheck        # tsgo (TS 7) type-checks the pure TypeScript (db/, src/lib/, src/types/, configs, tests)
-npm run typecheck:astro  # astro sync + astro check type-check .astro files (on the classic TypeScript package)
-npm run typecheck:all    # both of the above
+npm run typecheck        # tsgo（TS 7）が純粋な TypeScript を型チェックします（db/、src/lib/、src/types/、各種設定、テスト）
+npm run typecheck:astro  # astro sync + astro check が .astro ファイルを型チェックします（従来の TypeScript パッケージを使用）
+npm run typecheck:all    # 上記の両方を実行します
 ```
 
-`tsgo` runs against [`tsconfig.tsgo.json`](tsconfig.tsgo.json), a scoped config that excludes `.astro` files (which the native compiler doesn't understand). Type checking runs automatically in CI on pull requests to `main`.
+`tsgo` は [`tsconfig.tsgo.json`](tsconfig.tsgo.json) に対して実行されます。これは `.astro` ファイル（ネイティブコンパイラーが解釈できません）を除外したスコープ付きの設定です。型チェックは `main` へのプルリクエスト時に CI で自動的に実行されます。
 
 > [!NOTE]
-> The native compiler is used only for type checking (`--noEmit`); the site is still built by `astro build` (Vite/esbuild). The classic `typescript` package stays on v6 until `typescript-eslint` and `@astrojs/check` support the native API (~TS 7.1); a Dependabot `ignore` in `.github/dependabot.yml` holds the classic `typescript@7` bump until then.
+> ネイティブコンパイラーは型チェック（`--noEmit`）にのみ使用され、サイトのビルドは引き続き `astro build`（Vite/esbuild）が行います。従来の `typescript` パッケージは、`typescript-eslint` と `@astrojs/check` がネイティブ API（TS 7.1 頃）に対応するまで v6 のままにします。それまでの間、`.github/dependabot.yml` の Dependabot `ignore` 設定が従来の `typescript@7` へのアップグレードを保留します。
 
-## Copilot Agents & Skills
+## Copilot エージェントとスキル
 
-This project ships Copilot customizations to assist with quality assurance:
+本プロジェクトには、品質保証を支援する Copilot のカスタマイズが含まれています。
 
-### Database Explorer Canvas
+### Database Explorer キャンバス
 
-The shared **Database Explorer** canvas (`.github/extensions/database-explorer/`) provides a small UI and agent actions for browsing the project's SQLite tables and running one read-only `SELECT` or `WITH` query at a time. It uses the database at `.data/tailspin.db` (or `DATABASE_URL` when set), so run `npm run db:setup` before opening it in a fresh checkout.
+共有の **Database Explorer** キャンバス（`.github/extensions/database-explorer/`）は、プロジェクトの SQLite テーブルを閲覧し、一度に1つの読み取り専用 `SELECT` または `WITH` クエリを実行するための小さな UI とエージェントアクションを提供します。`.data/tailspin.db`（または `DATABASE_URL` が設定されている場合はそちら）のデータベースを使用するため、新規チェックアウトで開く前に `npm run db:setup` を実行してください。
 
-### PR Readiness Agent
+### PR Readiness エージェント
 
-The **PR Readiness** agent (`.github/agents/pr-readiness.md`) is a pre-PR quality gate. Invoke it before opening a pull request to:
+**PR Readiness** エージェント（`.github/agents/pr-readiness.md`）は、PR 作成前の品質ゲートです。プルリクエストを作成する前に呼び出すことで、次のことを行います。
 
-- Verify all acceptance criteria have been implemented
-- Audit test coverage and fill any gaps
-- Run the full verification suite (unit tests, lint, E2E tests)
-- Manually validate the feature in the browser via Playwright MCP (required for every run)
-- Produce a go/no-go report
+- すべての受け入れ基準が実装されているか検証します
+- テストカバレッジを監査し、不足している箇所を補完します
+- 完全な検証スイート（ユニットテスト、Lint、E2E テスト）を実行します
+- Playwright MCP を介してブラウザーで機能を手動検証します（毎回必須）
+- 実施可否（go/no-go）のレポートを作成します
 
-### quality-checks Skill
+### quality-checks スキル
 
-The **quality-checks** skill (`.github/skills/quality-checks/SKILL.md`) wraps the project's npm test and lint commands with a detailed debugging and troubleshooting runbook. Use it via `/quality-checks` when:
+**quality-checks** スキル（`.github/skills/quality-checks/SKILL.md`）は、プロジェクトの npm のテスト・Lint コマンドを、詳細なデバッグとトラブルシューティングの手順書とともにラップします。次のような場面で `/quality-checks` から使用します。
 
-- Running tests or lint for the first time after setup
-- Diagnosing test failures (port conflicts, stale servers, flaky tests, CI divergence)
-- Validating readiness before commits, pushes, or merges
+- セットアップ後に初めてテストや Lint を実行するとき
+- テストの失敗を診断するとき（ポートの競合、残存したサーバー、不安定なテスト、CI との差異など）
+- コミット、プッシュ、マージの前に準備状況を検証するとき
 
-### GitHub Copilot App Run Menu
+### GitHub Copilot アプリの実行メニュー
 
-The [GitHub Copilot app](https://github.com/github/github-app) reads
-`.github/github-app.yml` to provide project commands in its **Run** menu.
-New sessions automatically install dependencies; use **Run development site** to
-start Astro. When Astro reports its local URL, the app opens it in the browser
-canvas automatically. The menu also provides static build and type-check
-commands for on-demand validation.
+[GitHub Copilot アプリ](https://github.com/github/github-app) は
+`.github/github-app.yml` を読み取り、**Run** メニューにプロジェクトコマンドを提供します。
+新しいセッションでは依存関係が自動的にインストールされます。**Run development site** を使用すると
+Astro が起動します。Astro がローカル URL を報告すると、アプリはそれを自動的にブラウザーキャンバスで開きます。
+このメニューでは、オンデマンドでの検証用に静的ビルドと型チェックのコマンドも提供されます。
 
-## License 
+## ライセンス
 
-This project is licensed under the terms of the MIT open source license. Please refer to the [LICENSE](./LICENSE) for the full terms.
+本プロジェクトは MIT オープンソースライセンスの条件の下でライセンスされています。完全な条項については [LICENSE](./LICENSE) を参照してください。
 
-## Maintainers 
+## メンテナー
 
-You can find the list of maintainers in [CODEOWNERS](./.github/CODEOWNERS).
+メンテナーの一覧は [CODEOWNERS](./.github/CODEOWNERS) に記載されています。
 
-## Support
+## サポート
 
-This project is provided as-is, and may be updated over time. If you have questions, please open an issue.
+本プロジェクトは現状のまま提供され、時間の経過とともに更新される場合があります。ご質問がある場合は issue を作成してください。
 
-## Disclaimer
+## 免責事項
 
-This app is not intended for use in a production environment, nor is it built as an example of what a production app should look like.
+このアプリは本番環境での使用を想定しておらず、本番アプリのあるべき姿を示す例として構築されたものでもありません。
