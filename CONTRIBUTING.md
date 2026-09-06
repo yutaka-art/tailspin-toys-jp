@@ -1,45 +1,45 @@
-# Contributing
+# コントリビューション
 
-Thanks for your interest in contributing to **Copilot Workshops**! This repository hosts the workshop content (Markdown source and the Astro + Starlight site that publishes it).
+**Copilot Workshops** へのコントリビューションに関心をお寄せいただきありがとうございます。このリポジトリは、ワークショップのコンテンツ（Markdown のソースと、それを公開する Astro + Starlight サイト）を管理しています。
 
-## Code of Conduct
+## 行動規範
 
-This project is released with a [Contributor Code of Conduct](./CODE_OF_CONDUCT.md). By participating, you agree to abide by its terms.
+このプロジェクトは [コントリビューター行動規範（Contributor Code of Conduct）](./CODE_OF_CONDUCT.md) のもとで公開されています。参加することで、その条項を遵守することに同意したものとみなされます。
 
-Contributions are released under the [project's open source license](./LICENSE).
+コントリビューションは、[プロジェクトのオープンソースライセンス](./LICENSE) のもとで公開されます。
 
-## What to read first
+## まず最初に読むもの
 
-If you want to **author or edit content**, start with [`AUTHORING.md`](./AUTHORING.md). It covers the mental model, file layout, step-by-step recipes for adding/editing lessons and images, the local preview workflow, and style conventions.
+**コンテンツを執筆・編集** したい場合は、まず [`AUTHORING.md`](./AUTHORING.md) をご覧ください。全体像の考え方、ファイル構成、レッスンや画像を追加・編集するための手順、ローカルプレビューのワークフロー、スタイル規約について説明しています。
 
-## Submitting a pull request
+## プルリクエストの送信
 
-1. [Fork](https://github.com/github-samples/copilot-workshops/fork) and clone the repository.
-2. Create a topic branch (`git checkout -b my-change`).
-3. Make your change. Keep PRs focused — one logical change per PR.
-4. Push to your fork and [open a pull request](https://github.com/github-samples/copilot-workshops/compare).
-5. Wait for CI and review.
+1. リポジトリを [フォーク](https://github.com/github-samples/copilot-workshops/fork) してクローンします。
+2. トピックブランチを作成します（`git checkout -b my-change`）。
+3. 変更を加えます。PR は 1 つの論理的な変更に絞り、焦点を明確に保ってください。
+4. フォークにプッシュし、[プルリクエストを作成](https://github.com/github-samples/copilot-workshops/compare) します。
+5. CI とレビューを待ちます。
 
-## Before merge
+## マージ前に
 
-CI (`pages.yml`) must be green on your PR. It runs:
+PR で CI（`pages.yml`）が成功している必要があります。CI では次が実行されます:
 
-- **`pages.yml` build** — `npm run build` (Astro site build).
-- **Lychee** — offline link check of the built `website/dist/`.
+- **`pages.yml` ビルド** — `npm run build`（Astro サイトのビルド）。
+- **Lychee** — ビルドされた `website/dist/` に対するオフラインリンクチェック。
 
-Before you push, run the full local verification sequence described in [AUTHORING.md → Building and verifying](./AUTHORING.md#building-and-verifying): clean build, page-count check, and lychee link check.
+プッシュする前に、[AUTHORING.md → Building and verifying](./AUTHORING.md#building-and-verifying) で説明されている一連のローカル検証（クリーンビルド、ページ数チェック、lychee のリンクチェック）を実行してください。
 
-## Commit messages
+## コミットメッセージ
 
-Conventional commit prefixes preferred: `docs:`, `chore:`, `fix:`, `ci:`, `feat:`.
+Conventional Commits のプレフィックスの使用を推奨します: `docs:`、`chore:`、`fix:`、`ci:`、`feat:`。
 
-Include a `Co-authored-by` trailer when AI-assisted:
+AI の支援を受けた場合は、`Co-authored-by` トレーラーを含めてください:
 
 ```
 Co-authored-by: Copilot <223556219+Copilot@users.noreply.github.com>
 ```
 
-## Resources
+## 参考リンク
 
-- [How to contribute to open source](https://opensource.guide/how-to-contribute/)
-- [Using pull requests](https://help.github.com/articles/about-pull-requests/)
+- [オープンソースへのコントリビューション方法](https://opensource.guide/how-to-contribute/)
+- [プルリクエストの使い方](https://help.github.com/articles/about-pull-requests/)
