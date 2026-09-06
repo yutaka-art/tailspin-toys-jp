@@ -1,11 +1,11 @@
-# Allow users to sort the game list
+# ユーザーがゲーム一覧を並べ替えできるようにする
 
-Different players browse in different ways — some want the highest-rated titles first, others prefer alphabetical order. Adding sorting options to the game list page gives backers more control over how they explore the catalog. The data layer already exposes title and star rating, so this builds on existing structures.
+プレイヤーによって閲覧の仕方はさまざまです。評価の高いタイトルを先に見たい人もいれば、名前順（アルファベット順）で見たい人もいます。ゲーム一覧ページに並べ替えオプションを追加することで、支援者（バッカー）はカタログの探索方法をより自由にコントロールできるようになります。データ層はすでにタイトルとスター評価を公開しているため、この機能は既存の構造を土台に構築できます。
 
-## Acceptance criteria
+## 受け入れ基準
 
-- [ ] Users can sort the game list by title (A–Z and Z–A)
-- [ ] Users can sort the game list by star rating (highest first)
-- [ ] Games without a star rating are ordered in a sensible, documented way when sorting by rating
-- [ ] The sort control follows the project's accessibility guidelines (labeling, keyboard navigation, visible focus states) and includes a `data-testid` attribute
-- [ ] Unit tests cover the sorting helper(s) and Playwright e2e tests cover the sorting behavior
+- [ ] ユーザーがゲーム一覧をタイトル順（A→Z および Z→A）で並べ替えできる
+- [ ] ユーザーがゲーム一覧をスター評価順（高い順）で並べ替えできる
+- [ ] スター評価が付いていないゲームは、評価順で並べ替えた際に妥当かつ文書化された方法で並べられる
+- [ ] 並べ替えコントロールがプロジェクトのアクセシビリティガイドライン（ラベル付け、キーボード操作、可視のフォーカス状態）に従い、`data-testid` 属性を含んでいる
+- [ ] ユニットテストが並べ替えヘルパーをカバーし、Playwright の E2E テストが並べ替えの動作をカバーしている
