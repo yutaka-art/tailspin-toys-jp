@@ -3,97 +3,97 @@ description: 'Markdown accessibility guidelines based on GitHub''s 5 best practi
 applyTo: '**/*.md'
 ---
 
-# Markdown Accessibility Review Guidelines
+# Markdown アクセシビリティレビューガイドライン
 
-This file is the single home for **accessibility** conventions in this repo. Mechanical Markdown formatting lives in [`markdown.instructions.md`](./markdown.instructions.md); the accessibility rationale for those conventions lives here.
+このファイルは、このリポジトリにおける **アクセシビリティ** 規約の単一の拠点です。機械的な Markdown の書式は [`markdown.instructions.md`](./markdown.instructions.md) にあります。それらの規約のアクセシビリティ上の根拠はここにあります。
 
-When writing or reviewing Markdown files, check for the following accessibility issues based on GitHub's [5 tips for making your GitHub profile page accessible](https://github.blog/developer-skills/github/5-tips-for-making-your-github-profile-page-accessible/) and the Smashing Magazine article [Improving The Accessibility Of Your Markdown](https://www.smashingmagazine.com/2021/09/improving-accessibility-of-markdown/). Flag violations and suggest fixes with clear explanations of the accessibility impact.
+Markdown ファイルを執筆・レビューする際は、GitHub の [GitHub プロフィールページをアクセシブルにする 5 つのヒント](https://github.blog/developer-skills/github/5-tips-for-making-your-github-profile-page-accessible/) と、Smashing Magazine の記事 [Improving The Accessibility Of Your Markdown](https://www.smashingmagazine.com/2021/09/improving-accessibility-of-markdown/) に基づいて、以下のアクセシビリティ上の問題をチェックします。違反を指摘し、アクセシビリティへの影響を明確に説明しながら修正案を提案します。
 
-## 1. Descriptive Links
+## 1. 説明的なリンク
 
-- Flag generic link text such as "click here," "here," "this," "read more," "learn more," or "link."
-- Link text must make sense when read out of context, because assistive technology can present links as an isolated list.
-- Weave the link into the prose with descriptive text; never add a sentence whose only job is to point at a link.
-- Flag multiple links on the same page that share identical text but point to different destinations.
-- Bare URLs in prose should be converted to descriptive links.
+- 「click here」「here」「this」「read more」「learn more」「link」などの一般的なリンクテキストを指摘します。
+- 支援技術はリンクを単独のリストとして提示できるため、リンクテキストは文脈から離れて読まれても意味が通じなければなりません。
+- リンクは説明的なテキストで散文に組み込みます。リンクを指すだけの文を追加しないでください。
+- 同じページ内で、同一のテキストでありながら異なる宛先を指す複数のリンクを指摘します。
+- 散文中の裸の URL は説明的なリンクに変換すべきです。
 
-Bad: `Read my blog post [here](https://example.com)`
-Good: `Read my blog post "[Crafting an accessible resume](https://example.com)"`
+悪い例: `Read my blog post [here](https://example.com)`
+良い例: `Read my blog post "[Crafting an accessible resume](https://example.com)"`
 
-## 2. Image Alternative (alt) Text
+## 2. 画像の代替（alt）テキスト
 
-- Flag images with empty alt text (e.g., `![](path/to/image.png)`) unless they are explicitly decorative. In this repo, Starlight treats alt text as required.
-- Flag alt text that is a filename (e.g., `img_1234.jpg`) or generic placeholder (e.g., `screenshot`, `image`).
-- Alt text should be succinct and descriptive. Include any text visible in the image.
-- Use "screenshot of" where relevant, but do not prefix with "image of" since screen readers announce that automatically.
-- For complex images (charts, infographics), suggest summarizing the data in alt text and providing longer descriptions via `<details>` tags or linked content.
-- When suggesting alt text improvements, present them as recommendations for the author to review. Alt text requires understanding of visual content and context that only the author can properly assess.
+- 明示的に装飾的でない限り、alt テキストが空の画像（例: `![](path/to/image.png)`）を指摘します。このリポジトでは Starlight は alt テキストを必須として扱います。
+- alt テキストがファイル名（例: `img_1234.jpg`）や一般的なプレースホルダー（例: `screenshot`、`image`）であるものを指摘します。
+- alt テキストは簡潔かつ説明的にします。画像内に見えるテキストは含めます。
+- 適切な場合は「screenshot of（スクリーンショット）」を使いますが、スクリーンリーダーが自動で読み上げるため「image of（画像）」を接頭に付けないでください。
+- 複雑な画像（グラフ、インフォグラフィック）の場合は、alt テキストでデータを要約し、`<details>` タグやリンク先のコンテンツでより長い説明を提供することを提案します。
+- alt テキストの改善を提案する場合は、著者がレビューするための推奨として提示します。alt テキストには、著者にしか適切に評価できない視覚コンテンツと文脈の理解が必要です。
 
-## 3. Heading Hierarchy
+## 3. 見出しの階層
 
-- Headings must follow a logical hierarchy and never skip levels (e.g., `##` followed by `####` is a violation).
-- Flag bold text (`**text**`) used as a visual substitute for a proper heading.
-- Proper heading structure allows assistive technology users to navigate by section and helps sighted users scan content.
+- 見出しは論理的な階層に従い、レベルを飛ばしてはいけません（例: `##` の後に `####` は違反）。
+- 適切な見出しの代わりに視覚的に使われている太字テキスト（`**text**`）を指摘します。
+- 適切な見出し構造により、支援技術の利用者はセクション単位でナビゲートでき、晴眼の利用者はコンテンツを流し読みしやすくなります。
 
-This repo has two repo-specific rules that override the generic "one H1 per document" guidance:
+このリポジトには、一般的な「1 ドキュメントにフ H1 は 1 つ」というガイダンスを上書きする 2 つのリポジト固有のルールがあります:
 
-- **Lesson pages have no H1 in the body.** The title comes from Markdown frontmatter and Starlight renders it as the H1. Body headings start at `##`.
-- **Repository docs carry their own H1.** README, contributing, instruction, and skill files start with a single `#` title.
+- **レッスンページは本文に H1 を置きません。** タイトルは Markdown フロントマターから取得され、Starlight が H1 としてレンダリングします。本文の見出しは `##` から始めます。
+- **リポジトリドキュメントは独自の H1 を持ちます。** README、contributing、instruction、スキルの各ファイルは、1 つの `#` タイトルから始めます。
 
-## 4. Plain Language
+## 4. 平易な言葉
 
-- Flag unnecessarily complex or jargon-heavy language that could be simplified.
-- Favor short sentences, common words, and active voice.
-- Flag long, dense paragraphs that could be broken into smaller sections or lists.
-- When describing UI navigation, write actions as sequential steps in plain language first (e.g., "open Settings, then select Preferences"). Use generic, stable labels rather than icon names or visual descriptions.
-- A parenthetical visual reference may follow as supplemental context (e.g., "(gear icon > Preferences)"), but never use visual breadcrumb notation or icon names as the sole way to describe a navigation path.
-- When suggesting plain language improvements, present them as recommendations for the author to review. Language decisions require understanding of audience, context, and tone.
+- 単純化できる、不必要に複雑で専門用語の多い表現を指摘します。
+- 短い文、一般的な語、能動態を優先します。
+- より小さなセクションやリストに分割できる、長く密な段落を指摘します。
+- UI のナビゲーションを説明するときは、まずアクションを平易な言葉の逐次ステップとして書きます（例:「Settings を開き、次に Preferences を選択」）。アイコン名や視覚的な説明ではなく、一般的で安定したラベルを使います。
+- 補足的な文脈として括弧付きの視覚的参照を続けても構いませんが（例:「(歯車アイコン > Preferences)」）、視覚的なパンくず表記やアイコン名をナビゲーション経路の唯一の説明方法にしないでください。
+- 平易な言葉への改善を提案する場合は、著者がレビューするための推奨として提示します。言語の判断には、読者層、文脈、トーンの理解が必要です。
 
-### Input-agnostic action verbs
+### 入力手段に依存しない動作動詞
 
-- Use input-agnostic verbs so instructions work for keyboard, screen reader, touch, and mouse users. Prefer **select** over "click", "press", or "tap" when referring to UI elements (buttons, tabs, menu items, links).
-- Reserve "press" for physical keyboard shortcuts (e.g., "press <kbd>Enter</kbd>").
+- キーボード、スクリーンリーダー、タッチ、マウスの利用者のいずれにも指示が機能するよう、入力手段に依存しない動詞を使います。UI 要素（ボタン、タブ、メニュー項目、リンク）を指すときは、「click」「press」「tap」より **select** を優先します。
+- 「press」は物理キーボードショートカット（例:「press <kbd>Enter</kbd>」）に限定します。
 
-## 5. Lists and Emoji Usage
+## 5. リストと絵文字の使用
 
-### Lists
+### リスト
 
-- Flag emoji or special characters used as bullet points instead of proper markdown list syntax (`-`, `*`, `+`, or `1.`).
-- Flag sequential items in plain text that should be structured as a proper list.
-- Proper list markup allows screen readers to announce list context (e.g., "item 1 of 3").
+- 適切な markdown リスト構文（`-`、`*`、`+`、`1.`）の代わりに、絵文字や特殊文字を箇条書きの先頭に使っているものを指摘します。
+- 適切なリストとして構造化すべき、プレーンテキストの連続項目を指摘します。
+- 適切なリストマークアップにより、スクリーンリーダーはリストの文脈（例:「3 項目中 1 項目」）を読み上げられます。
 
-### Emoji
+### 絵文字
 
-- Flag multiple consecutive emoji, which are disruptive to screen reader users since each emoji name is read aloud in full (e.g., "rocket" "sparkles" "fire").
-- Flag emoji used to convey meaning that is not also communicated in text.
-- Emoji should be used sparingly and thoughtfully.
+- 連続する複数の絵文字を指摘します。各絵文字の名前が完全に読み上げられるため（例:「rocket」「sparkles」「fire」）、スクリーンリーダーの利用者にとって妄げになります。
+- テキストでも伝えられていない意味を伝えるために使われている絵文字を指摘します。
+- 絵文字は控えめに、慎重に使うべきです。
 
-## 6. Multimedia
+## 6. マルチメディア
 
-- Provide captions for videos and transcripts for recorded audio.
-- Do not auto-play audio and video.
-- It's recommended that animated images and other animations are paused on page load.
+- 動画にはキャプションを、録音された音声にはトランスクリプトを提供します。
+- 音声や動画を自動再生しないでください。
+- アニメーション画像やその他のアニメーションは、ページ読み込み時に一時停止しておくことを推奨します。
 
-## 7. Other
+## 7. その他
 
-- Links: Avoid opening links in a new tab or window.
-- Bold and Italics: Screen readers often don't announce bold or italic emphasis, so critical information should not rely on this styling alone.
-- Tables: Use tables for data only. Do not use tables for page layout. Avoid nested tables. Avoid complex tables as they are difficult to represent in an accessible format in standard Markdown.
+- リンク: リンクを新しいタブやウィンドウで開くのは避けます。
+- 太字と斜体: スクリーンリーダーは太字や斜体の強調を読み上げないことが多いため、重要な情報をこのスタイルだけに依存させないでください。
+- テーブル: テーブルはデータにのみ使います。ページレイアウトには使わないでください。ネストしたテーブルは避けます。標準の Markdown ではアクセシブルな形式で表現しにくいため、複雑なテーブルは避けます。
 
-## Review Priority
+## レビューの優先順位
 
-When multiple issues exist, prioritize in this order:
+複数の問題が存在する場合は、次の順で優先します:
 
-1. Missing or empty alt text on images
-2. Skipped heading levels or heading hierarchy issues
-3. Non-descriptive link text
-4. Emoji used as bullet points or list markers
-5. Plain language improvements
-6. Multimedia
-7. Other
+1. 画像の alt テキストの欠落または空
+2. 見出しレベルの飛ばしや見出し階層の問題
+3. 説明的でないリンクテキスト
+4. 箇条書きやリストマーカーとして使われた絵文字
+5. 平易な言葉への改善
+6. マルチメディア
+7. その他
 
-## Review Tone
+## レビューのトーン
 
-- Explain the accessibility impact of each issue, specifying which users are affected (e.g., screen reader users, people with cognitive disabilities, non-native speakers).
-- Do not remove personality or voice from the writing. Accessibility and engaging content are not mutually exclusive.
-- Keep suggestions actionable and specific.
+- 各問題のアクセシビリティへの影響を説明し、どの利用者が影響を受けるか（例: スクリーンリーダーの利用者、認知障害のある人、非ネイティブの話者）を明示します。
+- 文章から個性や声を取り除かないでください。アクセシビリティと魅力的なコンテンツは両立します。
+- 提案は実行可能かつ具体的に保ちます。
