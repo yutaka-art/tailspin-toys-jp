@@ -1,15 +1,13 @@
-# サポート
+# Support
 
-## Issue の起票とヘルプの受け方
+## How to file issues and get help
 
-このプロジェクトでは、バグや機能リクエストの管理に GitHub の issue を利用しています。重複を避けるため、新しい issue を起票する前に、既存の issue を検索してください。新規の場合は、バグや機能リクエストを新しい issue として起票してください。
+This project uses GitHub issues to track bugs and feature requests. Please search the existing issues before filing new issues to avoid duplicates. For new issues, file your bug or feature request as a new issue.
 
-このプロジェクトの利用に関するヘルプや質問については、[issue を起票](/issues)してください。
+For help or questions about using this project, please [file an issue](https://github.com/github-samples/tailspin-toys/issues).
 
-**TODO: リポジトリメンテナーの方へ** 次のいずれかの記述をこのファイルに含めてください:
+**Tailspin Toys** is a sample/template project maintained by GitHub staff and the community. We will do our best to respond to support, feature requests, and community questions in a timely manner.
 
-- **GitHub for Startups Workshops** は、GitHub のスタッフ **およびコミュニティ** によって活発に開発・保守されています。サポート、機能リクエスト、コミュニティからの質問には、できる限り迅速に対応するよう努めます。
+## GitHub Support Policy
 
-## GitHub のサポートポリシー
-
-このプロジェクトのサポートは、上記に記載されたリソースに限定されます。
+Support for this project is limited to the resources listed above.

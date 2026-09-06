@@ -1,7 +1,25 @@
 {
     "cSpell.words": [
-        "agentic",
-        "winget"
+        "backref",
+        "CODEOWNERS",
+        "codespace",
+        "Codespaces",
+        "containerapp",
+        "creds",
+        "deprioritized",
+        "devcontainer",
+        "devcontainers",
+        "docstrings",
+        "dotnettools",
+        "isouter",
+        "prebuild",
+        "pylance",
+        "schlich",
+        "SDLC",
+        "WCAG"
     ],
-    "typescript.tsdk": "website/node_modules/typescript/lib"
+    "github.copilot.nextEditSuggestions.enabled": true,
+    "editor.tabSize": 4,
+    "chat.agent.enabled": true,
+    "chat.agent.maxRequests": 100,
 }

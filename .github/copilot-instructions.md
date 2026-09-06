@@ -1,66 +1,100 @@
-# Copilot Workshops — ワークショップ執筆ガイド
+# Tailspin Toys Crowd Funding Development Guidelines
 
-このリポジトリは、Astro + Starlight サイトとして <https://github-samples.github.io/copilot-workshops/> で公開される **Copilot Workshops** の **ワークショップコンテンツ** をホストしています。受講者がワークショップを通じて構築するデモアプリケーションは、別のリポジトリにあります: <https://github.com/github-samples/tailspin-toys>。
+This is a crowdfunding platform for games with a developer theme. The application is a single **Astro 7** site (fully prerendered/static output) styled with **Tailwind CSS v4**. Data is stored in a local SQLite database accessed at build time through **Drizzle ORM + Node.js's built-in SQLite driver**; pages query the database directly in frontmatter — there is no separate backend API or client-side UI framework. Please follow these guidelines when contributing:
 
-**これはコンテンツ専用のリポジトリです。** デモアプリのアプリケーションコード（Astro の SSR エンドポイント、Drizzle データレイヤー、UI コンポーネント、Tailwind のスタイル、テスト）をここに追加しないでください。アプリケーションの変更は `tailspin-toys` に属します。
+## Agent notes
 
-## リポジトリ構成
+- Explore the project before beginning code generation
+- Create todo lists for long operations
+  - Before each step in a todo list, reread the instructions to ensure you always have the right directions
+- Always use instructions files when available, reviewing before generating code
+- Do not generate summary markdown files upon completion of a task
+- Always use absolute paths when running scripts and BASH commands
+- **NEVER commit or push to main automatically unless explicitly instructed to do so**
 
-- `docs/` — **すべてのレッスンのソース Markdown。ここを編集します。** ビルド不要で github.com 上で直接閲覧できます。
-  - `README.md` — ワークショップのランディングページ（`slug: index` フロントマターでサイトのホームも兼ねる）。
-  - `cli/`、`vscode/`、`cloud/`、`app/` — ハーネスごとのレッスン（Copilot CLI / VS Code / クラウドエージェント / GitHub Copilot アプリ）。各フォルダーのランディングページは `README.md` です（フォルダーパスに一致する `slug:` でルーティング）。各ハーネスはそれぞれの `0-prerequisites.md` セットアップレッスンで始まります。CLI と VS Code のハーネスは codespace をセットアップし、app と cloud のハーネスはそのフローに必要なセットアップをカバーします（app の場合は Node.js のローカルインストールと、テンプレートからのプロジェクト作成）。
-  - `es-es/`、`ja-jp/`、`ko-kr/`、`pt-br/`、`zh-cn/` — Starlight が要求するロケールルートパスにあるローカライズされたコンテンツ。翻訳されたページは各ロケールディレクトリ配下で英語のパスをミラーし、未翻訳のページは Starlight の英語フォールバックを使います。
-  - `_images/` — スクリーンショットと図（すべてのロケールで共有）。
-- `website/` — `docs/` を GitHub Pages に公開するオプションの Astro + Starlight サイト（ローダー `base: '../docs'`）。レンダリング後のサイトをセルフホストまたはプレビューする場合にのみ必要です。
-  - `astro.config.mjs` — 手動で管理されるサイドバーと `locales` ブロックを含むサイト設定。従来の `/shared/0-prereqs/` → ホーム（`/`）へのリダイレクトは、`src/pages/shared/0-prereqs.astro` にある完全な HTML リダイレクトページです（`astro.config.mjs` の `redirects` エントリではない。それだと `<html>` 要素のないスタブが出力され、Pagefind がインデックスできないため）。前提条件は現在、ハーネスごと（`/<harness>/0-prerequisites/`）にあるので、古い shared-prereqs URL はホームページに転送されます。
-  - `src/content.config.ts` — アンダースコア接頭辞の補助ディレクトリを除外するカスタムコンテンツローダー（`base: '../docs'`）。これにより `_images/` はコンテンツとしてルーティングされません。
-- `AUTHORING.md` — 執筆者向けの入口（レッスンや画像を追加するためのレシピ）。
-- `CONTRIBUTING.md` — AUTHORING.md への短いポインターと PR/CI ルール。
-- `.github/`
-  - `copilot-instructions.md` — このファイル。
-  - `instructions/` — スコープ付きの instruction ファイル（`applyTo` フロントマターが特定のファイルグロブを対象にする）。
-  - `agents/` — Copilot が利用できるカスタムエージェント。
-  - `skills/` — Copilot が利用できるスキル（各スキルの役割の索引は [`skills/README.md`](skills/README.md) を参照）。
-  - `workflows/pages.yml` — サイトをビルドしてデプロイします。
-  - `workflows/content-alignment.md` — 整合した更新が必要な重複コンテンツがないか PR をチェックするエージェント型ワークフロー。
+## Code standards
 
-## 執筆規約
+### Required Before Each Commit
 
-### パスをまたいだ散文の再利用
+#### Testing guidelines
 
-同じ散文が複数のハーネス（CLI、VS Code、cloud）に当てはまる場合は、ハーネスごとの各 `.md` レッスンにインラインでコピーします。インポートベースの共有コンテンツの仕組みはありません。ホストページがフロントマター、見出し、ナビゲーション、本文の散文を所有します。
+- **Always run tests and lint through the `quality-checks` skill — never invoke `npm run test:unit`, `npm run test:e2e`, or `npm run lint` directly.** The skill wraps environment setup, ordering, and troubleshooting. (Starting the app for manual validation is not a quality check — run `npm run dev` directly for that.)
+- Run Vitest unit tests to verify the data layer and transforms, and Playwright tests to verify e2e and frontend functionality
+- Run ESLint to check frontend code quality before committing
+- Review the existing tests to ensure we're not duplicating efforts
+- Test code should be of the same quality as the rest of the project, and follow DRY principles
+- For frontend changes, verify the build (`npm run build`) directly, and run the end-to-end tests through the `quality-checks` skill, to ensure everything works correctly
+- When changing the data layer (schema, helpers, transforms), update and run the corresponding unit tests
 
-インラインのコピーはずれていく可能性があるため、重複するセクションを編集した後は `check-content-alignment` スキルを実行してください。`.github/workflows/content-alignment.md` のエージェント型ワークフローは、セーフティネットとして PR 上で同じ分析を実行しますが、影響を受けるすべてのレッスンを更新する代わりとして依存しないでください。
+#### Project guidelines
 
-### admonition（コールアウト）
+- When updating the database schema, generate and commit the drizzle-kit migration (`npm run db:generate`)
+- When adding new functionality, make sure you update the README
+- Make sure all guidance in the Copilot Instructions file is updated with any relevant changes, including to project structure and scripts, and programming guidance
 
-- **どこでも GitHub の admonition 構文を使います** — 公開レッスン *と* リポジトリの Markdown の両方です。`[!NOTE]` / `[!TIP]` / `[!IMPORTANT]` / `[!WARNING]` / `[!CAUTION]` のマーカーを独立した `>` 接頭の行に置き、本文は続く `>` 接頭の行に書きます。
-- `docs/**` 配下の公開レッスンでは、`remark-github-admonitions-to-directives` プラグイン（`website/astro.config.mjs` で組み込み）がビルド時にこれらを Starlight のアサイドに変換します（NOTE/IMPORTANT → note、TIP → tip、WARNING/CAUTION → caution）。Starlight の `:::` ディレクティブを書か **ない** でください。
-- GitHub 構文にはカスタムタイトルやネストの形式がないため、コールアウトの見出しは **太字の導入行**（`> **Title**` の後に空の `>` 行、その後に本文）に置き、「ネストされた」コールアウトは空行で区切った兄弟のブロッククォートとして出力します。完全な対応関係とパターンは [`.github/instructions/markdown.instructions.md`](instructions/markdown.instructions.md) にあります。
+### Code formatting requirements
 
-### リンク
+- Use TypeScript with explicit types for function parameters and return values, especially in the data layer (`db/`, `src/lib/`)
+- Frontend code (TypeScript, Astro) must pass ESLint checks (`npm run lint`)
 
-- **ワークショップ内:** Markdown の参照スタイルリンク（`[Exercise 1][exercise-1]` と、ページ下部に定義した `[exercise-1]: ../1-foo/`）。
-- **外部ドキュメント:** `docs.github.com` やその他の信頼できる情報源への完全な URL。
-- **リポジトリ間（テンプレートリポジトリ、サンプルコード）:** `github.com/github-samples/tailspin-toys/...` への完全な URL。*この* リポジトリ内のファイルを、あたかもテンプレートであるかのようにリンクし **ない** でください — `tailspin-toys` が受講者向けのテンプレートです。
+### Data Layer Patterns (Drizzle + Node SQLite)
 
-## ビルド、プレビュー、検証
+- Define tables in `db/schema.ts`; manage schema changes with drizzle-kit migrations - see `drizzle.instructions.md`
+- Keep data-access helpers in `src/lib/` with an **injectable `db`** argument so they're testable
+- Keep CSV/seed logic as pure functions in `db/transforms.ts`
+- Seed-derived values must be deterministic (no `Math.random`) so static builds are reproducible
 
-サイトのビルド・プレビュー・検証のためのツール（開発サーバー、クリーンビルド、ページ数の不変条件、lychee のリンクチェック）は、[`build-and-verify-docs`](skills/build-and-verify-docs/SKILL.md) スキルにあります。コミットのたびにその検証手順を実行し、いずれかのステップが失敗したらコミットしないでください。
+### Astro Patterns
 
-PR を作成または更新する前には、そのスキルに記載された **PR 時の整合性チェック** も実施してください — これは、ビルドやリンクチェックでは検出できない構造的なずれの点検（名前変更されたパス、古くなったスキル / instruction への参照、CI の記述、リポジトリ構造ツリー、コピーした散文の整合性）です。
+- **Astro Pages/Components**: routing, layouts, content, and components are all `.astro` - see `astro.instructions.md`
+- Query data directly in page frontmatter via the `src/lib/` helpers (build-time, static output)
+- Dynamic routes use `getStaticPaths()` + `export const prerender = true`
+- Provide a branded `404.astro` (unknown routes are real 404s under static output)
+- Only add a scoped Astro `<script>` when genuine client interactivity is required
 
-## コミットの衛生
+### Styling
 
-- Conventional Commits のプレフィックスを推奨します（`docs:`、`chore:`、`fix:`）。
-- 常に次のトレーラーを含めてください:
-  ```
-  Co-authored-by: Copilot <223556219+Copilot@users.noreply.github.com>
-  ```
+- Use Tailwind CSS utility classes exclusively - see `style.instructions.md`
+- Dark theme colors: slate palette (`bg-slate-800`, `text-slate-100`, etc.)
+- Rounded corners and modern UI patterns
+- Follow modern UI/UX principles with clean, accessible interfaces
 
-## ここでやってはいけないこと
+### GitHub Actions workflows
 
-- デモアプリのアプリケーションコードを追加しない — Astro の SSR エンドポイント、Drizzle データレイヤー、`.astro` UI コンポーネント、Tailwind クラス、Vitest/Playwright のテスト。これらは `github-samples/tailspin-toys` に属します。
-- アプリケーションのソースパスに対して執筆しない — デモアプリはここではなく `tailspin-toys` にある単一の Astro プロジェクトです。
-- タスクの最後にサマリーの Markdown ファイルを生成しない。
-- `mkdocs.yml` やその他の並行するドキュメントツールを追加しない — サイトは Astro + Starlight です。
+- Follow good security practices
+- Make sure to explicitly set the workflow permissions
+- Add comments to document what tasks are being performed
+
+## Scripts
+
+- The project uses **npm scripts** for all development tasks — there is no `scripts/` directory.
+- **Skills take precedence.** Before running a command directly, check whether a skill covers the task (e.g. the `quality-checks` skill wraps tests and lint). If one applies, follow it.
+- Key npm scripts:
+  - `npm run dev` — start the Astro dev server (`predev` migrates + seeds the local SQLite database)
+  - `npm run build` — build the static site (`prebuild` migrates + seeds the local SQLite database)
+  - `npm run preview` — serve the built `dist/` output
+  - `npm run lint` — ESLint
+  - `npm run test:unit` — Vitest unit tests
+  - `npm run test:e2e` — Playwright E2E tests (builds + previews first)
+  - `npm run typecheck` — type-check the pure TypeScript with `tsgo` (TypeScript 7 native compiler, via `@typescript/native-preview`) using `tsconfig.tsgo.json`
+  - `npm run typecheck:astro` — type-check `.astro` files with `astro check` (classic TypeScript package)
+  - `npm run typecheck:all` — run both type-check scripts (used by the CI `type-check` job)
+  - `npm run db:generate` / `db:migrate` / `db:seed` / `db:setup` — Drizzle schema/migration/seed tasks
+
+> [!NOTE]
+> TypeScript 7 (`tsgo`) is adopted **side-by-side** for type checking only; it does not affect linting. ESLint + `typescript-eslint` and `astro check` still resolve the classic `typescript` package (kept at v6) because the native compiler's API isn't ready for them yet. Do **not** bump the classic `typescript` package to 7 (a Dependabot `ignore` holds it) until `typescript-eslint` + `@astrojs/check` support the native API. `tsgo` is `--noEmit` only; the site is still built by `astro build`.
+
+## Repository Structure
+
+The application lives at the repository root:
+
+- `db/`: Drizzle schema, migrations, transforms, seed, and `games.csv`
+- `src/lib/`: Node SQLite client (`db.ts`) and data-access helpers (`games.ts`)
+- `src/components/`: reusable `.astro` components
+- `src/layouts/`: Astro layout templates
+- `src/pages/`: Astro page routes (`index.astro` listing, `game/[id].astro`, `404.astro`, `about.astro`)
+- `src/styles/`: CSS and Tailwind configuration
+- `src/types/`: TypeScript interfaces (Game, Publisher, Category)
+- `e2e-tests/`: Playwright E2E tests (home, games, accessibility)
+- `drizzle.config.ts`, `vitest.config.ts`, `astro.config.mjs`, `playwright.config.ts`: tooling config
+- `README.md`: Project documentation

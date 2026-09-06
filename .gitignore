@@ -1,37 +1,34 @@
 # macOS
 .DS_Store
 
-# Astro / Node
-website/dist/
-website/.astro/
-website/node_modules/
+# build output
+dist/
+
+# generated types
+.astro/
+
+# dependencies
 node_modules/
+
+# local SQLite database (regenerated from db/games.csv)
+*.db
+
+# environment variables
+.env
+.env.production
+
+# logs
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 pnpm-debug.log*
 
-# Generated workshop mirror (no longer committed; renderer was retired)
-workshop/
+# Playwright
+/test-results/
+/playwright-report/
+/blob-report/
+/playwright/.cache/
 
-# Environment
-.env
-.env.production
-
-# JetBrains
+# editors
 .idea/
-
-# Python
-__pycache__/
-*.py[cod]
-*$py.class
-*.egg-info/
-.pytest_cache/
-.mypy_cache/
-.ruff_cache/
-.venv/
-venv/
-
-# Lychee / local-only artifacts
-.playwright-mcp/
-sidebar-vscode.png
+*.swp

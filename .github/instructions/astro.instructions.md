@@ -1,23 +1,122 @@
 ---
-description: 'Astro + Starlight site wrapper conventions'
-applyTo: 'website/**/*.{astro,mjs,ts,js}'
+description: 'Astro component patterns for pages, layouts, components, and routing'
+applyTo: '**/*.astro'
 ---
 
-# Astro + Starlight ラッパー
+# Astro Component Instructions
 
-`website/` は、ワークショップを GitHub Pages に公開する Astro + Starlight プロジェクトです。これはアプリケーションでは **なく**、薄いサイトシェルです。レッスンコンテンツはリポジトリルートの `docs/` ディレクトリにあります（ローダーの `base: '../docs'` 経由で取得）。執筆は `website/` 配下のプロジェクトファイルではなく、そこで行ってください。
+## Astro Component Patterns
 
-## サイト設定
+Astro handles everything in the UI: pages, layouts, components, routing, and content. The site is **fully prerendered** (`output: 'static'`) — there is no client-side UI framework and no separate API server. Pages read data **directly in frontmatter** at build time via the Drizzle/Node SQLite data-access helpers in `src/lib/`.
 
-- ベースパス: `/copilot-workshops`（リポジトリの GitHub Pages スラッグ）。
-- サイト URL: `https://github-samples.github.io/copilot-workshops/`。
-- **サイドバー: 手動で管理** します（`astro.config.mjs` 内）。`sidebar` 配列が、受講者が見る順序とナビゲーションに表示されるページの両方を決めます。新しいレッスンは明示的に追加する必要があります。
-- **コンテンツコレクション** は、`src/content.config.ts` 内のカスタム `glob()` ローダー（`base: '../docs'`）を通じて、リポジトリルートの `docs/` ディレクトリから取得されます。このローダーはアンダースコア接頭のファイルとディレクトリを除外するため、`_images/` などの補助アセットがページとしてルーティングされません。フォルダーのランディングページは、Starlight のデフォルトの `index.md` ではなく `README.md` ファイルです（github.com 上でレンダリングされるように）。各ファイルはフロントマターに `slug:` を持ち、インデックスファイルから得られるはずのルートを再現します — `docs/README.md` → `slug: index`（サイトホーム `/`）、`docs/<harness>/README.md` → `slug: <harness>`、ローカライズされたランディングはロケールを接頭辞に付けた slug を使います（`docs/<locale>/README.md` → `slug: <locale>`、`docs/<locale>/<harness>/README.md` → `slug: <locale>/<harness>`）。
+### Component Structure
 
-## アプリ風のコンポーネントを追加しない
+```astro
+---
+// Frontmatter: runs at build time (static output)
+import Layout from '../layouts/Layout.astro';
+import GameCard from '../components/GameCard.astro';
+import { getDatabase } from '../lib/db';
+import { getAllGames } from '../lib/games';
 
-これはドキュメントのラッパーです。インタラクティブなフレームワークアイランド（Svelte、React など）、Tailwind のユーティリティクラスによるスタイリング層、カスタムルーティング、その他アプリケーション風のコードを追加しないでください。Starlight のデフォルトを超えるものはすべて正当化が必要です。
+interface Props {
+  title: string;
+}
 
-## ビルドと検証
+const { title } = Astro.props;
+const games = await getAllGames(getDatabase());
+---
 
-`astro.config.mjs` や `website/src/` 配下のものを変更したら、[`build-and-verify-docs`](../skills/build-and-verify-docs/SKILL.md) スキルでサイトをビルドして検証してください。そのページ数の不変条件は、予期しないルーティングページを検知するトリップワイヤーです: Starlight は 36 のワークショップルートをルート言語と設定された 5 つのロケールについて出力し、さらにレガシーリダイレクトを追加するため、404 ページを除いて 217 個のビルド済み `index.html` ページになります。ルートやロケールの変更がないのに件数が変わった場合は、`docs/` 配下のロケールレイアウトと、`src/content.config.ts` のアンダースコアディレクトリ除外を確認してください。
+<Layout title={title}>
+  {games.map((game) => <GameCard {game} />)}
+</Layout>
+```
+
+## Layouts
+
+- Create reusable layout components in `src/layouts/`
+- Use `<slot />` for content injection
+- Include common elements: `<head>`, navigation, footer
+- Import global styles in layouts
+
+### Layout Example
+
+```astro
+---
+interface Props {
+  title: string;
+}
+const { title } = Astro.props;
+---
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width" />
+    <title>{title}</title>
+  </head>
+  <body>
+    <slot />
+  </body>
+</html>
+```
+
+## Pages
+
+- Create pages in `src/pages/`
+- File-based routing: `src/pages/about.astro` → `/about`
+- Dynamic routes: `src/pages/game/[id].astro`
+- Provide a branded `src/pages/404.astro` — with static output, any URL with no generated page is a real 404.
+
+### Dynamic Routes (static output)
+
+With `output: 'static'`, every dynamic route must enumerate its pages with `getStaticPaths()` and set `prerender = true`. Query data in frontmatter using the data-access helpers:
+
+```astro
+---
+import type { GetStaticPaths } from 'astro';
+import Layout from '../../layouts/Layout.astro';
+import { getDatabase } from '../../lib/db';
+import { getAllGameIds, getGameById } from '../../lib/games';
+
+export const prerender = true;
+
+export const getStaticPaths = (async () => {
+  const ids = await getAllGameIds(getDatabase());
+  return ids.map((id) => ({ params: { id: String(id) } }));
+}) satisfies GetStaticPaths;
+
+const { id } = Astro.params;
+const game = await getGameById(getDatabase(), Number(id));
+---
+
+<Layout title="Game Details - Tailspin Toys">
+  <!-- Game details -->
+</Layout>
+```
+
+## Data Access
+
+- Build-time data comes from a local SQLite database via **Drizzle ORM + Node SQLite** (see [`drizzle.instructions.md`](drizzle.instructions.md)).
+- Import `getDatabase()` from `src/lib/db.ts` and the typed helpers from `src/lib/games.ts`.
+- The database must be migrated and seeded before `astro build`; the `prebuild` npm script (`db:setup`) handles this.
+
+## Client Interactivity (rare)
+
+There is no Svelte/React layer. When a page genuinely needs client behaviour, add a scoped Astro `<script>` using standard DOM APIs. Prefer native interactive elements (`<button>`, `<a href>`) so keyboard and focus behaviour come for free.
+
+## TypeScript
+
+- Use TypeScript for type-safe props
+- Define `Props` interface in frontmatter
+- Type component imports and helper return values
+- Run `npx astro sync` to (re)generate route/content types before linting or type-checking
+- `.astro` files are type-checked by `npm run typecheck:astro` (which runs `astro sync` then `astro check`), on the classic `typescript` package. The pure TypeScript in `db/`, `src/lib/`, and `src/types/` is type-checked separately by `npm run typecheck` (the native TS 7 compiler, `tsgo`), which does **not** process `.astro` files.
+
+## Best Practices
+
+- Keep data fetching in frontmatter (build time); avoid client-side fetching
+- Minimize client-side JavaScript — the default is zero JS shipped
+- Import and use global CSS styles from layouts
+- Always include a `data-testid` on interactive elements (see `ui.instructions.md`)

@@ -1,45 +1,124 @@
-# コントリビューション
+# Contributing to Tailspin Toys
 
-**Copilot Workshops** へのコントリビューションに関心をお寄せいただきありがとうございます。このリポジトリは、ワークショップのコンテンツ（Markdown のソースと、それを公開する Astro + Starlight サイト）を管理しています。
+[fork]: https://github.com/github-samples/tailspin-toys/fork
+[pr]: https://github.com/github-samples/tailspin-toys/compare
+[code-of-conduct]: CODE_OF_CONDUCT.md
 
-## 行動規範
+Thank you for your interest in contributing to Tailspin Toys! Your help is essential for making this crowdfunding platform the best it can be for game creators and backers alike.
 
-このプロジェクトは [コントリビューター行動規範（Contributor Code of Conduct）](./CODE_OF_CONDUCT.md) のもとで公開されています。参加することで、その条項を遵守することに同意したものとみなされます。
+Contributions to this project are [released](https://help.github.com/articles/github-terms-of-service/#6-contributions-under-repository-license) to the public under the [project's open source license](LICENSE).
 
-コントリビューションは、[プロジェクトのオープンソースライセンス](./LICENSE) のもとで公開されます。
+Please note that this project is released with a [Contributor Code of Conduct][code-of-conduct]. By participating in this project you agree to abide by its terms.
 
-## まず最初に読むもの
+## Getting Started
 
-**コンテンツを執筆・編集** したい場合は、まず [`AUTHORING.md`](./AUTHORING.md) をご覧ください。全体像の考え方、ファイル構成、レッスンや画像を追加・編集するための手順、ローカルプレビューのワークフロー、スタイル規約について説明しています。
+### Prerequisites
 
-## プルリクエストの送信
+Before you can run and test the application locally, you'll need to install:
 
-1. リポジトリを [フォーク](https://github.com/github-samples/copilot-workshops/fork) してクローンします。
-2. トピックブランチを作成します（`git checkout -b my-change`）。
-3. 変更を加えます。PR は 1 つの論理的な変更に絞り、焦点を明確に保ってください。
-4. フォークにプッシュし、[プルリクエストを作成](https://github.com/github-samples/copilot-workshops/compare) します。
-5. CI とレビューを待ちます。
+- **Node.js 22.13+** - [Download](https://nodejs.org/) | [Homebrew](https://formulae.brew.sh/formula/node)
+- **Git** - [Download](https://git-scm.com/downloads) | [Homebrew](https://formulae.brew.sh/formula/git)
 
-## マージ前に
+### Setting Up Your Development Environment
 
-PR で CI（`pages.yml`）が成功している必要があります。CI では次が実行されます:
+1. Fork and clone the repository:
+   ```bash
+   git clone https://github.com/YOUR-USERNAME/tailspin-toys.git
+   cd tailspin-toys
+   ```
 
-- **`pages.yml` ビルド** — `npm run build`（Astro サイトのビルド）。
-- **Lychee** — ビルドされた `website/dist/` に対するオフラインリンクチェック。
+2. Install dependencies:
+   ```bash
+   npm ci
+   npx playwright install chromium   # only needed for the E2E tests
+   ```
 
-プッシュする前に、[AUTHORING.md → Building and verifying](./AUTHORING.md#building-and-verifying) で説明されている一連のローカル検証（クリーンビルド、ページ数チェック、lychee のリンクチェック）を実行してください。
+3. Start the development server:
+   ```bash
+   npm run dev
+   ```
 
-## コミットメッセージ
+4. Open your browser to [http://localhost:4321](http://localhost:4321)
 
-Conventional Commits のプレフィックスの使用を推奨します: `docs:`、`chore:`、`fix:`、`ci:`、`feat:`。
+## Project Structure
 
-AI の支援を受けた場合は、`Co-authored-by` トレーラーを含めてください:
+- `db/` - Drizzle schema, migrations, transforms, seed, and `games.csv`
+- `src/lib/` - database client and data-access helpers
+- `src/` - Astro pages, layouts, components, styles, and types
+- `e2e-tests/` - Playwright E2E tests
 
-```
-Co-authored-by: Copilot <223556219+Copilot@users.noreply.github.com>
-```
+## Making Changes
 
-## 参考リンク
+### Data Layer (Drizzle + Node SQLite)
 
-- [オープンソースへのコントリビューション方法](https://opensource.guide/how-to-contribute/)
-- [プルリクエストの使い方](https://help.github.com/articles/about-pull-requests/)
+- Define tables in `db/schema.ts`; generate a migration with `npm run db:generate` after schema changes
+- Use type hints for all function parameters and return values
+- Keep data-access helpers in `src/lib/` with an injectable `db` argument
+- Add or update Vitest tests for any data-layer change
+- Run tests before submitting: `npm run test:unit`
+   - All tests must pass
+
+### Frontend (Astro)
+
+- Build UI as `.astro` pages and components; query data in frontmatter (static output)
+- Follow the dark theme using Tailwind CSS utility classes
+- Add `data-testid` attributes to interactive elements for testing
+- Run E2E tests before submitting: `npm run test:e2e`
+   - All tests must pass
+
+## Submitting a Pull Request
+
+### Issues
+
+All change requests should start with an issue. You're welcome to file the issue alongside the PR, but an issue must always be created.
+
+### Workflow
+
+1. Create a new branch from `main` for your changes:
+   ```bash
+   git checkout -b feature/your-feature-name
+   ```
+
+2. Make your changes, following the documented coding standards.
+
+3. Run the test suites to ensure nothing is broken:
+   ```bash
+   npm run lint
+   npm run test:unit
+   npm run test:e2e
+   ```
+
+4. Commit your changes with a clear, descriptive message:
+   ```bash
+   git commit -m "Add feature: brief description of changes"
+   ```
+
+5. Push to your fork and [submit a pull request][pr].
+
+6. Wait for your pull request to be reviewed and merged.
+
+### Pull Request Guidelines
+
+- Use the appropriate pull request template, and ensure all sections are completed.
+- Keep your changes focused. If you have multiple unrelated changes, submit them as separate pull requests.
+- Write clear commit messages that explain *what* and *why*.
+- Update documentation if your changes affect how the application works.
+- Ensure all tests pass before requesting a review.
+- Be responsive to feedback and ready to make adjustments.
+
+## Reporting Issues
+
+Found a bug or have a feature request? Please [open an issue](https://github.com/github-samples/tailspin-toys/issues/new) with:
+
+- A clear, descriptive title
+- Steps to reproduce (for bugs)
+- Expected vs. actual behavior
+- Screenshots if applicable
+- Your environment details (OS, browser, Node version)
+
+## Resources
+
+- [How to Contribute to Open Source](https://opensource.guide/how-to-contribute/)
+- [Using Pull Requests](https://help.github.com/articles/about-pull-requests/)
+- [Writing Good Commit Messages](http://tbaggery.com/2008/04/19/a-note-about-git-commit-messages.html)
+- [GitHub Help](https://help.github.com)
