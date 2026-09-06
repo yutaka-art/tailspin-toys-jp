@@ -1,19 +1,19 @@
 ---
-description: 'Astro component patterns for pages, layouts, components, and routing'
+description: 'ページ、レイアウト、コンポーネント、ルーティング向けの Astro コンポーネントのパターン'
 applyTo: '**/*.astro'
 ---
 
-# Astro Component Instructions
+# Astro コンポーネントに関する指示
 
-## Astro Component Patterns
+## Astro コンポーネントのパターン
 
-Astro handles everything in the UI: pages, layouts, components, routing, and content. The site is **fully prerendered** (`output: 'static'`) — there is no client-side UI framework and no separate API server. Pages read data **directly in frontmatter** at build time via the Drizzle/Node SQLite data-access helpers in `src/lib/`.
+Astro は UI に関するすべて（ページ、レイアウト、コンポーネント、ルーティング、コンテンツ）を担います。このサイトは **完全にプリレンダリング** されており（`output: 'static'`）、クライアントサイドの UI フレームワークも別建ての API サーバーも存在しません。各ページはビルド時に、`src/lib/` にある Drizzle／Node SQLite のデータアクセス用ヘルパーを介して **フロントマターで直接** データを読み込みます。
 
-### Component Structure
+### コンポーネントの構造
 
 ```astro
 ---
-// Frontmatter: runs at build time (static output)
+// フロントマター: ビルド時に実行される（静的出力）
 import Layout from '../layouts/Layout.astro';
 import GameCard from '../components/GameCard.astro';
 import { getDatabase } from '../lib/db';
@@ -32,14 +32,14 @@ const games = await getAllGames(getDatabase());
 </Layout>
 ```
 
-## Layouts
+## レイアウト
 
-- Create reusable layout components in `src/layouts/`
-- Use `<slot />` for content injection
-- Include common elements: `<head>`, navigation, footer
-- Import global styles in layouts
+- 再利用可能なレイアウトコンポーネントは `src/layouts/` に作成すること
+- コンテンツの差し込みには `<slot />` を使用すること
+- 共通要素（`<head>`、ナビゲーション、フッター）を含めること
+- グローバルスタイルはレイアウトでインポートすること
 
-### Layout Example
+### レイアウトの例
 
 ```astro
 ---
@@ -62,16 +62,16 @@ const { title } = Astro.props;
 </html>
 ```
 
-## Pages
+## ページ
 
-- Create pages in `src/pages/`
-- File-based routing: `src/pages/about.astro` → `/about`
-- Dynamic routes: `src/pages/game/[id].astro`
-- Provide a branded `src/pages/404.astro` — with static output, any URL with no generated page is a real 404.
+- ページは `src/pages/` に作成すること
+- ファイルベースのルーティング: `src/pages/about.astro` → `/about`
+- 動的ルート: `src/pages/game/[id].astro`
+- ブランドを反映した `src/pages/404.astro` を用意すること。静的出力では、生成されたページが存在しない URL は実際の 404 になります。
 
-### Dynamic Routes (static output)
+### 動的ルート（静的出力）
 
-With `output: 'static'`, every dynamic route must enumerate its pages with `getStaticPaths()` and set `prerender = true`. Query data in frontmatter using the data-access helpers:
+`output: 'static'` では、すべての動的ルートは `getStaticPaths()` でページを列挙し、`prerender = true` を設定する必要があります。データはデータアクセス用ヘルパーを使ってフロントマターでクエリします。
 
 ```astro
 ---
@@ -92,31 +92,31 @@ const game = await getGameById(getDatabase(), Number(id));
 ---
 
 <Layout title="Game Details - Tailspin Toys">
-  <!-- Game details -->
+  <!-- ゲームの詳細 -->
 </Layout>
 ```
 
-## Data Access
+## データアクセス
 
-- Build-time data comes from a local SQLite database via **Drizzle ORM + Node SQLite** (see [`drizzle.instructions.md`](drizzle.instructions.md)).
-- Import `getDatabase()` from `src/lib/db.ts` and the typed helpers from `src/lib/games.ts`.
-- The database must be migrated and seeded before `astro build`; the `prebuild` npm script (`db:setup`) handles this.
+- ビルド時のデータは、**Drizzle ORM + Node SQLite** を介してローカルの SQLite データベースから取得します（[`drizzle.instructions.md`](drizzle.instructions.md) を参照）。
+- `getDatabase()` は `src/lib/db.ts` から、型付きヘルパーは `src/lib/games.ts` からインポートすること。
+- データベースは `astro build` の前にマイグレーションとシードを済ませておく必要があります。`prebuild` の npm スクリプト（`db:setup`）がこれを行います。
 
-## Client Interactivity (rare)
+## クライアントのインタラクティブ性（まれ）
 
-There is no Svelte/React layer. When a page genuinely needs client behaviour, add a scoped Astro `<script>` using standard DOM APIs. Prefer native interactive elements (`<button>`, `<a href>`) so keyboard and focus behaviour come for free.
+Svelte／React のレイヤーは存在しません。ページに本当にクライアント側の挙動が必要な場合は、標準の DOM API を使ったスコープ付きの Astro `<script>` を追加すること。キーボードやフォーカスの挙動を無償で得られるよう、ネイティブのインタラクティブ要素（`<button>`、`<a href>`）を優先すること。
 
 ## TypeScript
 
-- Use TypeScript for type-safe props
-- Define `Props` interface in frontmatter
-- Type component imports and helper return values
-- Run `npx astro sync` to (re)generate route/content types before linting or type-checking
-- `.astro` files are type-checked by `npm run typecheck:astro` (which runs `astro sync` then `astro check`), on the classic `typescript` package. The pure TypeScript in `db/`, `src/lib/`, and `src/types/` is type-checked separately by `npm run typecheck` (the native TS 7 compiler, `tsgo`), which does **not** process `.astro` files.
+- 型安全な props のために TypeScript を使用すること
+- `Props` インターフェースをフロントマターで定義すること
+- コンポーネントのインポートとヘルパーの戻り値に型を付けること
+- Lint や型チェックの前に `npx astro sync` を実行して、ルート／コンテンツの型を（再）生成すること
+- `.astro` ファイルは `npm run typecheck:astro`（`astro sync` の後に `astro check` を実行）によって、従来の `typescript` パッケージ上で型チェックされます。`db/`、`src/lib/`、`src/types/` にある純粋な TypeScript は、`npm run typecheck`（ネイティブの TS 7 コンパイラ `tsgo`）によって別途型チェックされ、こちらは `.astro` ファイルを **処理しません**。
 
-## Best Practices
+## ベストプラクティス
 
-- Keep data fetching in frontmatter (build time); avoid client-side fetching
-- Minimize client-side JavaScript — the default is zero JS shipped
-- Import and use global CSS styles from layouts
-- Always include a `data-testid` on interactive elements (see `ui.instructions.md`)
+- データの取得はフロントマター（ビルド時）にとどめ、クライアントサイドでの取得は避けること
+- クライアントサイドの JavaScript を最小限にすること。既定では JS は一切出力されません
+- グローバルな CSS スタイルはレイアウトからインポートして使用すること
+- インタラクティブ要素には常に `data-testid` を付けること（`ui.instructions.md` を参照）
