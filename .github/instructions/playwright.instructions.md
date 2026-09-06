@@ -1,47 +1,47 @@
 ---
-description: 'Playwright test generation instructions'
+description: 'Playwright テスト生成の指示'
 applyTo: '**/*.spec.ts'
 ---
 
-# Test Writing Guidelines
+# テスト作成ガイドライン
 
-## Code Quality Standards
+## コード品質の基準
 
-- **Locators**: Prioritize user-facing, role-based locators (`getByRole`, `getByLabel`, `getByText`, etc.) for resilience and accessibility. Use `test.step()` to group interactions and improve test readability and reporting.
-- **Timeouts**: Rely solely on Playwright's built-in auto-waiting mechanisms. NEVER use hard-coded waits such as `waitForTimeout`, increased default timeouts, or `waitForLoadState`.
-- **Assertions**: Use auto-retrying web-first assertions. These assertions start with the `await` keyword (e.g., `await expect(locator).toHaveText()`). Prefer assertions that verify meaningful state — `toHaveText`, `toContainText`, `toHaveCount`, `toMatchAriaSnapshot`, `toHaveURL` — over a bare `toBeVisible()` when you actually care about content or structure. `toBeVisible()` is a valid auto-retrying assertion and is appropriate for genuine presence/visibility checks; just don't reach for it when a more specific assertion better expresses the intent.
-- **Clarity**: Use descriptive test and step titles that clearly state the intent. Add comments only to explain complex logic or non-obvious interactions.
+- **ロケーター**: 堅牢性とアクセシビリティのため、ユーザーに見える形のロール（役割）ベースのロケーター（`getByRole`、`getByLabel`、`getByText` など）を優先すること。`test.step()` を使って操作をグループ化し、テストの可読性とレポートの見やすさを高めること。
+- **タイムアウト**: Playwright に組み込まれた自動待機（auto-waiting）の仕組みのみに頼ること。`waitForTimeout` のようなハードコードされた待機、デフォルトタイムアウトの延長、`waitForLoadState` は絶対に使わないこと。
+- **アサーション**: 自動リトライ付きの Web ファーストなアサーションを使用すること。これらのアサーションは `await` キーワードで始まります（例: `await expect(locator).toHaveText()`）。コンテンツや構造を本当に検証したい場合は、単なる `toBeVisible()` よりも、意味のある状態を検証できるアサーション（`toHaveText`、`toContainText`、`toHaveCount`、`toMatchAriaSnapshot`、`toHaveURL`）を優先すること。`toBeVisible()` も有効な自動リトライ付きアサーションであり、純粋に存在・表示を確認する場合には適切ですが、より具体的なアサーションのほうが意図をよく表せる場面では使わないこと。
+- **明確さ**: テストやステップのタイトルには、意図が明確に伝わる説明的な名前を付けること。コメントは複雑なロジックや自明でない操作を説明する場合にのみ追加すること。
 
-## Test Structure
+## テストの構造
 
-- **Imports**: Start with `import { test, expect } from '@playwright/test';`.
-- **Organization**: Group related tests for a feature under a `test.describe()` block.
-- **Hooks**: Use `beforeEach` for setup actions common to all tests in a `describe` block (e.g., navigating to a page).
-- **Titles**: Follow a clear naming convention, such as `Feature - Specific action or scenario`.
-
-
-## File Organization
-
-- **Location**: Store all test files in the `e2e-tests/` directory.
-- **Naming**: Use the convention `<feature-or-page>.spec.ts` (e.g., `login.spec.ts`, `search.spec.ts`).
-- **Scope**: Aim for one test file per major application feature or page.
-
-## Assertion Best Practices
-
-- **UI Structure**: Use `toMatchAriaSnapshot` to verify the accessibility tree structure of a component. This provides a comprehensive and accessible snapshot.
-- **Element Counts**: Use `toHaveCount` to assert the number of elements found by a locator.
-- **Text Content**: Use `toHaveText` for exact text matches and `toContainText` for partial matches.
-- **Navigation**: Use `toHaveURL` to verify the page URL after an action.
+- **インポート**: `import { test, expect } from '@playwright/test';` から始めること。
+- **構成**: ある機能に関連するテストは `test.describe()` ブロックにまとめること。
+- **フック**: `describe` ブロック内のすべてのテストに共通するセットアップ処理（例: ページへの遷移）には `beforeEach` を使うこと。
+- **タイトル**: `機能 - 具体的な操作やシナリオ` のように、明確な命名規則に従うこと。
 
 
-## Example Test Structure
+## ファイルの構成
+
+- **配置場所**: すべてのテストファイルは `e2e-tests/` ディレクトリに保存すること。
+- **命名**: `<機能名またはページ名>.spec.ts` という規則を使うこと（例: `login.spec.ts`、`search.spec.ts`）。
+- **範囲**: 主要なアプリ機能やページごとに 1 つのテストファイルを目安とすること。
+
+## アサーションのベストプラクティス
+
+- **UI 構造**: コンポーネントのアクセシビリティツリーの構造を検証するには `toMatchAriaSnapshot` を使うこと。これにより、包括的でアクセシブルなスナップショットが得られます。
+- **要素数**: ロケーターで見つかった要素の数を検証するには `toHaveCount` を使うこと。
+- **テキスト内容**: 完全一致には `toHaveText`、部分一致には `toContainText` を使うこと。
+- **ナビゲーション**: 操作後のページ URL を検証するには `toHaveURL` を使うこと。
+
+
+## テスト構造の例
 
 ```typescript
 import { test, expect } from '@playwright/test';
 
 test.describe('Movie Search Feature', () => {
   test.beforeEach(async ({ page }) => {
-    // Navigate to the application before each test
+    // 各テストの前にアプリケーションへ遷移する
     await page.goto('https://debs-obrien.github.io/playwright-movies-app');
   });
 
@@ -54,7 +54,7 @@ test.describe('Movie Search Feature', () => {
     });
 
     await test.step('Verify search results', async () => {
-      // Verify the accessibility tree of the search results
+      // 検索結果のアクセシビリティツリーを検証する
       await expect(page.getByRole('main')).toMatchAriaSnapshot(`
         - main:
           - heading "Garfield" [level=1]
@@ -71,22 +71,22 @@ test.describe('Movie Search Feature', () => {
 });
 ```
 
-## Authoring & Iteration Strategy
+## 作成・反復の進め方
 
 > [!NOTE]
-> This file covers how specs should be written. To *run* the E2E suite, use the `quality-checks` skill — never invoke `npx playwright test` directly.
+> このファイルはスペック（テスト）の書き方を扱います。E2E スイートを *実行* するには `quality-checks` スキルを使用し、`npx playwright test` を直接呼び出さないこと。
 
-1. **Run**: Execute the suite through the `quality-checks` skill.
-2. **Debug Failures**: Analyze test failures and identify root causes.
-3. **Iterate**: Refine locators, assertions, or test logic as needed, re-running through the skill.
-4. **Validate**: Ensure tests pass consistently and cover the intended functionality.
-5. **Report**: Provide feedback on test results and any issues discovered.
+1. **実行**: `quality-checks` スキルを通じてスイートを実行する。
+2. **失敗のデバッグ**: テストの失敗を分析し、根本原因を特定する。
+3. **反復**: 必要に応じてロケーター、アサーション、テストロジックを改善し、スキルを通じて再実行する。
+4. **検証**: テストが一貫して成功し、意図した機能を確実にカバーしていることを確認する。
+5. **報告**: テスト結果と発見した問題についてフィードバックを提供する。
 
-## Quality Checklist
+## 品質チェックリスト
 
-Before finalizing tests, ensure:
-- [ ] All locators are accessible and specific and do not use strict mode violations
-- [ ] Tests are grouped logically and follow a clear structure
-- [ ] Assertions are meaningful and reflect user expectations
-- [ ] Tests follow consistent naming conventions
-- [ ] Code is properly formatted and commented
+テストを確定する前に、以下を確認すること:
+- [ ] すべてのロケーターがアクセシブルかつ具体的で、strict モード違反を起こさないこと
+- [ ] テストが論理的にグループ化され、明確な構造に従っていること
+- [ ] アサーションが意味を持ち、ユーザーの期待を反映していること
+- [ ] テストが一貫した命名規則に従っていること
+- [ ] コードが適切にフォーマットされ、コメントが付けられていること
