@@ -3,21 +3,21 @@ description: 'Astro + Starlight site wrapper conventions'
 applyTo: 'website/**/*.{astro,mjs,ts,js}'
 ---
 
-# Astro + Starlight Wrapper
+# Astro + Starlight ラッパー
 
-`website/` is the Astro + Starlight project that publishes the workshop to GitHub Pages. It is **not** an application; it is a thin site shell. Lesson content lives in the repo-root `docs/` directory (sourced via the loader's `base: '../docs'`) — author there, not in the project files under `website/`.
+`website/` は、ワークショップを GitHub Pages に公開する Astro + Starlight プロジェクトです。これはアプリケーションでは **なく**、薄いサイトシェルです。レッスンコンテンツはリポジトリルートの `docs/` ディレクトリにあります（ローダーの `base: '../docs'` 経由で取得）。執筆は `website/` 配下のプロジェクトファイルではなく、そこで行ってください。
 
-## Site config
+## サイト設定
 
-- Base path: `/copilot-workshops` (the repo's GitHub Pages slug).
-- Site URL: `https://github-samples.github.io/copilot-workshops/`.
-- **Sidebar: manually maintained** in `astro.config.mjs`. The `sidebar` array drives both the order learners see and which pages appear in navigation. New lessons must be added explicitly.
-- **Content collection** is sourced from the repo-root `docs/` directory via the custom `glob()` loader in `src/content.config.ts` (`base: '../docs'`). That loader excludes underscore-prefixed files and directories so support assets such as `_images/` don't get routed as pages. Folder landing pages are `README.md` files (so they render on github.com) rather than Starlight's default `index.md`; each carries a `slug:` in its frontmatter to reproduce the route it would otherwise get from an index file — `docs/README.md` → `slug: index` (site home `/`), `docs/<harness>/README.md` → `slug: <harness>`, and localized landings use the locale-prefixed slug (`docs/<locale>/README.md` → `slug: <locale>`, `docs/<locale>/<harness>/README.md` → `slug: <locale>/<harness>`).
+- ベースパス: `/copilot-workshops`（リポジトリの GitHub Pages スラッグ）。
+- サイト URL: `https://github-samples.github.io/copilot-workshops/`。
+- **サイドバー: 手動で管理** します（`astro.config.mjs` 内）。`sidebar` 配列が、受講者が見る順序とナビゲーションに表示されるページの両方を決めます。新しいレッスンは明示的に追加する必要があります。
+- **コンテンツコレクション** は、`src/content.config.ts` 内のカスタム `glob()` ローダー（`base: '../docs'`）を通じて、リポジトリルートの `docs/` ディレクトリから取得されます。このローダーはアンダースコア接頭のファイルとディレクトリを除外するため、`_images/` などの補助アセットがページとしてルーティングされません。フォルダーのランディングページは、Starlight のデフォルトの `index.md` ではなく `README.md` ファイルです（github.com 上でレンダリングされるように）。各ファイルはフロントマターに `slug:` を持ち、インデックスファイルから得られるはずのルートを再現します — `docs/README.md` → `slug: index`（サイトホーム `/`）、`docs/<harness>/README.md` → `slug: <harness>`、ローカライズされたランディングはロケールを接頭辞に付けた slug を使います（`docs/<locale>/README.md` → `slug: <locale>`、`docs/<locale>/<harness>/README.md` → `slug: <locale>/<harness>`）。
 
-## Don't add app-style components
+## アプリ風のコンポーネントを追加しない
 
-This is a docs wrapper. Don't add interactive framework islands (Svelte, React, etc.), Tailwind utility-class styling layers, custom routing, or other application-style code. Anything beyond Starlight defaults should be justified.
+これはドキュメントのラッパーです。インタラクティブなフレームワークアイランド（Svelte、React など）、Tailwind のユーティリティクラスによるスタイリング層、カスタムルーティング、その他アプリケーション風のコードを追加しないでください。Starlight のデフォルトを超えるものはすべて正当化が必要です。
 
-## Building and verifying
+## ビルドと検証
 
-After changing `astro.config.mjs` or anything under `website/src/`, build and verify the site with the [`build-and-verify-docs`](../skills/build-and-verify-docs/SKILL.md) skill. Its page-count invariant is the tripwire for unexpected routed pages: Starlight emits each of the 36 workshop routes for the root language and five configured locales, then adds the legacy redirect, for 217 built `index.html` pages excluding the 404 page. If the count changes without a corresponding route or locale change, check the locale layout under `docs/` and the underscore-directory exclude in `src/content.config.ts`.
+`astro.config.mjs` や `website/src/` 配下のものを変更したら、[`build-and-verify-docs`](../skills/build-and-verify-docs/SKILL.md) スキルでサイトをビルドして検証してください。そのページ数の不変条件は、予期しないルーティングページを検知するトリップワイヤーです: Starlight は 36 のワークショップルートをルート言語と設定された 5 つのロケールについて出力し、さらにレガシーリダイレクトを追加するため、404 ページを除いて 217 個のビルド済み `index.html` ページになります。ルートやロケールの変更がないのに件数が変わった場合は、`docs/` 配下のロケールレイアウトと、`src/content.config.ts` のアンダースコアディレクトリ除外を確認してください。

@@ -3,21 +3,21 @@ description: 'How to write and maintain instruction files (`.github/instructions
 applyTo: '**/*.instructions.md'
 ---
 
-# Authoring instruction files
+# instruction ファイルの執筆
 
-Guidance for creating and maintaining the scoped instruction files that steer Copilot in this repo. This is a **content-only** Astro + Starlight workshop repo, so instruction files govern *Markdown authoring conventions* — never application code (that lives in `github-samples/tailspin-toys`).
+このリポジトリで Copilot を導く、スコープ付きの instruction ファイルを作成・維持するためのガイダンスです。これは **コンテンツ専用** の Astro + Starlight ワークショップリポジトリなので、instruction ファイルは *Markdown 執筆規約* を支配します — アプリケーションコードは扱いません（それは `github-samples/tailspin-toys` にあります）。
 
-This file covers what is specific to instruction files. For mechanical Markdown formatting (no hard-wrapping, admonition syntax, headings, link style), instruction files also follow [`markdown.instructions.md`](./markdown.instructions.md) — don't restate those rules here.
+このファイルは instruction ファイル固有の内容をカバーします。機械的な Markdown の書式（ハードラップしない、admonition 構文、見出し、リンクスタイル）については、instruction ファイルも [`markdown.instructions.md`](./markdown.instructions.md) に従います — それらのルールをここで繰り返さないでください。
 
-## Where instruction files live
+## instruction ファイルの場所
 
-- Location: `.github/instructions/`.
-- Naming: lowercase with hyphens, ending `.instructions.md` (e.g. `markdown-accessibility.instructions.md`).
-- One concern per file. The existing set: `markdown` (formatting), `markdown-accessibility` (a11y), `astro` (the `docs/` site wrapper). Add a new file only for a genuinely new concern; otherwise extend an existing one.
+- 場所: `.github/instructions/`。
+- 命名: 小文字とハイフンで、`.instructions.md` で終わります（例: `markdown-accessibility.instructions.md`）。
+- 1 ファイルにつき 1 つの関心事。既存のセット: `markdown`（書式）、`markdown-accessibility`（a11y）、`astro`（`docs/` サイトのラッパー）。新しいファイルは、本当に新しい関心事のときのみ追加します。それ以外は既存のものを拡張します。
 
-## Required frontmatter
+## 必須のフロントマター
 
-Every instruction file opens with YAML frontmatter:
+すべての instruction ファイルは YAML フロントマターで始まります:
 
 ```yaml
 ---
@@ -26,39 +26,39 @@ applyTo: '**/*.md'
 ---
 ```
 
-- **description** — single-quoted, one sentence. This is how an author (and Copilot) tells files apart, so make it specific.
-- **applyTo** — glob(s) selecting the files the instructions bind to. Patterns used in this repo:
-  - `'**/*.md'` — all Markdown files (formatting, accessibility).
-  - `'docs/**/*.{astro,mjs,ts,js}'` — the site wrapper.
-  - `'**/*.instructions.md'` — this meta-guide.
+- **description** — シングルクォートで囲んだ 1 文。著者（および Copilot）がファイルを区別する手がかりなので、具体的にします。
+- **applyTo** — instruction が適用されるファイルを選ぶ glob。このリポジトリで使われるパターン:
+  - `'**/*.md'` — すべての Markdown ファイル（書式、アクセシビリティ）。
+  - `'docs/**/*.{astro,mjs,ts,js}'` — サイトのラッパー。
+  - `'**/*.instructions.md'` — このメタガイド。
 
-## Structure
+## 構造
 
-- Start with a single `#` H1 title, then `##` sections. (Instruction files are repository docs, so — unlike lesson Markdown — they *do* carry a body H1.)
-- Keep sections short and scannable. Lead with the rule; follow with a tight example only when it removes ambiguity.
-- If two files would cover the same ground, pick one home and have the other point to it. Duplicated guidance drifts.
+- 1 つの `#` H1 タイトルから始め、次に `##` セクション。（instruction ファイルはリポジトリドキュメントなので、レッスン Markdown とは異なり、*本文に* H1 を持ちます。）
+- セクションは短く、スキャンしやすく保ちます。ルールを先に示し、曖昧さを取り除く場合にのみ簡潔な例を続けます。
+- 2 つのファイルが同じ領域をカバーする場合は、一方を拠点に選び、もう一方はそちらを指します。重複したガイダンスはずれていきます。
 
-## Instruction altitude (the Goldilocks zone)
+## instruction の高度（ゴルディロックスゾーン）
 
-Aim for the smallest rule set that fully defines the outcome. Add a rule after a real failure, not for a hypothetical one. Prefer a high-signal example over an exhaustive decision table.
+結果を完全に定義する最小限のルールセットを目指します。ルールは仮想の失敗のためではなく、実際の失敗の後に追加します。網羅的な意思決定表よりも、シグナルの高い例を優先します。
 
-| Altitude | Failure mode | Result |
+| 高度 | 失敗モード | 結果 |
 | --- | --- | --- |
-| Over-specified | Brittle if-this-then-that prose | Breaks on any case you didn't list |
-| Under-specified | Assumes shared context | Generic, off-convention output |
-| Right altitude | Heuristics + one example | Stable, generalizes to new content |
+| 過剰に詳細 | 脆い if-this-then-that の散文 | 列挙しなかったケースで破綻する |
+| 過少に詳細 | 共有された文脈を仮定 | 汎用的で規約外れの出力 |
+| 適切な高度 | ヒューリスティック + 1 例 | 安定し、新しいコンテンツに一般化する |
 
-## Writing style
+## 文体
 
-- Imperative mood: "Use", "Define", "Avoid" — not "you should" / "it might be good to".
-- Be specific and actionable. Replace vague advice with a concrete instruction plus, where helpful, a `Good`/`Avoid` pair.
-- Use backticks for filenames, paths, and literal syntax; bold for UI labels (per `markdown.instructions.md`).
+- 命令形: 「Use」「Define」「Avoid」— 「you should」「it might be good to」は使わない。
+- 具体的かつ実行可能に。曖昧な助言は、具体的な指示と、有用な場合は `Good`/`Avoid` のペアに置き換えます。
+- ファイル名、パス、リテラル構文にはバッククォートを、UI ラベルには太字を使います（`markdown.instructions.md` に従う）。
 
-## Examples
+## 例
 
-Show the convention, not just describe it. Label the contrast.
+規約を単に説明するのではなく、示します。対比にラベルを付けます。
 
-**Good** — names the syntax and shows the callout:
+**Good** — 構文を名指しし、コールアウトを示す:
 
 ```markdown
 Use GitHub admonition syntax for callouts in published lesson content:
@@ -67,22 +67,22 @@ Use GitHub admonition syntax for callouts in published lesson content:
 > Run the dev server before editing.
 ```
 
-**Avoid** — abstract, unactionable:
+**Avoid** — 抽象的で実行不可能:
 
 ```markdown
 Callouts should be done properly using the right syntax.
 ```
 
-## Patterns to avoid
+## 避けるべきパターン
 
-- **Hypothetical-rule inflation** — don't encode rules for failures that haven't happened.
-- **Restating other files** — defer mechanical formatting to `markdown.instructions.md` and the build/verify process to the [`build-and-verify-docs`](../skills/build-and-verify-docs/SKILL.md) skill.
-- **Documenting tooling here** — instruction files describe *what content should look like*; *how to build/verify/preview* belongs in the skill.
-- **Ambiguous terms** — "should", "might", "possibly" leave the outcome undefined.
-- **Copy-paste from upstream docs** — distill and contextualize for this repo instead.
+- **仮想ルールの膨張** — まだ起きていない失敗のためのルールを組み込まない。
+- **他のファイルの再掲** — 機械的な書式は `markdown.instructions.md` に、ビルド/検証のプロセスは [`build-and-verify-docs`](../skills/build-and-verify-docs/SKILL.md) スキルに委ねる。
+- **ここでツールを文書化** — instruction ファイルは *コンテンツがどうあるべきか* を記述します。*どうビルド/検証/プレビューするか* はスキルに属します。
+- **曖昧な語** — 「should」「might」「possibly」は結果を未定義のままにする。
+- **上流ドキュメントからのコピペースト** — 代わりにこのリポジトリ向けに要約して文脈化する。
 
-## Maintenance
+## メンテナンス
 
-- When a convention, path, or file is renamed, update the instruction files that mention it (the PR-time consistency pass in [`build-and-verify-docs`](../skills/build-and-verify-docs/SKILL.md) catches this).
-- Keep `applyTo` globs accurate as the project structure evolves.
-- Remove rules that no longer reflect how the repo works rather than letting them accumulate.
+- 規約、パス、ファイルが名前変更されたときは、それに言及する instruction ファイルを更新します（[`build-and-verify-docs`](../skills/build-and-verify-docs/SKILL.md) の PR 時整合性パスがこれを検出します）。
+- プロジェクト構造の進化に合わせて、`applyTo` の glob を正確に保ちます。
+- リポジトリの実態を反映しなくなったルールは、蓄積させるのではなく削除します。
