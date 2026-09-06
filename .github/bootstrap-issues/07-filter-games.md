@@ -1,12 +1,12 @@
-# Allow users to filter games by category and publisher
+# ユーザーがカテゴリーやパブリッシャーでゲームを絞り込めるようにする
 
-As the game catalog grows, players need a faster way to find titles relevant to them. Adding the ability to filter the game list by category and by publisher improves discoverability and directly supports the platform's goal of helping backers find games to support. The data model already includes categories and publishers, so this builds on existing structures.
+ゲームカタログが増えるにつれて、プレイヤーには自分に関連するタイトルをより早く見つける手段が必要になります。ゲーム一覧をカテゴリーやパブリッシャーで絞り込めるようにすることで発見しやすさが向上し、支援者が支援したいゲームを見つけられるようにするというプラットフォームの目標を直接的に後押しします。データモデルにはすでにカテゴリーとパブリッシャーが含まれているため、この機能は既存の構造を土台に構築できます。
 
-## Acceptance criteria
+## 受け入れ基準
 
-- [ ] Users can filter the game list by one or more categories
-- [ ] Users can filter the game list by publisher
-- [ ] Category and publisher filters can be combined
-- [ ] The data-access helpers in `src/lib/` support filtering games by category and publisher
-- [ ] Filter controls follow the project's accessibility guidelines (keyboard navigation, ARIA, visible focus states) and include `data-testid` attributes
-- [ ] Vitest unit tests cover the filtering helpers and Playwright e2e tests cover the new filtering behavior
+- [ ] ユーザーが 1 つ以上のカテゴリーでゲーム一覧を絞り込める
+- [ ] ユーザーがパブリッシャーでゲーム一覧を絞り込める
+- [ ] カテゴリーとパブリッシャーの絞り込みを組み合わせられる
+- [ ] `src/lib/` のデータアクセス用ヘルパーが、カテゴリーとパブリッシャーによるゲームの絞り込みに対応している
+- [ ] 絞り込みコントロールがプロジェクトのアクセシビリティガイドライン（キーボード操作、ARIA、視認可能なフォーカス状態）に従い、`data-testid` 属性を備えている
+- [ ] Vitest のユニットテストが絞り込みヘルパーを、Playwright の E2E テストが新しい絞り込み動作をカバーしている
