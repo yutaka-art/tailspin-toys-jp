@@ -1,11 +1,11 @@
-# Add a search box to find games by title
+# タイトルでゲームを検索する検索ボックスを追加する
 
-Players who already know what they're looking for shouldn't have to scan the whole catalog. Adding a simple search box on the game list page lets users quickly narrow the list by title, improving discoverability alongside the planned category and publisher filters. This builds on the existing game list data layer without changing the data model.
+探しているものがすでに分かっているプレイヤーが、カタログ全体を見渡さなければならないのは不便です。ゲーム一覧ページにシンプルな検索ボックスを追加することで、ユーザーはタイトルですばやく一覧を絞り込めるようになり、今後予定しているカテゴリーやパブリッシャーによるフィルターと合わせて、目的のゲームを見つけやすくなります。この機能は、データモデルを変更することなく、既存のゲーム一覧のデータ層を活用して実現します。
 
-## Acceptance criteria
+## 受け入れ条件
 
-- [ ] The game list page includes a search input that filters games by title
-- [ ] Matching is case-insensitive and updates the visible list as the user types or submits
-- [ ] An appropriate empty state is shown when no games match the search
-- [ ] The search input follows the project's accessibility guidelines (labeling, keyboard navigation, visible focus states) and includes a `data-testid` attribute
-- [ ] Unit tests cover any new data-layer/search helper and Playwright e2e tests cover the search behavior
+- [ ] ゲーム一覧ページに、タイトルでゲームを絞り込む検索入力欄がある
+- [ ] マッチングは大文字・小文字を区別せず、ユーザーの入力中または送信時に表示中の一覧が更新される
+- [ ] 検索条件に一致するゲームがない場合は、適切な空状態（empty state）が表示される
+- [ ] 検索入力欄はプロジェクトのアクセシビリティガイドライン（ラベル付け、キーボード操作、フォーカス状態の可視化）に準拠し、`data-testid` 属性を持つ
+- [ ] 新しく追加するデータ層／検索ヘルパーはユニットテストでカバーし、検索の動作は Playwright の E2E テストでカバーする
