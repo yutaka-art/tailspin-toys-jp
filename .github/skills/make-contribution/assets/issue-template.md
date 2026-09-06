@@ -1,37 +1,37 @@
-# <!-- Provide a concise, descriptive title for the issue -->
+# <!-- Issue の簡潔で分かりやすいタイトルを記載してください -->
 
-## Summary
+## 概要
 
-<!-- Provide a clear, one-sentence description of the request or issue. -->
+<!-- 依頼内容や問題を、明確な一文で説明してください。 -->
 
-## Context
+## 背景
 
-<!-- Explain why this change is needed. Include:
-- The problem being solved
-- Any relevant background information
-- Link to related issues or discussions if applicable
+<!-- この変更がなぜ必要なのかを説明してください。以下を含めます:
+- 解決しようとしている問題
+- 関連する背景情報
+- 関連する Issue やディスカッションへのリンク（該当する場合）
 -->
 
-## Proposed Solution
+## 提案する解決策
 
-<!-- Describe the suggested approach. Include:
-- Specific changes to be made
-- Files or areas affected
-- Any alternatives considered
+<!-- 推奨するアプローチを記述してください。以下を含めます:
+- 具体的に行う変更内容
+- 影響を受けるファイルや領域
+- 検討した代替案
 -->
 
-## Acceptance Criteria
+## 受け入れ基準
 
-<!-- List measurable criteria for completion:
-- [ ] Criterion 1
-- [ ] Criterion 2
+<!-- 完了を判断できる、測定可能な基準を列挙してください:
+- [ ] 基準 1
+- [ ] 基準 2
 -->
 
-## Additional Information
+## 補足情報
 
-<!-- Include any of the following if relevant:
-- Error messages or logs
-- Steps to reproduce (for bugs)
-- Dependencies or blockers
-- Impact assessment
+<!-- 該当する場合は以下を含めてください:
+- エラーメッセージやログ
+- 再現手順（バグの場合）
+- 依存関係やブロッカー
+- 影響範囲の評価
 -->
