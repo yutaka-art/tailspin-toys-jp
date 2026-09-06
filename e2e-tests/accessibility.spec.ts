@@ -39,7 +39,7 @@ test.describe('Accessibility Tests', () => {
     await page.goto('/');
     await page.waitForSelector('[data-testid="games-grid"]', { timeout: 10000 });
 
-    const menuButton = page.getByRole('button', { name: /toggle menu/i });
+    const menuButton = page.getByRole('button', { name: /メニューを開閉/ });
     const menu = page.locator('#menu');
 
     await test.step('Tab until the menu button is focused', async () => {
@@ -56,7 +56,7 @@ test.describe('Accessibility Tests', () => {
     });
 
     await test.step('Verify menu items are reachable', async () => {
-      const homeLink = menu.getByRole('link', { name: /home/i });
+      const homeLink = menu.getByRole('link', { name: /ホーム/ });
       // Focus may already be on the first menu item after opening
       if (!await homeLink.evaluate(el => el === document.activeElement)) {
         for (let i = 0; i < 10; i++) {
@@ -66,7 +66,7 @@ test.describe('Accessibility Tests', () => {
       }
       await expect(homeLink).toBeFocused();
 
-      const aboutLink = menu.getByRole('link', { name: /about/i });
+      const aboutLink = menu.getByRole('link', { name: /会社概要/ });
       for (let i = 0; i < 10; i++) {
         await page.keyboard.press('Tab');
         if (await aboutLink.evaluate(el => el === document.activeElement)) break;

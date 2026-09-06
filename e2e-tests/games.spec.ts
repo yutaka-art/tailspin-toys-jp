@@ -95,7 +95,7 @@ test.describe('Game Listing and Navigation', () => {
     await test.step('Verify back game button is visible and enabled', async () => {
       const backButton = page.getByTestId('back-game-button');
       await expect(backButton).toBeVisible();
-      await expect(backButton).toContainText('Support This Game');
+      await expect(backButton).toContainText('このゲームを支援する');
       await expect(backButton).toBeEnabled();
     });
   });
@@ -107,7 +107,7 @@ test.describe('Game Listing and Navigation', () => {
     });
 
     await test.step('Click back to all games link', async () => {
-      const backLink = page.getByRole('link', { name: /back to all games/i });
+      const backLink = page.getByRole('link', { name: /すべてのゲームに戻る/ });
       await expect(backLink).toBeVisible();
       await backLink.click();
     });
@@ -127,7 +127,7 @@ test.describe('Game Listing and Navigation', () => {
 
     await test.step('Verify a branded 404 page is served', async () => {
       expect(response?.status()).toBe(404);
-      await expect(page).toHaveTitle(/Page Not Found - Tailspin Toys/);
+      await expect(page).toHaveTitle(/ページが見つかりません - Tailspin Toys/);
       await expect(page.getByTestId('not-found')).toBeVisible();
       await expect(page.getByTestId('not-found-heading')).not.toBeEmpty();
       await expect(page.getByTestId('not-found-home-link')).toBeVisible();
