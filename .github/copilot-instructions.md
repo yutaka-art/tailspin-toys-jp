@@ -1,100 +1,100 @@
-# Tailspin Toys Crowd Funding Development Guidelines
+# Tailspin Toys クラウドファンディング開発ガイドライン
 
-This is a crowdfunding platform for games with a developer theme. The application is a single **Astro 7** site (fully prerendered/static output) styled with **Tailwind CSS v4**. Data is stored in a local SQLite database accessed at build time through **Drizzle ORM + Node.js's built-in SQLite driver**; pages query the database directly in frontmatter — there is no separate backend API or client-side UI framework. Please follow these guidelines when contributing:
+これは開発者をテーマにしたゲーム向けのクラウドファンディングプラットフォームです。アプリケーションは **Astro 7** による単一サイト（完全にプリレンダリングされた静的出力）で、**Tailwind CSS v4** でスタイリングされています。データはローカルの SQLite データベースに保存され、**Drizzle ORM と Node.js 組み込みの SQLite ドライバー** を通じてビルド時にアクセスされます。各ページはフロントマターで直接データベースをクエリします。別建てのバックエンド API やクライアントサイドの UI フレームワークは存在しません。コントリビュートする際は、以下のガイドラインに従ってください。
 
-## Agent notes
+## エージェント向けの注意事項
 
-- Explore the project before beginning code generation
-- Create todo lists for long operations
-  - Before each step in a todo list, reread the instructions to ensure you always have the right directions
-- Always use instructions files when available, reviewing before generating code
-- Do not generate summary markdown files upon completion of a task
-- Always use absolute paths when running scripts and BASH commands
-- **NEVER commit or push to main automatically unless explicitly instructed to do so**
+- コード生成を始める前に、まずプロジェクトを調査すること
+- 長い作業では TODO リストを作成すること
+  - TODO リストの各ステップに取りかかる前に、常に正しい指示に従えるよう、指示内容を読み直すこと
+- 利用可能な場合は常に instructions ファイルを使用し、コード生成前に内容を確認すること
+- タスク完了時にサマリー用の Markdown ファイルを生成しないこと
+- スクリプトや BASH コマンドを実行する際は、常に絶対パスを使用すること
+- **明示的に指示された場合を除き、main へのコミットやプッシュを自動で行わないこと**
 
-## Code standards
+## コード標準
 
-### Required Before Each Commit
+### 各コミット前に必須の事項
 
-#### Testing guidelines
+#### テストのガイドライン
 
-- **Always run tests and lint through the `quality-checks` skill — never invoke `npm run test:unit`, `npm run test:e2e`, or `npm run lint` directly.** The skill wraps environment setup, ordering, and troubleshooting. (Starting the app for manual validation is not a quality check — run `npm run dev` directly for that.)
-- Run Vitest unit tests to verify the data layer and transforms, and Playwright tests to verify e2e and frontend functionality
-- Run ESLint to check frontend code quality before committing
-- Review the existing tests to ensure we're not duplicating efforts
-- Test code should be of the same quality as the rest of the project, and follow DRY principles
-- For frontend changes, verify the build (`npm run build`) directly, and run the end-to-end tests through the `quality-checks` skill, to ensure everything works correctly
-- When changing the data layer (schema, helpers, transforms), update and run the corresponding unit tests
+- **テストと Lint は必ず `quality-checks` スキルを通じて実行すること。`npm run test:unit`、`npm run test:e2e`、`npm run lint` を直接実行しないこと。** このスキルは環境セットアップ、実行順序、トラブルシューティングをまとめて扱います。（手動確認のためにアプリを起動するのは品質チェックではありません。その場合は `npm run dev` を直接実行してください。）
+- Vitest のユニットテストを実行してデータ層と変換処理を検証し、Playwright のテストを実行して E2E とフロントエンドの機能を検証すること
+- コミット前に ESLint を実行してフロントエンドのコード品質をチェックすること
+- 既存のテストを確認し、作業が重複しないようにすること
+- テストコードもプロジェクトの他の部分と同等の品質を保ち、DRY 原則に従うこと
+- フロントエンドの変更については、ビルド（`npm run build`）を直接実行して検証し、`quality-checks` スキルを通じて E2E テストを実行し、すべてが正しく動作することを確認すること
+- データ層（スキーマ、ヘルパー、変換処理）を変更した場合は、対応するユニットテストを更新して実行すること
 
-#### Project guidelines
+#### プロジェクトのガイドライン
 
-- When updating the database schema, generate and commit the drizzle-kit migration (`npm run db:generate`)
-- When adding new functionality, make sure you update the README
-- Make sure all guidance in the Copilot Instructions file is updated with any relevant changes, including to project structure and scripts, and programming guidance
+- データベースのスキーマを更新した場合は、drizzle-kit のマイグレーションを生成してコミットすること（`npm run db:generate`）
+- 新しい機能を追加した場合は、必ず README を更新すること
+- プロジェクト構成やスクリプト、プログラミングに関する指針など、関連する変更があれば Copilot Instructions ファイルのすべての記述を更新すること
 
-### Code formatting requirements
+### コードフォーマットの要件
 
-- Use TypeScript with explicit types for function parameters and return values, especially in the data layer (`db/`, `src/lib/`)
-- Frontend code (TypeScript, Astro) must pass ESLint checks (`npm run lint`)
+- TypeScript を使用し、特にデータ層（`db/`、`src/lib/`）では関数の引数と戻り値に明示的な型を付けること
+- フロントエンドのコード（TypeScript、Astro）は ESLint のチェック（`npm run lint`）を通過すること
 
-### Data Layer Patterns (Drizzle + Node SQLite)
+### データ層のパターン（Drizzle + Node SQLite）
 
-- Define tables in `db/schema.ts`; manage schema changes with drizzle-kit migrations - see `drizzle.instructions.md`
-- Keep data-access helpers in `src/lib/` with an **injectable `db`** argument so they're testable
-- Keep CSV/seed logic as pure functions in `db/transforms.ts`
-- Seed-derived values must be deterministic (no `Math.random`) so static builds are reproducible
+- テーブルは `db/schema.ts` で定義し、スキーマ変更は drizzle-kit のマイグレーションで管理すること（`drizzle.instructions.md` を参照）
+- データアクセス用のヘルパーは `src/lib/` に置き、テスト可能にするために **注入可能な `db`** 引数を持たせること
+- CSV／シード処理のロジックは `db/transforms.ts` の純粋関数として保つこと
+- 静的ビルドを再現可能にするため、シードから導出される値は決定的であること（`Math.random` を使わないこと）
 
-### Astro Patterns
+### Astro のパターン
 
-- **Astro Pages/Components**: routing, layouts, content, and components are all `.astro` - see `astro.instructions.md`
-- Query data directly in page frontmatter via the `src/lib/` helpers (build-time, static output)
-- Dynamic routes use `getStaticPaths()` + `export const prerender = true`
-- Provide a branded `404.astro` (unknown routes are real 404s under static output)
-- Only add a scoped Astro `<script>` when genuine client interactivity is required
+- **Astro のページ／コンポーネント**: ルーティング、レイアウト、コンテンツ、コンポーネントはすべて `.astro`（`astro.instructions.md` を参照）
+- データはページのフロントマターから `src/lib/` のヘルパーを介して直接クエリすること（ビルド時、静的出力）
+- 動的ルートでは `getStaticPaths()` と `export const prerender = true` を使用すること
+- ブランドを反映した `404.astro` を用意すること（静的出力では未知のルートは実際の 404 になります）
+- 本当にクライアント側のインタラクティブ性が必要な場合にのみ、スコープ付きの Astro `<script>` を追加すること
 
-### Styling
+### スタイリング
 
-- Use Tailwind CSS utility classes exclusively - see `style.instructions.md`
-- Dark theme colors: slate palette (`bg-slate-800`, `text-slate-100`, etc.)
-- Rounded corners and modern UI patterns
-- Follow modern UI/UX principles with clean, accessible interfaces
+- Tailwind CSS のユーティリティクラスのみを使用すること（`style.instructions.md` を参照）
+- ダークテーマの配色: slate パレット（`bg-slate-800`、`text-slate-100` など）
+- 角丸とモダンな UI パターンを使用すること
+- クリーンでアクセシブルなインターフェースを備えた、モダンな UI/UX の原則に従うこと
 
-### GitHub Actions workflows
+### GitHub Actions ワークフロー
 
-- Follow good security practices
-- Make sure to explicitly set the workflow permissions
-- Add comments to document what tasks are being performed
+- 適切なセキュリティプラクティスに従うこと
+- ワークフローの権限（permissions）を明示的に設定すること
+- どのようなタスクを実行しているかを説明するコメントを追加すること
 
-## Scripts
+## スクリプト
 
-- The project uses **npm scripts** for all development tasks — there is no `scripts/` directory.
-- **Skills take precedence.** Before running a command directly, check whether a skill covers the task (e.g. the `quality-checks` skill wraps tests and lint). If one applies, follow it.
-- Key npm scripts:
-  - `npm run dev` — start the Astro dev server (`predev` migrates + seeds the local SQLite database)
-  - `npm run build` — build the static site (`prebuild` migrates + seeds the local SQLite database)
-  - `npm run preview` — serve the built `dist/` output
+- このプロジェクトはすべての開発タスクに **npm スクリプト** を使用します。`scripts/` ディレクトリは存在しません。
+- **スキルが優先されます。** コマンドを直接実行する前に、そのタスクをカバーするスキルがないか確認してください（例: `quality-checks` スキルはテストと Lint をまとめて扱います）。該当するものがあれば、それに従ってください。
+- 主な npm スクリプト:
+  - `npm run dev` — Astro の開発サーバーを起動（`predev` がローカル SQLite データベースのマイグレーションとシードを実行）
+  - `npm run build` — 静的サイトをビルド（`prebuild` がローカル SQLite データベースのマイグレーションとシードを実行）
+  - `npm run preview` — ビルド済みの `dist/` 出力を配信
   - `npm run lint` — ESLint
-  - `npm run test:unit` — Vitest unit tests
-  - `npm run test:e2e` — Playwright E2E tests (builds + previews first)
-  - `npm run typecheck` — type-check the pure TypeScript with `tsgo` (TypeScript 7 native compiler, via `@typescript/native-preview`) using `tsconfig.tsgo.json`
-  - `npm run typecheck:astro` — type-check `.astro` files with `astro check` (classic TypeScript package)
-  - `npm run typecheck:all` — run both type-check scripts (used by the CI `type-check` job)
-  - `npm run db:generate` / `db:migrate` / `db:seed` / `db:setup` — Drizzle schema/migration/seed tasks
+  - `npm run test:unit` — Vitest のユニットテスト
+  - `npm run test:e2e` — Playwright の E2E テスト（先にビルドとプレビューを実行）
+  - `npm run typecheck` — `tsgo`（`@typescript/native-preview` 経由の TypeScript 7 ネイティブコンパイラ）で `tsconfig.tsgo.json` を使い、純粋な TypeScript を型チェック
+  - `npm run typecheck:astro` — `astro check`（従来の TypeScript パッケージ）で `.astro` ファイルを型チェック
+  - `npm run typecheck:all` — 両方の型チェックスクリプトを実行（CI の `type-check` ジョブで使用）
+  - `npm run db:generate` / `db:migrate` / `db:seed` / `db:setup` — Drizzle のスキーマ／マイグレーション／シードタスク
 
 > [!NOTE]
-> TypeScript 7 (`tsgo`) is adopted **side-by-side** for type checking only; it does not affect linting. ESLint + `typescript-eslint` and `astro check` still resolve the classic `typescript` package (kept at v6) because the native compiler's API isn't ready for them yet. Do **not** bump the classic `typescript` package to 7 (a Dependabot `ignore` holds it) until `typescript-eslint` + `@astrojs/check` support the native API. `tsgo` is `--noEmit` only; the site is still built by `astro build`.
+> TypeScript 7（`tsgo`）は型チェック専用として **併用** で採用しており、Lint には影響しません。ネイティブコンパイラの API がまだ対応していないため、ESLint + `typescript-eslint` と `astro check` は引き続き従来の `typescript` パッケージ（v6 に固定）を解決に使用します。`typescript-eslint` と `@astrojs/check` がネイティブ API に対応するまでは、従来の `typescript` パッケージを 7 に上げないでください（Dependabot の `ignore` で固定されています）。`tsgo` は `--noEmit` 専用であり、サイトのビルドは引き続き `astro build` が担当します。
 
-## Repository Structure
+## リポジトリ構成
 
-The application lives at the repository root:
+アプリケーションはリポジトリのルートに配置されています。
 
-- `db/`: Drizzle schema, migrations, transforms, seed, and `games.csv`
-- `src/lib/`: Node SQLite client (`db.ts`) and data-access helpers (`games.ts`)
-- `src/components/`: reusable `.astro` components
-- `src/layouts/`: Astro layout templates
-- `src/pages/`: Astro page routes (`index.astro` listing, `game/[id].astro`, `404.astro`, `about.astro`)
-- `src/styles/`: CSS and Tailwind configuration
-- `src/types/`: TypeScript interfaces (Game, Publisher, Category)
-- `e2e-tests/`: Playwright E2E tests (home, games, accessibility)
-- `drizzle.config.ts`, `vitest.config.ts`, `astro.config.mjs`, `playwright.config.ts`: tooling config
-- `README.md`: Project documentation
+- `db/`: Drizzle のスキーマ、マイグレーション、変換処理、シード、`games.csv`
+- `src/lib/`: Node SQLite クライアント（`db.ts`）とデータアクセス用ヘルパー（`games.ts`）
+- `src/components/`: 再利用可能な `.astro` コンポーネント
+- `src/layouts/`: Astro のレイアウトテンプレート
+- `src/pages/`: Astro のページルート（一覧の `index.astro`、`game/[id].astro`、`404.astro`、`about.astro`）
+- `src/styles/`: CSS と Tailwind の設定
+- `src/types/`: TypeScript のインターフェース（Game、Publisher、Category）
+- `e2e-tests/`: Playwright の E2E テスト（ホーム、ゲーム、アクセシビリティ）
+- `drizzle.config.ts`、`vitest.config.ts`、`astro.config.mjs`、`playwright.config.ts`: ツール設定
+- `README.md`: プロジェクトのドキュメント
