@@ -1,11 +1,11 @@
-# Show a catalog summary on the home page
+# ホームページにカタログのサマリーを表示する
 
-The home page jumps straight into the featured games grid without giving visitors a sense of the catalog's size or quality. Adding a small summary — such as the total number of games and the average star rating — gives backers useful at-a-glance context and makes the landing page feel more alive. This builds entirely on data already available in the data layer.
+ホームページは、カタログの規模や品質を伝えることなく、いきなり注目ゲームのグリッドを表示しています。ゲームの総数や平均star評価といった小さなサマリーを追加すれば、支援者にとって役立つ一目でわかる情報を提供でき、ランディングページもより活気のある印象になります。これは、データ層にすでに用意されているデータだけで実現できます。
 
-## Acceptance criteria
+## 受け入れ基準
 
-- [ ] The home page displays the total number of games in the catalog
-- [ ] The home page displays the average star rating across games that have a rating
-- [ ] The summary handles edge cases gracefully (no games, or no rated games)
-- [ ] The summary follows the project's styling and accessibility guidelines and includes `data-testid` attributes
-- [ ] A data-access helper computes the summary deterministically, with unit test coverage, and Playwright e2e tests verify it renders on the home page
+- [ ] ホームページにカタログ内のゲームの総数が表示されること
+- [ ] ホームページに、評価が付いているゲームの平均star評価が表示されること
+- [ ] サマリーがエッジケース（ゲームが存在しない、または評価付きのゲームが存在しない場合）を適切に処理すること
+- [ ] サマリーがプロジェクトのスタイリングおよびアクセシビリティのガイドラインに従い、`data-testid` 属性を含んでいること
+- [ ] データアクセス用のヘルパーがサマリーを決定的に計算し、ユニットテストでカバーされていること。また、Playwright の e2e テストでホームページ上に表示されることを検証すること
