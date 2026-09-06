@@ -1,10 +1,10 @@
-# Implement pagination on the game list page
+# ゲーム一覧ページにページネーションを実装する
 
-As the number of games grows, loading the entire catalog on a single page hurts performance and makes the list harder to browse. Adding pagination keeps the game list page fast and manageable.
+ゲームの数が増えるにつれて、カタログ全体を 1 ページで読み込むとパフォーマンスが低下し、一覧が閲覧しづらくなります。ページネーションを追加することで、ゲーム一覧ページを高速かつ扱いやすい状態に保てます。
 
-## Acceptance criteria
+## 受け入れ基準
 
-- [ ] The data-access helpers in `src/lib/` support pagination (for example page/limit or cursor-based)
-- [ ] The game list page includes pagination controls
-- [ ] Pagination controls follow the project's accessibility guidelines and include `data-testid` attributes
-- [ ] Vitest unit tests cover the pagination helpers and Playwright e2e tests cover the pagination behavior
+- [ ] `src/lib/` のデータアクセス用ヘルパーがページネーションに対応している（例: ページ／件数指定、またはカーソルベース）
+- [ ] ゲーム一覧ページにページネーションのコントロールが含まれている
+- [ ] ページネーションのコントロールがプロジェクトのアクセシビリティガイドラインに従い、`data-testid` 属性を含んでいる
+- [ ] Vitest のユニットテストがページネーション用ヘルパーをカバーし、Playwright の E2E テストがページネーションの挙動をカバーしている
