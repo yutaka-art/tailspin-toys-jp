@@ -3,38 +3,38 @@ description: 'Markdown conventions for repository docs, READMEs, and workshop le
 applyTo: '**/*.md'
 ---
 
-# Markdown conventions
+# Markdown の規約
 
-This file covers Markdown authoring across the repo. Published lesson content under `docs/**` is plain `.md`; repository docs and instruction files are also Markdown but are read primarily on github.com. **Use GitHub admonition syntax (`> [!NOTE]`) everywhere** — see below.
+このファイルは、リポジトリ全体の Markdown 執筆をカバーします。`docs/**` 配下の公開レッスンコンテンツはプレーンな `.md` です。リポジトリドキュメントや instruction ファイルも Markdown ですが、主に github.com 上で読まれます。**どこでも GitHub の admonition 構文（`> [!NOTE]`）を使います** — 以下を参照してください。
 
-## No hard-wrapping
+## ハードラップしない
 
-Do not hard-wrap paragraphs. Keep each paragraph, list item, and blockquote on a single line and let editors soft-wrap. Line breaks are reserved for actual structural breaks (between paragraphs, list items, headings, code fences, table rows, etc.).
+段落をハードラップしないでください。各段落、リスト項目、ブロッククォートは 1 行に収め、エディターのソフトラップに任せます。改行は実際の構造的な区切り（段落間、リスト項目、見出し、コードフェンス、テーブル行など）にのみ使います。
 
-## Admonitions
+## admonition（コールアウト）
 
-Use **GitHub admonition syntax** for every callout in the repo — in published lesson content *and* in repository docs. The `[!TYPE]` marker goes on its own `>`-prefixed line, with the body on subsequent `>`-prefixed lines:
+リポジトリ内のすべてのコールアウトに **GitHub の admonition 構文** を使います — 公開レッスンコンテンツ *と* リポジトリドキュメントの両方です。`[!TYPE]` マーカーはそれ自体を `>` 接頭の行に置き、本文は続く `>` 接頭の行に書きます:
 
 ```markdown
 > [!NOTE]
-> Body text on subsequent quoted lines.
+> 続く引用行に書く本文。
 
 > [!TIP]
-> Body text.
+> 本文。
 
 > [!IMPORTANT]
-> Body text.
+> 本文。
 
 > [!WARNING]
-> Body text.
+> 本文。
 
 > [!CAUTION]
-> Body text.
+> 本文。
 ```
 
-The five GitHub admonition types are `NOTE`, `TIP`, `IMPORTANT`, `WARNING`, and `CAUTION`. On github.com they render natively. In published lesson content under `docs/**`, a remark plugin (`remark-github-admonitions-to-directives`, wired in `website/astro.config.mjs`) converts them to Starlight asides at build time using this mapping:
+GitHub の admonition の 5 種類は `NOTE`、`TIP`、`IMPORTANT`、`WARNING`、`CAUTION` です。github.com 上ではネイティブにレンダリングされます。`docs/**` 配下の公開レッスンコンテンツでは、remark プラグイン（`remark-github-admonitions-to-directives`、`website/astro.config.mjs` で組み込み）がビルド時に次の対応で Starlight のアサイドに変換します:
 
-| GitHub type | Starlight aside |
+| GitHub のタイプ | Starlight のアサイド |
 | ----------- | --------------- |
 | `NOTE`      | note            |
 | `TIP`       | tip             |
@@ -42,39 +42,39 @@ The five GitHub admonition types are `NOTE`, `TIP`, `IMPORTANT`, `WARNING`, and 
 | `WARNING`   | caution         |
 | `CAUTION`   | caution         |
 
-Do **not** use Starlight `:::` aside directives anywhere — author only GitHub admonitions and let the plugin translate them.
+Starlight の `:::` アサイドディレクティブはどこでも使わ **ない** でください — GitHub の admonition のみで執筆し、プラグインに変換を任せます。
 
-### Custom titles
+### カスタムタイトル
 
-GitHub admonition syntax has no custom-title form. When a callout needs a heading, put it on a **bold lead-in line** as the first body line, then a blank quoted line, then the body:
+GitHub の admonition 構文にはカスタムタイトルの形式がありません。コールアウトに見出しが必要な場合は、最初の本文行として **太字の導入行** に置き、次に空の引用行、その後に本文を続けます:
 
 ```markdown
 > [!TIP]
-> **Open Copilot Chat**
+> **Copilot Chat を開く**
 >
-> Body text.
+> 本文。
 ```
 
-### No nesting; separate adjacent callouts with a blank line
+### ネスト不可。隣接するコールアウトは空行で区切る
 
-GitHub admonitions cannot nest. If you need a callout "inside" another, emit them as **sibling** blockquotes instead. Consecutive admonitions **must** be separated by a blank line — without it, Markdown merges them into one blockquote and the second `[!TYPE]` marker renders as literal text:
+GitHub の admonition はネストできません。別のコールアウトの「中に」コールアウトが必要な場合は、代わりに **兄弟** のブロッククォートとして出力します。連続する admonition は空行で区切る **必要があります** — それがないと Markdown はそれらを 1 つのブロッククォートにマージし、2 つ目の `[!TYPE]` マーカーがリテラルなテキストとしてレンダリングされます:
 
 ```markdown
 > [!TIP]
-> First callout.
+> 1 つ目のコールアウト。
 
 > [!CAUTION]
-> Second callout — note the blank line above.
+> 2 つ目のコールアウト — 上の空行に注意。
 ```
 
-## Headings
+## 見出し
 
-- Repository docs (README, CONTRIBUTING, instruction files, skills, etc.): start with `# Title` then `##` for sections.
-- Lesson pages (`docs/**/*.md`): no `# H1` in body — the title comes from frontmatter. Body headings start at `##`.
+- リポジトリドキュメント（README、CONTRIBUTING、instruction ファイル、スキルなど）: `# タイトル` から始め、セクションには `##` を使います。
+- レッスンページ（`docs/**/*.md`）: 本文に `# H1` は置きません — タイトルはフロントマターから取得されます。本文の見出しは `##` から始めます。
 
-## Frontmatter for lesson pages
+## レッスンページのフロントマター
 
-Every lesson page needs frontmatter:
+すべてのレッスンページにはフロントマターが必要です:
 
 ```yaml
 ---
@@ -83,9 +83,9 @@ description: "One-sentence summary (optional, used for SEO/meta)."
 ---
 ```
 
-## Code fences
+## コードフェンス
 
-Always tag code fences with their language:
+コードフェンスには常に言語をタグ付けします:
 
 ````markdown
 ```bash
@@ -97,57 +97,57 @@ def f(): pass
 ```
 ````
 
-## Lists
+## リスト
 
-- Unordered: `-` (not `*` or `+`).
-- Ordered: `1.`, `2.`, ... — Markdown auto-numbers, but use real ordinals for readability.
+- 順序なし: `-`（`*` や `+` ではなく）。
+- 順序あり: `1.`、`2.`、... — Markdown は自動番号付けしますが、可読性のために実際の順序数を使います。
 
-## Filenames, UI elements, and literal values
+## ファイル名、UI 要素、リテラル値
 
-Follow the [GitHub Docs style guide][github-style]. In short:
+[GitHub Docs スタイルガイド][github-style] に従います。要約すると:
 
-- **Backticks** for filenames, directory names, code, configuration keys, and any literal text the user types or that appears verbatim in code/config. Examples: `` `.github/agents/accessibility.md` ``, `` `package.json` ``, `` `src/server/app.py` ``, `` `Code lacks documentation` `` (a literal value the learner types into a field).
-- **Bold** for UI elements the user interacts with — buttons, tabs, menu items, field labels, dialog names. Examples: `**Issues**` tab, `**New issue**` button, `**Title**` field, `**Assign to Copilot**`.
-- **Bold** for emphasis on a concept on its first introduction, used sparingly.
+- **バッククォート**: ファイル名、ディレクトリ名、コード、設定キー、ユーザーが入力するテキストやコード/設定にそのまま現れるリテラルテキストに使います。例: `` `.github/agents/accessibility.md` ``、`` `package.json` ``、`` `src/server/app.py` ``、`` `Code lacks documentation` ``（受講者がフィールドに入力するリテラル値）。
+- **太字**: ユーザーが操作する UI 要素 — ボタン、タブ、メニュー項目、フィールドラベル、ダイアログ名に使います。例: `**Issues**` タブ、`**New issue**` ボタン、`**Title**` フィールド、`**Assign to Copilot**`。
+- **太字**: 概念を初めて導入するときの強調に、控えめに使います。
 
-Rule of thumb: if the reader is going to select it, it's bold; if they're going to type it, read it in the filesystem, or see it in code, it's backticks.
+目安: 読者が選択するものなら太字、入力したり、ファイルシステムで読んだり、コード内で目にするものならバッククォートです。
 
-## Accessibility
+## アクセシビリティ
 
-Accessibility conventions — descriptive link text, alt text, heading hierarchy, plain language, input-agnostic action verbs (**select** not "click") — live in [`markdown-accessibility.instructions.md`](./markdown-accessibility.instructions.md).
+アクセシビリティの規約 — 説明的なリンクテキスト、代替テキスト、見出しの階層、平易な言葉、入力手段に依存しない動作動詞（「click」ではなく **select**） — は [`markdown-accessibility.instructions.md`](./markdown-accessibility.instructions.md) にあります。
 
-## Keyboard shortcuts
+## キーボードショートカット
 
-Use `<kbd>` tags with `+` joining keys (no spaces) and spell out Mac modifiers per the [GitHub Docs style guide][github-style-keyboard]. Mac shortcut first, then Windows/Linux:
+`<kbd>` タグを使い、キーを `+` でつなぎ（スペースなし）、[GitHub Docs スタイルガイド][github-style-keyboard] に従って Mac の修飾キーを綴って書きます。Mac のショートカットを先に、次に Windows/Linux を示します:
 
 ```markdown
 Press <kbd>Command</kbd>+<kbd>B</kbd> (Mac) or <kbd>Ctrl</kbd>+<kbd>B</kbd> (Windows/Linux).
 ```
 
-Mac modifiers: spell out **Command**, **Option**, **Control** — don't use ⌘, ⌥, ⌃, Cmd, or Opt. Windows/Linux: use **Ctrl**, **Alt** (abbreviated).
+Mac の修飾キー: **Command**、**Option**、**Control** と綴って書きます — ⌘、⌥、⌃、Cmd、Opt は使いません。Windows/Linux: **Ctrl**、**Alt**（略記）を使います。
 
-## Links
+## リンク
 
-- Use reference-style links when practical. Define refs at the bottom of the file that owns the link.
-- Strip locale codes (`/en/`, `/en-us/`, etc.) from URLs so readers land in their own locale.
-- For descriptive link text (no "click here"; no link-only sentences), see [`markdown-accessibility.instructions.md`](./markdown-accessibility.instructions.md).
+- 実用的な場合は参照スタイルのリンクを使います。参照定義は、そのリンクを持つファイルの末尾に置きます。
+- 読者が自分のロケールに到達できるよう、URL からロケールコード（`/en/`、`/en-us/` など）を除去します。
+- 説明的なリンクテキスト（「click here」を使わない、リンクだけの文にしない）については [`markdown-accessibility.instructions.md`](./markdown-accessibility.instructions.md) を参照してください。
 
-## Images
+## 画像
 
-Use Markdown image syntax with paths relative to the Markdown file:
+Markdown の画像構文を使い、パスは Markdown ファイルからの相対パスにします:
 
 ```markdown
-![Alt text describing the image](../_images/some-screenshot.png)
+![画像を説明する代替テキスト](../_images/some-screenshot.png)
 ```
 
-## Path conventions
+## パスの規約
 
-- Per-path lessons: `cli/`, `vscode/`, `cloud/`, `app/`. Files are numbered by lesson order: `1-installing.md`, `2-custom-instructions.md`, etc.
-- Support images live in `_images/` directories and are excluded from routing by `website/src/content.config.ts`.
+- パスごとのレッスン: `cli/`、`vscode/`、`cloud/`、`app/`。ファイルはレッスンの順に番号付けされます: `1-installing.md`、`2-custom-instructions.md` など。
+- 補助画像は `_images/` ディレクトリにあり、`website/src/content.config.ts` によってルーティングから除外されます。
 
-## Cross-repo links
+## リポジトリ間のリンク
 
-The learner's template repo is `github.com/github-samples/tailspin-toys`. Never link to files inside *this* repo as if they were the template — those paths don't exist here anymore.
+受講者のテンプレートリポジトリは `github.com/github-samples/tailspin-toys` です。*この* リポジトリ内のファイルを、あたかもテンプレートであるかのようにリンクしないでください — それらのパスはもうここには存在しません。
 
 [github-style]: https://docs.github.com/contributing/style-guide-and-content-model/style-guide
 [github-style-keyboard]: https://docs.github.com/contributing/style-guide-and-content-model/style-guide#keyboard-shortcuts
