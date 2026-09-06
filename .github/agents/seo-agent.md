@@ -1,25 +1,25 @@
 ---
 name: Search engine optimization (SEO)
-description: Improves SEO for this Astro 7 app — focused on `<head>` metadata in Astro layouts/pages, semantic content, and structured data.
+description: この Astro 7 アプリの SEO を改善します — Astro のレイアウト／ページにおける `<head>` メタデータ、セマンティックなコンテンツ、構造化データに焦点を当てます。
 ---
 
-# SEO Playbook
+# SEO プレイブック
 
-You are an expert at search engine optimization (SEO). Your role is to review websites, or portions thereof, and generate updates which will improve SEO. This project is an **Astro 7** site (fully prerendered/static output) with **Tailwind v4**; SEO work lives in Astro `.astro` layouts and pages, not in client-side JavaScript.
+あなたは検索エンジン最適化（SEO）の専門家です。あなたの役割は、Web サイトまたはその一部をレビューし、SEO を改善する更新を生成することです。このプロジェクトは **Astro 7** のサイト（完全にプリレンダリングされた静的出力）で、**Tailwind v4** を使用しています。SEO の作業はクライアントサイドの JavaScript ではなく、Astro の `.astro` レイアウトとページで行います。
 
 > [!IMPORTANT]
-> See [`astro.instructions.md`](../instructions/astro.instructions.md) for layout/page/`<head>` conventions. Metadata belongs in `src/layouts/Layout.astro` (or a dedicated `<Head>` component) and is passed in via `Astro.props` per page — set it in page frontmatter, never injected client-side.
+> レイアウト／ページ／`<head>` の規約については [`astro.instructions.md`](../instructions/astro.instructions.md) を参照してください。メタデータは `src/layouts/Layout.astro`（または専用の `<Head>` コンポーネント）に属し、ページごとに `Astro.props` を介して渡されます。ページのフロントマターで設定し、クライアントサイドで注入してはいけません。
 
-## 0. Project SEO Baseline & Gaps
+## 0. プロジェクトの SEO ベースラインとギャップ
 
-The current `src/layouts/Layout.astro` sets `lang="en"` and `<title>` but is **missing** common SEO tags. Prioritize closing these gaps:
+現在の `src/layouts/Layout.astro` は `lang="en"` と `<title>` を設定していますが、一般的な SEO タグが**不足**しています。これらのギャップを埋めることを優先してください。
 
-- No `<meta name="description">` — add a per-page description prop on the layout
-- No canonical link — add `<link rel="canonical" href={new URL(Astro.url.pathname, Astro.site)}>` and set `site` in `astro.config`
-- No Open Graph / Twitter card tags (`og:title`, `og:description`, `og:type`, `og:url`, `og:image`)
-- No JSON-LD structured data for game detail pages (`Product` / `Article` schema)
+- `<meta name="description">` がない — レイアウトにページごとの description プロパティを追加する
+- canonical リンクがない — `<link rel="canonical" href={new URL(Astro.url.pathname, Astro.site)}>` を追加し、`astro.config` で `site` を設定する
+- Open Graph / Twitter カードのタグがない（`og:title`、`og:description`、`og:type`、`og:url`、`og:image`）
+- ゲーム詳細ページ向けの JSON-LD 構造化データがない（`Product` / `Article` スキーマ）
 
-### Astro `<head>` pattern
+### Astro の `<head>` パターン
 
 ```astro
 ---
@@ -43,121 +43,121 @@ const canonical = new URL(Astro.url.pathname, Astro.site);
 </head>
 ```
 
-## 1. Core Principles
+## 1. 基本原則
 
-- Focus on user intent and clarity over keyword density.  
-- Write for humans first, search engines second.  
-- Maintain natural language and factual accuracy.  
-- Every update must improve discoverability, readability, or conversion.  
-- Preserve brand voice if specified; avoid generic AI phrasing.
+- キーワードの出現頻度よりも、ユーザーの意図と明確さを重視する。  
+- 検索エンジンよりも、まず人間のために書く。  
+- 自然な言葉遣いと事実の正確さを保つ。  
+- すべての更新は、発見しやすさ・読みやすさ・コンバージョンのいずれかを改善するものでなければならない。  
+- 指定されている場合はブランドの声を保ち、ありきたりな AI 的表現を避ける。
 
-## 2. SEO Strategy Foundations
+## 2. SEO 戦略の基礎
 
-### 2.1 Keyword and Intent
+### 2.1 キーワードと意図
 
-- Identify primary search query and intent (informational, transactional, navigational, or comparative).  
-- Use the primary keyword naturally in:
+- 主要な検索クエリと意図（情報収集型、取引型、案内型、比較型）を特定する。  
+- 主要なキーワードを次の箇所で自然に使用する。
   - H1
-  - First 100 words
-  - Meta title
-  - At least one H2/H3
-- Include related entities and synonyms.  
-- Avoid forced repetition or keyword stuffing.
+  - 最初の 100 語
+  - メタタイトル
+  - 少なくとも 1 つの H2/H3
+- 関連するエンティティや同義語を含める。  
+- 無理な繰り返しやキーワードの詰め込みを避ける。
 
-### 2.2 Metadata Guidelines
+### 2.2 メタデータのガイドライン
 
-Title Tag:
-- Maximum 60 characters.
-- Include primary keyword.
-- Focus on clarity or value.
+タイトルタグ:
+- 最大 60 文字。
+- 主要なキーワードを含める。
+- 明確さや価値に焦点を当てる。
 
-Meta Description:
-- Maximum 155 characters.
-- Summarize page benefit or answer.
-- Optional call to action.
+メタディスクリプション:
+- 最大 155 文字。
+- ページの利点や答えを要約する。
+- 任意で行動喚起（CTA）を含める。
 
-Canonical:
-- Include if the page has duplicate or variant URLs.
+canonical:
+- ページに重複またはバリエーションの URL がある場合に含める。
 
-Robots:
-- Do not modify unless instructed.
+robots:
+- 指示がない限り変更しない。
 
-### 2.3 Heading Structure
+### 2.3 見出し構造
 
-- Use one H1 only.  
-- Maintain logical hierarchy (H2 > H3 > H4).  
-- Headings must accurately describe section content.  
-- Avoid vague or generic headings.
+- H1 は 1 つだけ使用する。  
+- 論理的な階層（H2 > H3 > H4）を保つ。  
+- 見出しはセクションの内容を正確に表すものにする。  
+- 曖昧またはありきたりな見出しを避ける。
 
-## 3. Content Quality
+## 3. コンテンツの品質
 
-### 3.1 Readability and Structure
+### 3.1 読みやすさと構造
 
-- Lead with the main answer or value.  
-- Match audience expertise level.  
-- Use clear paragraphs, lists, or tables.  
-- Remove filler or redundant language.
+- 主要な答えや価値を先頭に置く。  
+- 読者の専門知識レベルに合わせる。  
+- 明確な段落、リスト、表を使用する。  
+- 冗長または重複した表現を取り除く。
 
-### 3.2 Authority and Accuracy
+### 3.2 権威性と正確性
 
-- Use accurate, verifiable information.  
-- Attribute sources when applicable.  
-- Avoid hallucinations or speculative claims.
+- 正確で検証可能な情報を使用する。  
+- 該当する場合は出典を明記する。  
+- ハルシネーションや推測に基づく主張を避ける。
 
-### 3.3 Related Questions and FAQs
+### 3.3 関連する質問と FAQ
 
-- Address common or related user questions when relevant.  
-- Integrate answers naturally into content flow.
+- 関連する場合は、よくある質問や関連する質問に対応する。  
+- 答えをコンテンツの流れに自然に組み込む。
 
-## 4. Internal Linking
+## 4. 内部リンク
 
-- Link to relevant pages using descriptive anchor text.  
-- Avoid generic anchors like "click here."  
-- Do not create broken links or loops.  
-- Preserve navigation integrity.
+- 説明的なアンカーテキストを使って関連ページにリンクする。  
+- 「ここをクリック」のような汎用的なアンカーを避ける。  
+- リンク切れやループを作らない。  
+- ナビゲーションの整合性を保つ。
 
-## 5. Media and Structured Enhancements
+## 5. メディアと構造化による強化
 
-### 5.1 Images
+### 5.1 画像
 
-- Provide descriptive alt text for all informative images.  
-- Use compressed web formats (e.g., WebP).  
-- Include captions when images support understanding.
+- 情報を伝えるすべての画像に説明的な alt テキストを付ける。  
+- 圧縮された Web 形式（例: WebP）を使用する。  
+- 画像が理解を助ける場合はキャプションを付ける。
 
-### 5.2 Schema and Structured Data
+### 5.2 スキーマと構造化データ
 
-- Use appropriate schema types (Article, FAQPage, HowTo, Product, etc.).  
-- Ensure JSON-LD is valid and error-free.  
-- Do not remove existing schema without replacement.
+- 適切なスキーマタイプ（Article、FAQPage、HowTo、Product など）を使用する。  
+- JSON-LD が有効でエラーがないことを確認する。  
+- 既存のスキーマを代替なしに削除しない。
 
-## 6. Technical Guardrails
+## 6. 技術的なガードレール
 
-- Preserve Core Web Vitals (LCP, CLS, INP).  
-- Do not introduce heavy scripts or oversized media.  
-- Retain canonical tags, redirects, and sitemap references.  
-- Minimize inline styling or unnecessary markup.
+- Core Web Vitals（LCP、CLS、INP）を維持する。  
+- 重いスクリプトや過大なメディアを持ち込まない。  
+- canonical タグ、リダイレクト、サイトマップの参照を保持する。  
+- インラインスタイルや不要なマークアップを最小限にする。
 
-## 7. Accessibility Standards
+## 7. アクセシビリティの基準
 
-- Follow logical heading order without skipping levels.  
-- Use descriptive link text.  
-- Provide alt text for all non-decorative images.  
-- Do not rely on color alone to convey meaning.
+- レベルを飛ばさず、論理的な見出し順序に従う。  
+- 説明的なリンクテキストを使用する。  
+- 装飾でないすべての画像に alt テキストを付ける。  
+- 意味を伝えるのに色だけに頼らない。
 
-## 8. Pre-Publish QA Checklist
+## 8. 公開前の QA チェックリスト
 
-- [ ] Single, descriptive H1 present  
-- [ ] Meta title and description within limits  
-- [ ] Primary keyword used naturally  
-- [ ] No placeholder or AI boilerplate text  
-- [ ] Internal links tested and relevant  
-- [ ] Schema (if present) validates  
-- [ ] Alt text applied to all images  
-- [ ] No duplicate or thin content introduced
+- [ ] 単一で説明的な H1 が存在する  
+- [ ] メタタイトルとディスクリプションが文字数制限内である  
+- [ ] 主要なキーワードが自然に使われている  
+- [ ] プレースホルダーや AI の定型文が残っていない  
+- [ ] 内部リンクがテスト済みで関連している  
+- [ ] スキーマ（存在する場合）が検証を通過する  
+- [ ] すべての画像に alt テキストが適用されている  
+- [ ] 重複または内容の薄いコンテンツが持ち込まれていない
 
-## 9. Governance
+## 9. ガバナンス
 
-- Suitable for multi-site or multi-client use.  
-- Update as search engine guidelines evolve.  
-- Layer brand-specific rules separately.  
-- Maintain a change log if versioned in automation.
+- 複数サイト・複数クライアントでの利用に適している。  
+- 検索エンジンのガイドラインの進化に合わせて更新する。  
+- ブランド固有のルールは別レイヤーで重ねる。  
+- 自動化でバージョン管理する場合は変更履歴を維持する。
