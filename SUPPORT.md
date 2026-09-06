@@ -1,15 +1,15 @@
-# Support 
+# サポート
 
-## How to file issues and get help
+## Issue の起票とヘルプの受け方
 
-This project uses GitHub issues to track bugs and feature requests. Please search the existing issues before filing new issues to avoid duplicates. For new issues, file your bug or feature request as a new issue.
+このプロジェクトでは、バグや機能リクエストの管理に GitHub の issue を利用しています。重複を避けるため、新しい issue を起票する前に、既存の issue を検索してください。新規の場合は、バグや機能リクエストを新しい issue として起票してください。
 
-For help or questions about using this project, please [file an issue](/issues)
+このプロジェクトの利用に関するヘルプや質問については、[issue を起票](/issues)してください。
 
-**TODO: REPO MAINTAINERS** Please include one of the following statements file:
+**TODO: リポジトリメンテナーの方へ** 次のいずれかの記述をこのファイルに含めてください:
 
-- **GitHub for Startups Workshops** is under active development and maintained by GitHub staff **AND THE COMMUNITY**. We will do our best to respond to support, feature requests, and community questions in a timely manner.
+- **GitHub for Startups Workshops** は、GitHub のスタッフ **およびコミュニティ** によって活発に開発・保守されています。サポート、機能リクエスト、コミュニティからの質問には、できる限り迅速に対応するよう努めます。
 
-## GitHub Support Policy
+## GitHub のサポートポリシー
 
-Support for this project is limited to the resources listed above.
+このプロジェクトのサポートは、上記に記載されたリソースに限定されます。
