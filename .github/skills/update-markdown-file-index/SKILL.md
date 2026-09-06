@@ -3,34 +3,34 @@ name: update-markdown-file-index
 description: 'Update a markdown file section with an index/table of files from a specified folder.'
 ---
 
-# Update Markdown File Index
+# Markdown ファイル索引の更新
 
-Update markdown file `${file}` with an index/table of files from folder `${input:folder}`.
+フォルダー `${input:folder}` 内のファイルの索引 / テーブルで、Markdown ファイル `${file}` を更新します。
 
-## Process
+## 手順
 
-1. **Scan**: Read the target markdown file `${file}` to understand existing structure
-2. **Discover**: List all files in the specified folder `${input:folder}` matching pattern `${input:pattern}`
-3. **Analyze**: Identify if an existing table/index section exists to update, or create new structure
-4. **Structure**: Generate appropriate table/list format based on file types and existing content
-5. **Update**: Replace existing section or add new section with file index
-6. **Validate**: Ensure markdown syntax is valid and formatting is consistent
+1. **スキャン**: 対象の Markdown ファイル `${file}` を読み、既存の構造を把握します。
+2. **検出**: 指定されたフォルダー `${input:folder}` 内の、パターン `${input:pattern}` に一致するすべてのファイルを列挙します。
+3. **分析**: 更新すべき既存のテーブル / 索引セクションがあるか、または新しい構造を作成するかを特定します。
+4. **構造化**: ファイルの種類と既存コンテンツに基づいて、適切なテーブル / リスト形式を生成します。
+5. **更新**: 既存のセクションを置き換えるか、ファイル索引を含む新しいセクションを追加します。
+6. **検証**: Markdown 構文が正しく、書式が一貫していることを確認します。
 
-## File Analysis
+## ファイル分析
 
-For each discovered file, extract:
+検出した各ファイルについて、次を抽出します:
 
-- **Name**: Filename with or without extension based on context
-- **Type**: File extension and category (e.g., `.md`, `.js`, `.py`)
-- **Description**: First line comment, header, or inferred purpose
-- **Size**: File size for reference (optional)
-- **Modified**: Last modified date (optional)
+- **名前**: 文脈に応じて、拡張子あり / なしのファイル名。
+- **種類**: ファイルの拡張子とカテゴリ（例: `.md`、`.js`、`.py`）。
+- **説明**: 先頭行のコメント、見出し、または推定される目的。
+- **サイズ**: 参考用のファイルサイズ（オプション）。
+- **更新日**: 最終更新日（オプション）。
 
-## Table Structure Options
+## テーブル構造の選択肢
 
-Choose format based on file types and existing content:
+ファイルの種類と既存コンテンツに基づいて形式を選びます:
 
-### Option 1: Simple List
+### オプション 1: シンプルなリスト
 
 ```markdown
 ## Files in ${folder}
@@ -39,38 +39,38 @@ Choose format based on file types and existing content:
 - [filename2.ext](path/to/filename2.ext) - Description
 ```
 
-### Option 2: Detailed Table
+### オプション 2: 詳細なテーブル
 
 | File | Type | Description |
 |------|------|-------------|
 | [filename.ext](path/to/filename.ext) | Extension | Description |
 | [filename2.ext](path/to/filename2.ext) | Extension | Description |
 
-### Option 3: Categorized Sections
+### オプション 3: カテゴリ別のセクション
 
-Group files by type/category with separate sections or sub-tables.
+ファイルを種類 / カテゴリごとにグループ化し、セクションやサブテーブルに分けます。
 
-## Update Strategy
+## 更新戦略
 
-- 🔄 **Update existing**: If table/index section exists, replace content while preserving structure
-- ➕ **Add new**: If no existing section, create new section using best-fit format
-- 📋 **Preserve**: Maintain existing markdown formatting, heading levels, and document flow
-- 🔗 **Links**: Use relative paths for file links within the repository
+- 🔄 **既存を更新**: テーブル / 索引セクションが存在する場合は、構造を保ちながら内容を置き換えます。
+- ➕ **新規追加**: 既存セクションがない場合は、最適な形式で新しいセクションを作成します。
+- 📋 **保持**: 既存の Markdown 書式、見出しレベル、ドキュメントの流れを維持します。
+- 🔗 **リンク**: リポジトリ内のファイルリンクには相対パスを使います。
 
-## Section Identification
+## セクションの特定
 
-Look for existing sections with these patterns:
+次のパターンを持つ既存セクションを探します:
 
-- Headings containing: "index", "files", "contents", "directory", "list"
-- Tables with file-related columns
-- Lists with file links
-- HTML comments marking file index sections
+- 「index」、「files」、「contents」、「directory」、「list」を含む見出し
+- ファイル関連の列を持つテーブル
+- ファイルリンクを含むリスト
+- ファイル索引セクションを示す HTML コメント
 
-## Requirements
+## 要件
 
-- Preserve existing markdown structure and formatting
-- Use relative paths for file links
-- Include file descriptions when available
-- Sort files alphabetically by default
-- Handle special characters in filenames
-- Validate all generated markdown syntax
+- 既存の Markdown 構造と書式を保持する
+- ファイルリンクには相対パスを使う
+- 利用可能な場合はファイルの説明を含める
+- デフォルトではファイルをアルファベット順にソートする
+- ファイル名内の特殊文字を扱う
+- 生成したすべての Markdown 構文を検証する
