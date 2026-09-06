@@ -3,54 +3,54 @@ name: validate-site-playwright
 description: Render-validate the built Copilot Workshops site in a real browser using the Playwright MCP server. Use as an optional deeper QA pass — after the static checks in build-and-verify-docs — to confirm pages actually render: navigate the built routes, assert HTTP 200, catch console/hydration errors, find broken images, confirm Starlight Markdown features rendered, and optionally screenshot key pages. Trigger when asked to "validate the built site", "check the pages render", "do a browser/visual QA pass", or before opening a PR that changes rendered output.
 ---
 
-# Validate the built site with Playwright
+# Playwright でビルド済みサイトを検証する
 
-`build-and-verify-docs` checks the site *statically* — it builds, confirms the page-count invariant, and link-checks the HTML with lychee. It never opens a page in a browser, so it cannot see runtime failures: console/hydration errors, images that 404 at load time, or rendered Markdown that looks wrong.
+`build-and-verify-docs` はサイトを *静的に* チェックします — ビルドし、ページ数の不変条件を確認し、lychee で HTML のリンクをチェックします。ブラウザでページを開くことはないため、実行時の失敗（コンソール / ハイドレーションエラー、読み込み時に 404 になる画像、表示がおかしいレンダリング済み Markdown）は検出できません。
 
-This skill is the **optional, deeper, browser-based pass**. It drives the **Playwright MCP server** against a local preview of the built site. It is **interactive/local only** — CI (`pages.yml`) has no browser step, so this is never a merge gate. Run it before a PR that changes how pages render (new site-shell components, image-heavy lessons, layout changes), or whenever you want to confirm the real rendered output.
+このスキルは **オプションの、より深い、ブラウザベースの検証** です。**Playwright MCP サーバー** を、ビルドされたサイトのローカルプレビューに対して実行します。**インタラクティブ / ローカル専用** です — CI（`pages.yml`）にはブラウザのステップがないため、これがマージのゲートになることはありません。ページのレンダリング方法を変更する PR（新しいサイトシェルコンポーネント、画像の多いレッスン、レイアウト変更）の前、または実際のレンダリング出力を確認したいときに実行してください。
 
-Run every command from the **repo root** unless a step says otherwise.
+ステップで特に指定がない限り、すべてのコマンドは **リポジトリルート** から実行してください。
 
-## Prerequisites
+## 前提条件
 
-- The Playwright MCP server must be available (the agent has `browser_*` tools).
-- A clean build must exist. If you haven't just built, run the build from [`build-and-verify-docs`](../build-and-verify-docs/SKILL.md) first:
+- Playwright MCP サーバーが利用可能であること（エージェントが `browser_*` ツールを持つこと）。
+- クリーンビルドが存在すること。直前にビルドしていない場合は、まず [`build-and-verify-docs`](../build-and-verify-docs/SKILL.md) のビルドを実行します:
 
   ```bash
   cd website && rm -rf dist && npm run build && cd ..
   ```
 
-## 1. Serve the built site
+## 1. ビルド済みサイトを配信する
 
-Serve the production build (not the dev server) so you validate exactly what ships. `npm run preview` serves `website/dist/` at the real base path:
+実際に出荷されるものをそのまま検証できるよう、（開発サーバーではなく）本番ビルドを配信します。`npm run preview` は `website/dist/` を実際のベースパスで配信します:
 
 ```bash
 cd website && npm run preview
 ```
 
-The site is served at <http://localhost:4321/copilot-workshops/>. Start it as a **detached background process** so it survives while you navigate, and capture its PID for teardown. Wait until the server logs that it's listening before navigating.
+サイトは <http://localhost:4321/copilot-workshops/> で配信されます。ナビゲート中も実行を継続できるよう **デタッチされたバックグラウンドプロセス** として起動し、後片付け用に PID を控えておきます。ナビゲートする前に、サーバーがリッスン中であるとログに出るまで待ちます。
 
-## 2. Derive the routes to check
+## 2. チェックするルートを導き出す
 
-Don't hard-code URLs. The built `dist/` is the source of truth for what routes exist:
+URL をハードコードしないでください。どのルートが存在するかについては、ビルド済みの `dist/` が信頼できる情報源（source of truth）です:
 
 ```bash
-# every built route, as site-absolute paths under the base
+# ベース配下のサイト絶対パスとして、ビルドされたすべてのルート
 find website/dist -name index.html | grep -v 404 | sed 's#website/dist#/copilot-workshops#; s#/index.html#/#'
 ```
 
-Validate a **representative sample** that covers every layout and harness: the landing page (`/copilot-workshops/`), a per-harness prerequisites page (e.g. `cli/0-prerequisites/`), and at least one lesson from each of `cli/`, `vscode/`, `cloud/`, and `app/`. For a release pass or a change that touches shared layout/components, validate **all** routes.
+すべてのレイアウトとハーネスをカバーする **代表的なサンプル** を検証します: ランディングページ（`/copilot-workshops/`）、ハーネスごとの前提条件ページ（例: `cli/0-prerequisites/`）、そして `cli/`、`vscode/`、`cloud/`、`app/` の各々から少なくとも 1 つのレッスン。リリース検証や、共有レイアウト / コンポーネントに影響する変更の場合は、**すべての** ルートを検証します。
 
-## 3. Validate each route
+## 3. 各ルートを検証する
 
-For each chosen route, use the Playwright MCP tools:
+選んだ各ルートについて、Playwright MCP ツールを使います:
 
-1. **Navigate** — `browser_navigate` to `http://localhost:4321/copilot-workshops/<route>`.
-2. **Confirm it rendered** — `browser_snapshot` and check the page has its heading/title and real content (not an error page or raw, unrendered Markdown).
-3. **Check the console** — `browser_console_messages` with `level: "error"`. There should be **zero** errors. Hydration warnings and 404s for assets surface here.
+1. **ナビゲート** — `browser_navigate` で `http://localhost:4321/copilot-workshops/<route>` へ。
+2. **レンダリングを確認** — `browser_snapshot` で、ページに見出し / タイトルと実際のコンテンツ（エラーページやレンダリングされていない生の Markdown ではないもの）があることを確認します。
+3. **コンソールをチェック** — `browser_console_messages` を `level: "error"` で実行します。エラーは **ゼロ** であるべきです。ハイドレーション警告やアセットの 404 はここに現れます。
 
-   *Known benign exception:* the legacy redirect route `/copilot-workshops/shared/0-prereqs/` is a minimal full-HTML redirect page (it immediately forwards to the home page `/copilot-workshops/` via a meta refresh) and declares no favicon, so the browser auto-requests `/favicon.ico` and logs a single `404 (Not Found)`. That one favicon 404 **on the redirect page only** is expected. Validate that route by confirming it lands on the home page, not by console cleanliness. A favicon 404 on any *real* page is a genuine finding (real pages link `favicon.svg`).
-4. **Find broken images** — `browser_evaluate` with an async function that **force-loads lazy images first**, then flags only the ones that truly fail. Starlight/Astro mark below-the-fold images `loading="lazy"`, so a naive `naturalWidth === 0` check reports false positives for images that simply haven't scrolled into view yet:
+   *既知の良性な例外:* 従来のリダイレクトルート `/copilot-workshops/shared/0-prereqs/` は最小限の完全な HTML リダイレクトページで（meta refresh で即座にホームページ `/copilot-workshops/` に転送します）、favicon を宣言していないため、ブラウザが `/favicon.ico` を自動リクエストし、1 つの `404 (Not Found)` をログに出します。**リダイレクトページに限って** は、その favicon の 404 は予期されるものです。このルートは、コンソールのクリーンさではなく、ホームページに到達することを確認して検証します。*実際の* ページで favicon の 404 が出た場合は本物の問題です（実際のページは `favicon.svg` をリンクしています）。
+4. **画像切れを見つける** — `browser_evaluate` で、**まず遅延読み込み画像を強制的に読み込んでから**、本当に失敗したものだけをフラグする非同期関数を使います。Starlight/Astro はフォールド下の画像に `loading="lazy"` を付けるため、単純な `naturalWidth === 0` のチェックでは、まだスクロールされて表示領域に入っていないだけの画像を偽陽性として報告してしまいます:
 
    ```js
    async () => {
@@ -67,23 +67,23 @@ For each chosen route, use the Playwright MCP tools:
    }
    ```
 
-   An empty array is a pass. Any entry is a genuinely broken/missing image — most often an `_images/` path that didn't survive a rename (cross-check with the [`build-and-verify-docs`](../build-and-verify-docs/SKILL.md) consistency pass). If you ever get a hit, confirm it with `curl -o /dev/null -w '%{http_code}'` against the asset URL before treating it as a real failure — a `200` means it was a lazy-load timing artifact, not a broken image.
-5. **Confirm Markdown rendered cleanly** — GitHub admonitions should render as styled Starlight callouts, not literal text. In the snapshot, verify there is no visible `[!NOTE]`, `[!TIP]`, `[!CAUTION]`, `[!WARNING]`, `[!IMPORTANT]`, leftover `:::` directive, or raw frontmatter in the body.
-6. **Screenshot (optional)** — `browser_take_screenshot` for a visual record of key pages. Save screenshots outside the repo as throwaway artifacts, not content.
+   空の配列は合格です。エントリがあれば、それは本当に壊れている / 欠落している画像です — 多くの場合、名前変更で失われた `_images/` パスです（[`build-and-verify-docs`](../build-and-verify-docs/SKILL.md) の整合性チェックと照合してください）。ヒットした場合は、本当の失敗として扱う前に、アセット URL に対して `curl -o /dev/null -w '%{http_code}'` で確認してください — `200` なら、壊れた画像ではなく遅延読み込みのタイミングによるものです。
+5. **Markdown がきれいにレンダリングされたことを確認** — GitHub の admonition は、リテラルなテキストではなく、スタイル適用された Starlight のコールアウトとしてレンダリングされるべきです。スナップショットで、本文に見える `[!NOTE]`、`[!TIP]`、`[!CAUTION]`、`[!WARNING]`、`[!IMPORTANT]`、残った `:::` ディレクティブ、生のフロントマターがないことを確認します。
+6. **スクリーンショット（オプション）** — `browser_take_screenshot` で主要ページの視覚的な記録を残します。スクリーンショットはコンテンツとしてではなく、使い捨てのアーティファクトとしてリポジトリ外に保存します。
 
-## 4. Tear down
+## 4. 後片付け
 
-Close the browser and stop the preview server when finished:
+終了したら、ブラウザを閉じてプレビューサーバーを停止します:
 
-- `browser_close` to release the browser.
-- `kill <PID>` for the preview server you started in step 1.
+- `browser_close` でブラウザを解放します。
+- ステップ 1 で起動したプレビューサーバーは `kill <PID>` で停止します。
 
-## What to report
+## 報告すべき内容
 
-Summarize per route: rendered (yes/no), console errors (count), broken images (list), Markdown rendered cleanly (yes/no). A clean pass is **every route rendered, zero console errors, zero broken images, all Markdown rendered cleanly**. Flag anything else with the specific route and the failing URL/selector so it can be fixed before the PR.
+ルートごとに要約します: レンダリングされたか（はい / いいえ）、コンソールエラー（件数）、画像切れ（リスト）、Markdown がきれいにレンダリングされたか（はい / いいえ）。クリーンな合格とは、**すべてのルートがレンダリングされ、コンソールエラーゼロ、画像切れゼロ、すべての Markdown がきれいにレンダリングされている** ことです。それ以外は、PR の前に修正できるよう、具体的なルートと失敗した URL / セレクタとともにフラグします。
 
-## Scope notes
+## スコープに関する注意
 
-- This validates **rendering**, not link correctness — lychee (in `build-and-verify-docs`) owns link checking. Run both.
-- It is **not** an accessibility audit. For accessibility *authoring* conventions, see [`markdown-accessibility.instructions.md`](../../instructions/markdown-accessibility.instructions.md).
-- It is local-only and does not gate merges; treat failures as must-fix-before-PR, not as CI status.
+- これは **レンダリング** を検証するものであり、リンクの正しさではありません — リンクチェックは lychee（`build-and-verify-docs` 内）が担います。両方を実行してください。
+- これはアクセシビリティ監査では **ありません**。アクセシビリティの *執筆* 規約については [`markdown-accessibility.instructions.md`](../../instructions/markdown-accessibility.instructions.md) を参照してください。
+- ローカル専用であり、マージをゲートしません。失敗は CI のステータスとしてではなく、PR 前に必ず修正すべきものとして扱ってください。
