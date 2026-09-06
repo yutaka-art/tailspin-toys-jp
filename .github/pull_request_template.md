@@ -1,30 +1,30 @@
-## Summary
+## 概要
 
-<!-- One- to two-sentence description of what this PR changes and why. -->
+<!-- この PR が何を、なぜ変更するのかを 1〜2 文で説明してください。 -->
 
-## Type of change
+## 変更の種類
 
-<!-- Check all that apply. -->
+<!-- 該当するものすべてにチェックを入れてください。 -->
 
-- [ ] Workshop content (lesson Markdown, images)
-- [ ] Site shell (`website/` Astro + Starlight wrapper)
-- [ ] Copilot configuration (`.github/copilot-instructions.md`, instructions, agents, skills)
-- [ ] Repo housekeeping (CI, dependabot, README, license)
-- [ ] Other:
+- [ ] ワークショップコンテンツ（レッスンの Markdown、画像）
+- [ ] サイトシェル（`website/` の Astro + Starlight ラッパー）
+- [ ] Copilot 設定（`.github/copilot-instructions.md`、instructions、agents、skills）
+- [ ] リポジトリの整備（CI、dependabot、README、ライセンス）
+- [ ] その他:
 
-## Verification
+## 検証
 
-<!-- Confirm the build + link checks pass before requesting review. -->
+<!-- レビューを依頼する前に、ビルドとリンクチェックが通ることを確認してください。 -->
 
-- [ ] `cd website && rm -rf dist && npm run build` succeeds (target: 36 routes × 6 locales + 1 redirect = 217 built pages excluding 404; build reports 218 HTML files including 404, or note any intentional change)
-- [ ] Lychee link check passes:
+- [ ] `cd website && rm -rf dist && npm run build` が成功する（目標: 36 ルート × 6 ロケール + リダイレクト 1 = 404 を除いて 217 ページ。ビルドは 404 を含めて 218 個の HTML ファイルを報告。意図的な変更があれば明記）
+- [ ] Lychee のリンクチェックが通る:
       `mkdir -p /tmp/lychee-root && ln -sfn $PWD/website/dist /tmp/lychee-root/copilot-workshops && lychee --offline --no-progress --root-dir /tmp/lychee-root 'website/dist/**/*.html'`
-- [ ] External GitHub URLs that I changed have been clicked manually (lychee runs offline)
+- [ ] 変更した外部 GitHub URL を手動でクリックして確認した（lychee はオフラインで実行されるため）
 
-## Screenshots
+## スクリーンショット
 
-<!-- For visual changes only. Otherwise delete this section. -->
+<!-- 見た目に関わる変更の場合のみ。それ以外はこのセクションを削除してください。 -->
 
-## Notes for reviewers
+## レビュアーへの補足
 
-<!-- Anything reviewers should know: areas of uncertainty, follow-ups intentionally deferred, etc. -->
+<!-- レビュアーが知っておくべきこと（不確かな箇所、意図的に先送りしたフォローアップなど）があれば記載してください。 -->
