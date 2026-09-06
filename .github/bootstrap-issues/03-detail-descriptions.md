@@ -1,11 +1,11 @@
-# Show category and publisher descriptions on the game detail page
+# ゲーム詳細ページにカテゴリと出版社（パブリッシャー）の説明を表示する
 
-The categories and publishers tables already include a `description` field, but the game detail page only shows their names. Surfacing these descriptions gives backers helpful context about who is behind a game and what kind of game it is, with no schema changes required.
+categories テーブルと publishers テーブルにはすでに `description` フィールドが含まれていますが、ゲーム詳細ページにはそれぞれの名前しか表示されていません。これらの説明を表に出すことで、支援者（バッカー）はゲームの背後にいる人物やゲームの種類について役立つ背景情報を得られます。しかも、スキーマの変更は一切必要ありません。
 
-## Acceptance criteria
+## 受け入れ基準
 
-- [ ] The game detail page displays the category description when one is available
-- [ ] The game detail page displays the publisher description when one is available
-- [ ] Missing descriptions are handled gracefully (the section is hidden rather than showing empty content)
-- [ ] The new content follows the project's styling and accessibility guidelines and includes `data-testid` attributes
-- [ ] The data-access helper is updated to include the description fields, with unit tests covering the change, and Playwright e2e tests verify the descriptions render
+- [ ] カテゴリの説明が利用可能な場合、ゲーム詳細ページにそれを表示する
+- [ ] 出版社（パブリッシャー）の説明が利用可能な場合、ゲーム詳細ページにそれを表示する
+- [ ] 説明が存在しない場合は適切に処理する（空の内容を表示するのではなく、そのセクションを非表示にする）
+- [ ] 新しく追加する内容がプロジェクトのスタイリングおよびアクセシビリティのガイドラインに従い、`data-testid` 属性を含んでいる
+- [ ] データアクセスヘルパーを更新して説明フィールドを含めること。その変更をユニットテストでカバーし、Playwright の E2E テストで説明が描画されることを検証する
