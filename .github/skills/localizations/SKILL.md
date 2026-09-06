@@ -3,98 +3,98 @@ name: localizations
 description: A skill that localizes contents into given locales.
 ---
 
-# Localize contents into given locales
+# コンテンツを指定ロケールにローカライズする
 
-A skill that localizes contents into given locales.
+コンテンツを指定されたロケールにローカライズするスキルです。
 
-## How it works
+## 仕組み
 
-The skill takes input content and a list of target locales. It then translates the content into each specified locale, providing localized versions for each.
+このスキルは、入力コンテンツと対象ロケールのリストを受け取ります。そして、指定された各ロケールにコンテンツを翻訳し、それぞれのローカライズされたバージョンを提供します。
 
-### Content structure
+### コンテンツ構造
 
 ```text
 .
-└── docs/                         ← workshop content (source + locale outputs)
-    ├── README.md                 ← landing page (source; slug: index)
-    ├── <harness>/                ← English lessons (source)
-    │   ├── README.md             ← harness landing (source; slug: <harness>)
+└── docs/                         ← ワークショップコンテンツ（ソース + ロケール出力）
+    ├── README.md                 ← ランディングページ（ソース；slug: index）
+    ├── <harness>/                ← 英語のレッスン（ソース）
+    │   ├── README.md             ← ハーネスのランディング（ソース；slug: <harness>）
     │   └── *.md
-    ├── _images/                  ← shared assets (not localized)
-    └── <locale>/                 ← localized output, direct child of docs/
-        ├── README.md             ← locale landing (slug: <locale>)
+    ├── _images/                  ← 共有アセット（ローカライズしない）
+    └── <locale>/                 ← ローカライズされた出力。docs/ の直下の子
+        ├── README.md             ← ロケールのランディング（slug: <locale>）
         └── <harness>/
-            ├── README.md         ← localized harness landing (slug: <locale>/<harness>)
+            ├── README.md         ← ローカライズされたハーネスランディング（slug: <locale>/<harness>）
             └── *.md
 ```
 
-### Input contents
+### 入力コンテンツ
 
-Here are the contents in scope for localization:
+ローカライズの対象となるコンテンツは次のとおりです:
 
-- All English Markdown files under `docs/` **and its subdirectories** — the workshop landing (`docs/README.md`) and the per-harness lessons (`docs/<harness>/**/*.md`).
+- `docs/` **およびそのサブディレクトリ** 配下のすべての英語 Markdown ファイル — ワークショップのランディング（`docs/README.md`）とハーネスごとのレッスン（`docs/<harness>/**/*.md`）。
 
-Do **not** treat `_images/` (shared assets) or any configured locale-root directory as source input.
+`_images/`（共有アセット）や、設定されたロケールルートディレクトリをソース入力として扱わ **ない** でください。
 
-Files already under `docs/<locale>/` are **outputs**, not inputs—never treat configured locale-root directories as source content to be localized again.
+すでに `docs/<locale>/` 配下にあるファイルは **出力** であり、入力ではありません — 設定されたロケールルートディレクトリを、再度ローカライズするソースコンテンツとして決して扱わないでください。
 
-### Target locales
+### 対象ロケール
 
-Target locales are defined in the `rules` directory as markdown files in this skill (`rules/ko-kr.md`, for example). **To determine which locales to process, list the files in `rules/`: each `<locale>.md` file corresponds to exactly one supported target locale.** Each locale has its own set of rules and guidelines for translation, ensuring that the localized content is appropriate for the target audience.
+対象ロケールは、このスキルの `rules` ディレクトリに Markdown ファイルとして定義されています（例: `rules/ko-kr.md`）。**どのロケールを処理するかを判断するには、`rules/` 内のファイルを列挙します: 各 `<locale>.md` ファイルが、サポートされる 1 つの対象ロケールに正確に対応します。** 各ロケールには独自の翻訳ルールとガイドラインがあり、ローカライズされたコンテンツが対象読者に適したものになるようにします。
 
-Locale identifiers use lowercase with a hyphen (for example, `ko-kr`). This is the canonical casing for both the rules filename and the output directory in this skill; keep them consistent.
+ロケール識別子は、小文字とハイフンを使います（例: `ko-kr`）。これは、このスキルにおけるルールのファイル名と出力ディレクトリの両方の正規な表記です。一貫性を保ってください。
 
-### Output contents
+### 出力コンテンツ
 
-All localized workshop content is stored directly under the repo-root `docs/` content directory, with each locale having its own subdirectory. For example, Korean content is stored in `docs/ko-kr/`.
+ローカライズされたワークショップコンテンツはすべて、リポジトリルートの `docs/` コンテンツディレクトリの直下に保存され、各ロケールが独自のサブディレクトリを持ちます。例えば、韓国語のコンテンツは `docs/ko-kr/` に保存されます。
 
-Locale directories must be direct children of `docs/` so Starlight (configured in `website/astro.config.mjs`) recognizes them and renders its language selector. Do not add an intermediate `localizations/` directory.
+ロケールディレクトリは `docs/` の直接の子でなければなりません。そうすることで Starlight（`website/astro.config.mjs` で設定）がそれらを認識し、言語セレクターをレンダリングします。中間に `localizations/` ディレクトリを追加しないでください。
 
-## Localization process
+## ローカライズのプロセス
 
-There are three cases for localization. To detect which case applies, compare the **source tree** against the existing `docs/<locale>/` tree, and use the **git history of the source files** to detect changes:
+ローカライズには 3 つのケースがあります。どのケースに当てはまるかを検出するには、**ソースツリー** を既存の `docs/<locale>/` ツリーと比較し、**ソースファイルの git 履歴** を使って変更を検出します:
 
-- **Original exists, no localized version for the locale:** Create a new localized document.
-- **Both original and localized versions exist:** Compare the source tree against `docs/<locale>/`, then run `git diff` (or `git log`) on the **source** file to find what changed since the localized version was last produced. Update only the affected sections of the localized document; do not re-translate unchanged sections unnecessarily.
-- **Localized version exists, but the original has been deleted:** Delete the orphaned localized document (and prune now-empty locale subdirectories).
+- **オリジナルが存在し、そのロケールのローカライズ版がない場合:** 新しいローカライズされたドキュメントを作成します。
+- **オリジナルとローカライズ版の両方が存在する場合:** ソースツリーを `docs/<locale>/` と比較し、ローカライズ版が最後に生成されて以降に何が変わったかを、**ソース** ファイルに対する `git diff`（または `git log`）で見つけます。ローカライズされたドキュメントの影響を受けたセクションのみを更新します。変更のないセクションを不必要に再翻訳しないでください。
+- **ローカライズ版は存在するが、オリジナルが削除された場合:** 孤立したローカライズドキュメントを削除します（そして空になったロケールサブディレクトリを整理します）。
 
-The process runs in two passes. First, the content is analyzed to identify key phrases and context. Then the `translator` agent performs the initial localization, followed by a review-and-refinement pass by the `evaluator` agent to ensure quality and consistency.
+プロセスは 2 つのパスで実行されます。まず、コンテンツを分析して重要なフレーズと文脈を特定します。次に `translator` エージェントが初期ローカライズを行い、続いて `evaluator` エージェントによるレビューと洗練のパスで、品質と一貫性を確保します。
 
-> The `translator` and `evaluator` "agents" are **roles/personas**, not external tools. If no dedicated sub-agents are available, perform them as sequential personas: first adopt the translator role to produce the draft, then adopt the evaluator role to critique and refine that draft against the locale rules. Repeat the refinement loop until the evaluator's criteria pass.
+> `translator` と `evaluator` の「エージェント」は、外部ツールではなく **役割 / ペルソナ** です。専用のサブエージェントが利用できない場合は、順番にペルソナとして実行します: まず translator の役割を担って下書きを作成し、次に evaluator の役割を担って、その下書きをロケールルールに照らして批評・洗練します。evaluator の基準を満たすまで、洗練ループを繰り返します。
 
-### Markdown and formatting preservation
+### Markdown と書式の保持
 
-Regardless of locale, the following must be preserved exactly and **not** translated:
+ロケールにかかわらず、以下は正確に保持し、**翻訳しない** でください:
 
-- YAML frontmatter **keys** (translate values only where appropriate, e.g. a `title`). **Exception — the `slug` key on landing pages (`README.md`):** the site routes each folder landing via its `slug`, so a localized landing must carry a **locale-prefixed** slug rather than the English one. Rewrite it: a locale root (`docs/<locale>/README.md`) uses `slug: <locale>`, and a localized harness landing (`docs/<locale>/<harness>/README.md`) uses `slug: <locale>/<harness>`. Never copy the English `slug: index` / `slug: <harness>` verbatim into a localized file — that would collide with the English route.
-- Fenced and inline code, including variable, function, and command names.
-- URLs and external link targets.
-- HTML tags, Markdown structure, tables, and admonition markers.
+- YAML フロントマターの **キー**（適切な場合のみ値を翻訳。例: `title`）。**例外 — ランディングページ（`README.md`）の `slug` キー:** サイトは各フォルダーランディングをその `slug` でルーティングするため、ローカライズされたランディングは英語のものではなく **ロケールを接頭辞に付けた** slug を持たなければなりません。書き換えます: ロケールルート（`docs/<locale>/README.md`）は `slug: <locale>` を使い、ローカライズされたハーネスランディング（`docs/<locale>/<harness>/README.md`）は `slug: <locale>/<harness>` を使います。英語の `slug: index` / `slug: <harness>` をそのままローカライズファイルにコピーしないでください — 英語のルートと衝突します。
+- フェンス囲みのコードとインラインコード（変数名、関数名、コマンド名を含む）。
+- URL と外部リンクのターゲット。
+- HTML タグ、Markdown 構造、テーブル、admonition のマーカー。
 
-Translate human-language prose, including comments inside code blocks where they are explanatory (per the locale rules). Keep heading order and document structure stable.
+人間の言語による散文は翻訳します。これには、説明的な場合のコードブロック内のコメントも含みます（ロケールルールに従う）。見出しの順序とドキュメント構造は安定して保ちます。
 
-**Heading anchors follow the localized text.** When a heading is translated, its auto-generated anchor/slug changes with it—this is expected. The requirement is that **same-document anchor links keep resolving**: whenever you translate a heading, update every in-page link that targets it (`](#...)`) to the localized heading's new slug. Do not leave a link pointing at the original English slug once the heading is translated, and do not preserve an English anchor that no longer matches its heading. Anchors that point into **non-localized** files (or external URLs) keep their original target.
+**見出しのアンカーはローカライズされたテキストに従います。** 見出しが翻訳されると、自動生成されるアンカー / slug もそれに合わせて変わります — これは予期される動作です。要件は、**同一ドキュメント内のアンカーリンクが引き続き解決される** ことです: 見出しを翻訳したら、それを対象とするページ内リンク（`](#...)`）をすべて、ローカライズされた見出しの新しい slug に更新します。見出しを翻訳した後に、リンクを元の英語 slug のままにしないでください。また、見出しと一致しなくなった英語アンカーを残さないでください。**ローカライズされていない** ファイル（または外部 URL）を指すアンカーは、元のターゲットを保ちます。
 
-**Image and asset paths point to the original assets unless a localized asset exists.** Because localized files live under `docs/<locale>/`, rewrite source-relative paths as needed so they still resolve to the shared asset (for example, an app lesson at `docs/<locale>/app/2-foo.md` uses `../../_images/x.png` to reach `docs/_images/`). Only point at a localized asset when a corresponding translated image actually exists under the locale tree. Either way, the link must resolve to a real file.
+**画像やアセットのパスは、ローカライズされたアセットが存在しない限り、オリジナルのアセットを指します。** ローカライズファイルは `docs/<locale>/` 配下にあるため、ソース相対パスを必要に応じて書き換え、共有アセットに引き続き解決されるようにします（例えば、`docs/<locale>/app/2-foo.md` のアプリレッスンは `../../_images/x.png` で `docs/_images/` に到達します）。ローカライズされた画像がロケールツリー配下に実際に存在する場合のみ、ローカライズされたアセットを指します。いずれにせよ、リンクは実在するファイルに解決されなければなりません。
 
-### Translator agent
+### translator エージェント
 
-Use the `translator` agent to perform the localization. It should follow the rules and guidelines defined for each target locale document in the `rules` directory.
+ローカライズには `translator` エージェントを使用します。`rules` ディレクトリ内の各対象ロケールドキュメントに定義されたルールとガイドラインに従う必要があります。
 
-### Evaluator agent
+### evaluator エージェント
 
-Use the `evaluator` agent to assess the quality of the localized content. The evaluator checks for accuracy, cultural relevance, and overall quality, following the rules and guidelines defined for the target locale in the `rules` directory.
+ローカライズされたコンテンツの品質を評価するには `evaluator` エージェントを使用します。evaluator は、`rules` ディレクトリ内の対象ロケールに定義されたルールとガイドラインに従って、正確さ、文化的な適切さ、全体的な品質をチェックします。
 
-The evaluator scores the localized document against the locale's **Evaluator Scoring Rubric** (defined in the locale's `rules/<locale>.md`). The rubric uses two tiers: **Tier A** hard-fail criteria that must score 5, and **Tier B** graded criteria (1–5) that must score 4 or 5. A document passes only when **every applicable Tier A criterion scores 5 and every applicable Tier B criterion scores ≥ 4**. If anything falls short, return the document to the translator with specific notes and re-run the translate → evaluate loop until it passes, escalating to a human after the rubric's iteration cap.
+evaluator は、ロケールの **評価スコアリングルーブリック**（ロケールの `rules/<locale>.md` に定義）に照らして、ローカライズされたドキュメントを採点します。ルーブリックは 2 つの階層を使います: **Tier A** は 5 点を取る必要があるハードフェイル基準、**Tier B** は 4 または 5 点を取る必要がある段階評価基準（1〜5）です。**適用されるすべての Tier A 基準が 5 点、適用されるすべての Tier B 基準が 4 点以上** の場合にのみ、ドキュメントは合格します。不十分な点があれば、具体的なメモを付けてドキュメントを translator に戻し、合格するまで 翻訳 → 評価 のループを再実行します。ルーブリックの反復上限に達したら人間にエスカレーションします。
 
-## DOs and DON'Ts
+## すべきこと・してはいけないこと
 
-- **Do** perform localization only for the target locales defined in the `rules` directory (one `<locale>.md` per supported locale). Do not localize into unsupported locales.
-- **Do** preserve Markdown structure, code, external link/URL targets, and frontmatter keys exactly (see *Markdown and formatting preservation*).
-- **Do** let heading anchors follow the localized heading text, and update same-document anchor links to match the new slugs so they keep resolving (see *Markdown and formatting preservation*).
-- **Do** point image and asset paths at the original assets (rewriting the relative path as needed so it resolves from `docs/<locale>/`), unless a corresponding localized asset exists (see *Markdown and formatting preservation*).
-- **Do** mirror the source directory layout under `docs/<locale>/`.
-- **Don't** treat configured locale-root directories as source input.
-- **Don't** reorder or restructure content; keep headings and their order stable.
-- **Don't** translate code, commands, or identifiers; translate explanatory prose and code comments only.
+- `rules` ディレクトリに定義された対象ロケール（サポートされるロケールごとに 1 つの `<locale>.md`）に対してのみローカライズを行って **ください**。サポートされないロケールにはローカライズしないでください。
+- Markdown 構造、コード、外部リンク / URL のターゲット、フロントマターのキーを正確に保持して **ください**（*Markdown と書式の保持* を参照）。
+- 見出しのアンカーはローカライズされた見出しテキストに従わせ、同一ドキュメント内のアンカーリンクを新しい slug に合わせて更新し、解決され続けるようにして **ください**（*Markdown と書式の保持* を参照）。
+- 対応するローカライズアセットが存在しない限り、画像やアセットのパスをオリジナルのアセットに向けて **ください**（`docs/<locale>/` から解決されるよう必要に応じて相対パスを書き換え）（*Markdown と書式の保持* を参照）。
+- ソースのディレクトリ構成を `docs/<locale>/` 配下にミラーして **ください**。
+- 設定されたロケールルートディレクトリをソース入力として扱わ **ない** でください。
+- コンテンツを並べ替えたり再構成したり **しない** でください。見出しとその順序は安定して保ちます。
+- コード、コマンド、識別子を翻訳 **しない** でください。説明的な散文とコードコメントのみを翻訳します。
 
