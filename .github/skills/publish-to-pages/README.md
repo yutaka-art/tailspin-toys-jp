@@ -1,9 +1,9 @@
-# About this skill in this repo
+# このリポジトリにおけるこのスキルについて
 
-`publish-to-pages` is a general-purpose skill for converting and publishing arbitrary content (PPTX, PDF, HTML, Google Slides) to a **new** GitHub Pages repo.
+`publish-to-pages` は、任意のコンテンツ（PPTX、PDF、HTML、Google スライド）を変換し、**新しい** GitHub Pages リポジトリに公開するための汎用スキルです。
 
-**It is NOT the deployment workflow for this repo's site.** This repo's workshop site is built and deployed by [`.github/workflows/pages.yml`](../../workflows/pages.yml). That workflow runs automatically on pushes to `main` and publishes the Astro + Starlight build under `website/dist/` to <https://github-samples.github.io/copilot-workshops/>.
+**これは、このリポジトリのサイトのデプロイワークフローでは ありません。** このリポジトリのワークショップサイトは、[`.github/workflows/pages.yml`](../../workflows/pages.yml) によってビルド・デプロイされます。そのワークフローは `main` へのプッシュ時に自動で実行され、`website/dist/` 配下の Astro + Starlight のビルドを <https://github-samples.github.io/copilot-workshops/> に公開します。
 
-Use `publish-to-pages` when you want to spin up a *separate* Pages site for, say, a slide deck or a one-off HTML artifact. Don't use it to deploy this repo.
+`publish-to-pages` は、たとえばスライドデッキや単発の HTML アーティファクトなど、*別の* Pages サイトを立ち上げたいときに使ってください。このリポジトリのデプロイには使わないでください。
 
-Source: imported from [`github/awesome-copilot@65b20ad`](https://github.com/github/awesome-copilot/tree/65b20ad912305cb9ac6e3cf2b0e65ea35db2d1f7/skills/publish-to-pages).
+出典: [`github/awesome-copilot@65b20ad`](https://github.com/github/awesome-copilot/tree/65b20ad912305cb9ac6e3cf2b0e65ea35db2d1f7/skills/publish-to-pages) からインポート。
