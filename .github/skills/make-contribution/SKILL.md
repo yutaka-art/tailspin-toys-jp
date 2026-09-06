@@ -1,76 +1,76 @@
 ---
 name: make-contribution
-description: All changes to code must follow the guidance documented in the repository. Before any issue is filed, branch is made, commits generated, or pull request (or PR) created, a search must be done to ensure the right steps are followed. Whenever asked to create an issue, commit messages, to push code, or create a PR, use this skill so everything is done correctly.
+description: コードへのすべての変更は、リポジトリに記載されたガイダンスに従う必要があります。Issue の起票、ブランチの作成、コミットの生成、プルリクエスト（PR）の作成を行う前には、正しい手順に従っているかを確認するための調査を必ず実施してください。Issue やコミットメッセージの作成、コードのプッシュ、PR の作成を求められた際は、すべてが正しく行われるよう、このスキルを使用してください。
 ---
 
-# Contribution guidelines
+# コントリビューションガイドライン
 
-Most every project has a set of contribution guidelines everyone needs to follow when creating issues, pull requests (PR), or otherwise contributing code. These may include, but are not limited to:
+ほとんどのプロジェクトには、Issue やプルリクエスト（PR）の作成、その他のコードのコントリビューションを行う際に、全員が従うべきコントリビューションガイドラインが用意されています。これには、以下のようなものが含まれますが、これらに限りません。
 
-- Creating an issue before creating a PR, or creating the two in conjunction
-- Templates for issues or PRs that must be used depending on the change request being made
-- Guidelines on what needs to be documented in those issues and PRs
-- Tests, linters, and other prerequisites that need to be run before pushing any changes
+- PR を作成する前に Issue を作成すること、または両者を併せて作成すること
+- 変更リクエストの内容に応じて使用しなければならない Issue や PR のテンプレート
+- それらの Issue や PR に記載すべき内容についてのガイドライン
+- 変更をプッシュする前に実行しておく必要があるテスト、リンター、その他の前提条件
 
-Always remember, you are a guest in someone else's repository. As such, you need to follow the rules and guidelines set forth by the repository owner when contributing code.
+常に、あなたは他人のリポジトリにおける「ゲスト」であることを忘れないでください。したがって、コードをコントリビューションする際は、リポジトリのオーナーが定めたルールとガイドラインに従う必要があります。
 
-## Using existing guidelines
+## 既存のガイドラインの活用
 
-Before creating a PR or any of the steps leading up to it, explore the project to determine if there's any guidance. Places to explore include, but are not limited to:
+PR やそこに至るまでの各ステップを実行する前に、プロジェクトを調査し、何らかのガイダンスが存在するかを確認してください。調査すべき場所には、以下が含まれますが、これらに限りません。
 
 - README.md
 - CONTRIBUTING.md
-- Project documentation
-- Issue templates
-- Pull request or PR templates
+- プロジェクトのドキュメント
+- Issue テンプレート
+- プルリクエスト（PR）テンプレート
 
-If any of those exist or you discover documentation elsewhere in the repo, read through what you find, consider it, and follow the guidance to the best of your ability. If you have any questions or confusion, ask the user for input on how best to proceed. DO NOT create a PR until you're certain you've followed the practices.
+これらのいずれかが存在する場合、またはリポジトリ内の別の場所でドキュメントを見つけた場合は、その内容をよく読み、検討したうえで、可能な限りそのガイダンスに従ってください。疑問点や不明な点があれば、どのように進めるのが最善かをユーザーに確認してください。プラクティスに確実に従ったと確信できるまでは、PR を作成しないでください。
 
-## No guidelines found
+## ガイドラインが見つからない場合
 
-If no guidance is found, or doesn't provide guidance on certain topics, then use the following as a foundation for creating a quality contribution. **ALWAYS** defer to the guidance provided in the repository.
+ガイダンスが見つからない場合、または特定のトピックについてのガイダンスが提供されていない場合は、質の高いコントリビューションを行うための土台として以下を活用してください。ただし、リポジトリに記載されたガイダンスが存在する場合は、**常に** そちらを優先してください。
 
-## Tasks
+## タスク
 
-Many repository owners will have guidance on prerequisite steps which need to be completed before a PR is to be created. This can include, but is not limited to:
+多くのリポジトリオーナーは、PR を作成する前に完了しておくべき前提ステップについてのガイダンスを用意しています。これには、以下が含まれますが、これらに限りません。
 
-- building the project or generating assets
-- running linters and ensuring any issues are resolved
-- naming guidelines and other patterns
-- unit tests, end to end tests, or other tests which need to be created and pass
-  - related, there may be required coverage percentages
+- プロジェクトのビルドやアセットの生成
+- リンターの実行と、検出された問題の解消
+- 命名ガイドラインやその他のパターン
+- 作成し、パスさせる必要があるユニットテスト、エンドツーエンドテスト、その他のテスト
+  - 関連して、要求されるカバレッジ率が定められている場合があります
 
-Look through all guidance you find, and ensure any prerequisites have been satisfied.
+見つかったガイダンスをすべて確認し、前提条件がすべて満たされていることを確認してください。
 
 ## Issue
 
-Always start by looking to see if an issue exists that's related to the task at hand. This may have already been created by the user, or someone else. If you discover one, prompt the user to ensure they want to use that issue, or which one they may wish to use.
+まずは、取り組もうとしているタスクに関連する Issue が存在するかどうかを確認することから始めてください。これは、ユーザーや他の誰かによってすでに作成されている場合があります。もし見つかった場合は、その Issue を使用してよいか、あるいはどの Issue を使用したいかをユーザーに確認してください。
 
-If no issue is discovered, look through the guidance to see if creating an issue is a requirement. If it is, use the template provided in the repository. If there are multiple, choose the one that most aligns with the work being done. If there are any questions, ask the user which one to use.
+Issue が見つからない場合は、ガイダンスを確認して Issue の作成が必須かどうかを調べてください。必須の場合は、リポジトリに用意されているテンプレートを使用してください。複数ある場合は、行おうとしている作業に最も合致するものを選んでください。判断に迷う点があれば、どれを使用すべきかユーザーに確認してください。
 
-If the requirement is to file an issue, but no issue template is provided, use [this issue template](./assets/issue-template.md) as a guide on what to file.
+Issue の起票が必須であるにもかかわらず Issue テンプレートが提供されていない場合は、[この Issue テンプレート](./assets/issue-template.md) を、何を起票すべきかの参考として使用してください。
 
-## Branch
+## ブランチ
 
-Before performing any commits, ensure a branch has been created for the work. Follow whatever guidance is provided by the repository's documentation. If prefixes are defined, like `feature` or `chore`, or if the requirement is to use the username of the person making the PR, then use that. This branch must never be `main`, or the default branch, but should be a branch created specifically for the changes taking place. If no branch is already created, create a new one with a good name based on the changes being made and the guidance.
+コミットを行う前に、作業用のブランチが作成されていることを確認してください。リポジトリのドキュメントに記載されたガイダンスに従ってください。`feature` や `chore` などのプレフィックスが定義されている場合や、PR を作成する人のユーザー名を使用することが求められている場合は、それに従ってください。このブランチは決して `main` やデフォルトブランチであってはならず、行う変更のために専用に作成したブランチである必要があります。まだブランチが作成されていない場合は、変更内容とガイダンスに基づいた適切な名前を付けて、新しいブランチを作成してください。
 
-## Commits
+## コミット
 
-When committing changes:
+変更をコミットする際は、以下の手順に従ってください。
 
-1. Review all changes
-2. Logically group the changes together
-3. Create short commit messages for each group, following any guidance in the repository
-4. Commit the grouped code to the branch.
+1. すべての変更を確認する
+2. 変更を論理的にグループ化する
+3. 各グループに対して、リポジトリのガイダンスに従った短いコミットメッセージを作成する
+4. グループ化したコードをブランチにコミットする
 
-## Merging
+## マージ
 
-**NEVER** merge to main unless explicitly instructed to do so by the user
+ユーザーから明示的に指示された場合を除き、**決して** main にマージしないでください。
 
-## Pull request
+## プルリクエスト
 
-When creating a pull request, use existing templates in the repository if any exist, following the guidance you discovered.
+プルリクエストを作成する際は、リポジトリに既存のテンプレートがあればそれを使用し、見つけたガイダンスに従ってください。
 
-If no template is provided, use the [this PR template](./assets/pr-template.md). It contains a collection of headers to use, each with guidance of what to place in the particular sections.
+テンプレートが提供されていない場合は、[この PR テンプレート](./assets/pr-template.md) を使用してください。これには使用すべき見出しの一覧が含まれており、それぞれの見出しに、その項目に何を記載すべきかのガイダンスが付いています。
 
-If an issue was created or is being used, ensure that issue is referenced in the PR. Use the `Closes #NUMBER` syntax to enable auto-closing of the issue.
+Issue を作成した場合、または既存の Issue を使用している場合は、その Issue を PR 内で必ず参照してください。Issue の自動クローズを有効にするため、`Closes #NUMBER` の構文を使用してください。
