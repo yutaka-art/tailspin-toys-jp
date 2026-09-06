@@ -1,70 +1,70 @@
 ---
-description: 'Central UI strategy and component development philosophy'
+description: 'UI 全体の戦略とコンポーネント開発の考え方'
 ---
 
-# UI Component Strategy
+# UI コンポーネント戦略
 
-This file defines the central UI development strategy for Tailspin Toys. Technology-specific guidance is in separate instruction files.
+このファイルは、Tailspin Toys における UI 開発の中心的な戦略を定義します。技術ごとの具体的なガイダンスは、それぞれ別の instructions ファイルにまとめられています。
 
-## Component Architecture
+## コンポーネントアーキテクチャ
 
-### Technology Separation
+### 技術ごとの役割分担
 
-- **Astro** (`.astro` files): Pages, layouts, components, routing, and static content. The site is fully prerendered (`output: 'static'`), so components render to HTML at build time.
-- **Tailwind CSS** (utility classes): Styling
-- **Astro `<script>`**: Reach for a small client-side script only when genuine interactivity is required — there is no client-side UI framework.
+- **Astro**（`.astro` ファイル）: ページ、レイアウト、コンポーネント、ルーティング、静的コンテンツを担当します。サイトは完全にプリレンダリングされる（`output: 'static'`）ため、コンポーネントはビルド時に HTML へレンダリングされます。
+- **Tailwind CSS**（ユーティリティクラス）: スタイリングを担当します。
+- **Astro の `<script>`**: 本当にインタラクティブ性が必要な場合にのみ、小さなクライアントサイドスクリプトを使用します。クライアントサイドの UI フレームワークは存在しません。
 
-Refer to technology-specific instruction files:
-- [`astro.instructions.md`](astro.instructions.md) - Astro pages, layouts, and components
-- [`style.instructions.md`](style.instructions.md) - Tailwind CSS styling patterns
+技術ごとの instructions ファイルも参照してください:
+- [`astro.instructions.md`](astro.instructions.md) - Astro のページ、レイアウト、コンポーネント
+- [`style.instructions.md`](style.instructions.md) - Tailwind CSS のスタイリングパターン
 
-## Core Principles
+## 基本原則
 
-### Testability
+### テスト容易性
 
-- Every interactive element MUST include a `data-testid` attribute
-- Use descriptive test IDs that identify the element's purpose and context
-- Examples: `data-testid="game-card-{game.id}"`, `data-testid="submit-button"`, `data-testid="nav-home"`
+- インタラクティブな要素には必ず `data-testid` 属性を付与すること
+- 要素の目的とコンテキストが分かる、説明的なテスト ID を使用すること
+- 例: `data-testid="game-card-{game.id}"`、`data-testid="submit-button"`、`data-testid="nav-home"`
 
-### Accessibility
+### アクセシビリティ
 
-- Use semantic HTML elements (`<nav>`, `<main>`, `<article>`, `<button>`)
-- Provide ARIA labels and roles where semantic HTML isn't sufficient
-- Use plain `<nav>` with `<a>`/`<button>` elements for site navigation — do **not** add `role="menu"`. Reserve `role="menu"` / `role="menuitem"` for true application-style menus that implement full composite keyboard semantics (arrow-key roving focus, Home/End, type-ahead)
-- Loading states should use `role="status"` and `aria-live="polite"` for screen reader announcements
-- Include Escape key handlers for dismissible elements (menus, modals)
-- Ensure keyboard navigation works for all interactive elements, with proper focus management
-- Include visible focus states: `focus:ring-2 focus:ring-blue-500 focus:outline-none`
-- Maintain sufficient color contrast (especially in dark theme)
+- セマンティックな HTML 要素を使用すること（`<nav>`、`<main>`、`<article>`、`<button>`）
+- セマンティックな HTML だけでは不十分な場合は、ARIA のラベルやロールを付与すること
+- サイトナビゲーションには、`<a>` / `<button>` 要素を含むシンプルな `<nav>` を使用し、`role="menu"` は **付けない** こと。`role="menu"` / `role="menuitem"` は、完全な複合キーボード操作（矢印キーによるローミングフォーカス、Home/End、先頭一致による絞り込み入力）を実装した、真にアプリケーション的なメニューにのみ使用すること
+- ローディング状態では、スクリーンリーダーへの通知のために `role="status"` と `aria-live="polite"` を使用すること
+- 閉じられる要素（メニュー、モーダル）には Escape キーのハンドラーを含めること
+- すべてのインタラクティブな要素でキーボード操作が機能するようにし、適切なフォーカス管理を行うこと
+- 視認できるフォーカス状態を含めること: `focus:ring-2 focus:ring-blue-500 focus:outline-none`
+- 十分な色のコントラストを保つこと（特にダークテーマにおいて）
 
-### Design Consistency
+### デザインの一貫性
 
-- Dark theme throughout the application
-- Modern, clean UI with rounded corners and smooth transitions
-- Consistent spacing and visual hierarchy
-- Responsive design that works on mobile, tablet, and desktop
+- アプリケーション全体でダークテーマを採用すること
+- 角丸となめらかなトランジションを備えた、モダンでクリーンな UI にすること
+- 一貫した余白と視覚的な階層を保つこと
+- モバイル、タブレット、デスクトップで機能するレスポンシブデザインにすること
 
-### Component Reusability
+### コンポーネントの再利用性
 
-- Create reusable components for common UI patterns
-- Keep components focused on a single responsibility
-- Use props for configuration, not duplication
-- Document component APIs with TypeScript types
+- よくある UI パターンには再利用可能なコンポーネントを作成すること
+- コンポーネントは単一の責務に集中させること
+- 重複ではなく、props による設定で構成すること
+- TypeScript の型でコンポーネントの API をドキュメント化すること
 
-## Development Workflow
+## 開発ワークフロー
 
-1. **Choose the right tool**: 
-   - Content & structure → Astro components/pages
-   - Styling → Tailwind
-   - Client interactivity (rare) → a scoped Astro `<script>`
+1. **適切なツールを選ぶ**: 
+   - コンテンツと構造 → Astro のコンポーネント／ページ
+   - スタイリング → Tailwind
+   - クライアントのインタラクティブ性（まれ） → スコープ付きの Astro `<script>`
 
-2. **Follow technology-specific patterns**: 
-   - Refer to the appropriate instruction file
+2. **技術ごとのパターンに従う**: 
+   - 該当する instructions ファイルを参照すること
 
-3. **Ensure testability**: 
-   - Add `data-testid` to all interactive elements
+3. **テスト容易性を確保する**: 
+   - すべてのインタラクティブな要素に `data-testid` を付与すること
 
-4. **Verify accessibility**: 
-   - Test keyboard navigation
-   - Check focus states
-   - Validate semantic structure
+4. **アクセシビリティを検証する**: 
+   - キーボード操作をテストする
+   - フォーカス状態を確認する
+   - セマンティックな構造を検証する
