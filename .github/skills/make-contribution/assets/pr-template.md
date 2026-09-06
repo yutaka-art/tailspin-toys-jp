@@ -1,36 +1,36 @@
-# <!-- Provide a concise, descriptive title for the pull request -->
+# <!-- プルリクエストの内容を簡潔かつわかりやすく表すタイトルを記載してください -->
 
-## Summary
+## 概要
 
-<!-- Provide a three to four sentence description of what this PR accomplishes. -->
+<!-- この PR が達成する内容を、3〜4 文で説明してください。 -->
 
-## Background
+## 背景
 
-<!-- Explain why this change is needed. Include:
-- The problem being solved or feature being added
-- Link to related issues (use "Closes #123" to auto-close)
-- Any relevant context or discussions
+<!-- この変更がなぜ必要なのかを説明してください。以下を含めます。
+- 解決する課題、または追加する機能
+- 関連する Issue へのリンク（自動でクローズするには "Closes #123" を使用）
+- 関連する背景情報や議論の内容
 -->
 
-## Changes
+## 変更内容
 
-<!-- List the changes being made, logically grouped. Include:
-- Files added, modified, or deleted
-- Key code changes with brief explanations
-- Any architectural or design decisions made
+<!-- 行った変更を論理的にグループ分けして列挙してください。以下を含めます。
+- 追加・変更・削除したファイル
+- 主要なコード変更とその簡単な説明
+- アーキテクチャや設計に関する決定事項
 -->
 
-## Testing
+## テスト
 
-<!-- Describe how the changes were validated:
-- Commands run (e.g., `npm run build`, `npm run validate`)
-- Manual testing performed
-- Edge cases considered
+<!-- 変更をどのように検証したかを説明してください。
+- 実行したコマンド（例: `npm run build`、`npm run validate`）
+- 手動で行ったテスト
+- 考慮したエッジケース
 -->
 
-## Additional Notes
+## 補足事項
 
-<!-- Include any of the following if relevant:
-- Breaking changes or migration steps
-- Highlights for human reviewers
+<!-- 該当する場合は、以下を記載してください。
+- 破壊的変更や移行手順
+- レビュアーに特に確認してほしいポイント
 -->
