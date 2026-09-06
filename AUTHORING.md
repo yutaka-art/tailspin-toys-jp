@@ -1,38 +1,38 @@
-# Authoring Guide
+# 執筆ガイド
 
-This is the entry point for **content authors and maintainers** of **Copilot Workshops**. If you arrived here looking to *take* the workshop, head to the published site at <https://github-samples.github.io/copilot-workshops/>.
+これは **Copilot Workshops** の **コンテンツ執筆者およびメンテナー** 向けの入口です。ワークショップを*受講*する目的でここにたどり着いた場合は、公開サイト <https://github-samples.github.io/copilot-workshops/> にアクセスしてください。
 
-## Project overview model
+## プロジェクト全体像のモデル
 
-- **All lesson content is plain Markdown** under the repo-root `docs/` directory. That's the source of truth, and it's browsable directly on github.com with no build required.
-- **Optional publisher.** The Astro + Starlight site in `website/` builds the published GitHub Pages site from those Markdown files (loader `base: '../docs'`). You only need it to self-host or preview the rendered pages.
-- **Reusable prose is copied inline.** There is no import-based shared content system; keep duplicated lesson sections aligned with the content-alignment safety nets described below.
+- **すべてのレッスンコンテンツはプレーンな Markdown** で、リポジトリルートの `docs/` ディレクトリ配下にあります。これが信頼できる情報源（source of truth）であり、ビルド不要で github.com 上で直接閲覧できます。
+- **公開機能はオプションです。** `website/` にある Astro + Starlight サイトが、これらの Markdown ファイルから公開用の GitHub Pages サイトをビルドします（ローダーの `base: '../docs'`）。レンダリング後のページをセルフホストまたはプレビューする場合にのみ必要です。
+- **再利用する散文はインラインでコピーします。** インポートベースの共有コンテンツの仕組みはありません。重複するレッスンのセクションは、後述のコンテンツ整合性のセーフティネットを使って一貫性を保ってください。
 
 ```
 copilot-workshops/
-├── docs/                        ← Markdown source. EDIT HERE. Browsable on github.com.
-│   ├── README.md                ← Workshop landing page (also site home via slug: index)
-│   ├── cli/                     ← Copilot CLI lessons (0-prerequisites.md + numbered exercises)
-│   ├── vscode/                  ← VS Code lessons (0-prerequisites.md + numbered exercises)
-│   ├── cloud/                   ← Cloud agent lessons (0-prerequisites.md + numbered exercises)
-│   ├── app/                     ← GitHub Copilot app lessons (setup folded into Exercise 1)
-│   ├── es-es/ ja-jp/ ...        ← Translated locale trees (currently the app harness)
-│   └── _images/                 ← Screenshots and diagrams (shared across locales)
-├── website/                     ← Optional Astro + Starlight publisher
-│   ├── astro.config.mjs         ← Site URL, base path, locales, sidebar
-│   └── src/content.config.ts    ← Content loader (base: '../docs')
+├── docs/                        ← Markdown ソース。ここを編集。github.com で閲覧可能。
+│   ├── README.md                ← ワークショップのランディングページ（slug: index でサイトのホームも兼ねる）
+│   ├── cli/                     ← Copilot CLI レッスン（0-prerequisites.md + 番号付き演習）
+│   ├── vscode/                  ← VS Code レッスン（0-prerequisites.md + 番号付き演習）
+│   ├── cloud/                   ← クラウドエージェントレッスン（0-prerequisites.md + 番号付き演習）
+│   ├── app/                     ← GitHub Copilot アプリレッスン（セットアップは演習 1 に統合）
+│   ├── es-es/ ja-jp/ ...        ← 翻訳された各ロケールのツリー（現在は app ハーネス）
+│   └── _images/                 ← スクリーンショットと図（ロケール間で共有）
+├── website/                     ← オプションの Astro + Starlight 公開機能
+│   ├── astro.config.mjs         ← サイト URL、ベースパス、ロケール、サイドバー
+│   └── src/content.config.ts    ← コンテンツローダー（base: '../docs'）
 └── .github/
-    ├── copilot-instructions.md   ← AI authoring guide (humans can read it too)
-    ├── instructions/             ← Per-file-type conventions (auto-applied to Copilot)
-    └── workflows/                ← CI for site build + Pages deploy, plus content-alignment workflow
+    ├── copilot-instructions.md   ← AI 向け執筆ガイド（人間も読めます）
+    ├── instructions/             ← ファイル種別ごとの規約（Copilot に自動適用）
+    └── workflows/                ← サイトビルド + Pages デプロイの CI、およびコンテンツ整合性ワークフロー
 ```
 
-## Step-by-step recipes
+## 手順ごとのレシピ
 
-### Add a new lesson
+### 新しいレッスンを追加する
 
-1. **Pick a path and number.** Lessons live under `docs/{cli,vscode,app,cloud}/N-name.md`. `N` is the next available integer in that path; the number drives the URL slug (`/cli/3-generating-code/`).
-2. **Create the file** with frontmatter:
+1. **パスと番号を決めます。** レッスンは `docs/{cli,vscode,app,cloud}/N-name.md` 配下にあります。`N` はそのパスで次に使える整数で、この番号が URL スラッグ（`/cli/3-generating-code/`）を決定します。
+2. **フロントマター付きでファイルを作成します:**
    ```markdown
    ---
    title: "Exercise N - Short descriptive title"
@@ -40,16 +40,16 @@ copilot-workshops/
 
    Body starts here.
    ```
-   Only `title` is required; it becomes the H1 and the page title. Don't add a body H1 — Starlight renders the title automatically.
-3. **Write the body.** Use Markdown and GitHub admonition syntax (`> [!NOTE]`) for callouts. See **Style essentials** below.
-4. **Add prev/next navigation.** Define `[previous-lesson]` and `[next-lesson]` reference links at the bottom of the page, pointing at the adjacent lessons in the same path:
+   必須は `title` のみで、これが H1 とページタイトルになります。本文に H1 を追加しないでください — Starlight がタイトルを自動でレンダリングします。
+3. **本文を書きます。** Markdown と、コールアウトには GitHub の admonition 構文（`> [!NOTE]`）を使います。後述の **スタイルの要点** を参照してください。
+4. **前後のナビゲーションを追加します。** ページ下部に `[previous-lesson]` と `[next-lesson]` の参照リンクを定義し、同じパス内の隣接するレッスンを指すようにします:
    ```markdown
    [previous-lesson]: ../2-custom-instructions/
    [next-lesson]: ../4-mcp/
    ```
-   Then surface them in the body using **the same style as the other lessons in your path** — don't mix styles within a path:
-   - **Woven into prose** (common in the CLI path): end the lesson with a sentence like ``the next step is to [create the PR][next-lesson]``.
-   - **Explicit nav table** (common in the cloud and VS Code paths): a single-cell table just below the frontmatter and again at the end of the body.
+   そのうえで、**そのパスの他のレッスンと同じスタイル** を使って本文に表示します。パス内でスタイルを混在させないでください:
+   - **散文に織り込む**（CLI パスで一般的）: ``the next step is to [create the PR][next-lesson]`` のような文でレッスンを締めくくります。
+   - **明示的なナビゲーションテーブル**（cloud および VS Code パスで一般的）: フロントマターの直下と本文の末尾に、1 セルのテーブルを置きます。
      ```markdown
      | [← Previous lesson: Custom instructions][previous-lesson] |
      |:--|
@@ -58,49 +58,49 @@ copilot-workshops/
      | [Next lesson: Custom agents →][next-lesson] |
      |--:|
      ```
-   The first lesson in a path omits `[previous-lesson]`; the last omits `[next-lesson]`.
-5. **Register in the sidebar.** Open `website/astro.config.mjs` and add an entry to the appropriate `items: []` block. The sidebar is *manually* maintained — order in the file is the order learners see.
-6. **Preview and verify, then open a PR.** Preview locally and run the verification sequence before committing — see [Building and verifying](#building-and-verifying) below. CI runs the Astro build and the lychee link check; both must pass.
+   パスの最初のレッスンでは `[previous-lesson]` を省き、最後のレッスンでは `[next-lesson]` を省きます。
+5. **サイドバーに登録します。** `website/astro.config.mjs` を開き、適切な `items: []` ブロックにエントリを追加します。サイドバーは*手動で*管理されており、ファイル内の順序がそのまま受講者に表示される順序になります。
+6. **プレビューして検証し、PR を作成します。** コミット前にローカルでプレビューし、検証手順を実行してください — 後述の [ビルドと検証](#building-and-verifying) を参照。CI は Astro のビルドと lychee のリンクチェックを実行し、両方が成功する必要があります。
 
-### Landing pages (folder `README.md`)
+### ランディングページ（フォルダーの `README.md`）
 
-Every folder's landing page is a `README.md` so it renders directly when someone browses that folder on github.com. Because Starlight normally derives a folder's index route from an `index.md`, each landing carries an explicit `slug:` in its frontmatter that reproduces the route:
+すべてのフォルダーのランディングページは `README.md` です。これにより、github.com でそのフォルダーを閲覧したときに直接レンダリングされます。Starlight は通常フォルダーのインデックスルートを `index.md` から導出するため、各ランディングはフロントマターに、そのルートを再現する明示的な `slug:` を持ちます:
 
-- `docs/README.md` → `slug: index` (site home `/`).
-- `docs/<harness>/README.md` → `slug: <harness>` (e.g. `slug: app` → `/app/`).
-- `docs/<locale>/README.md` → `slug: <locale>` (e.g. `slug: es-es` → `/es-es/`).
-- `docs/<locale>/<harness>/README.md` → `slug: <locale>/<harness>` (e.g. `slug: es-es/app` → `/es-es/app/`).
+- `docs/README.md` → `slug: index`（サイトのホーム `/`）。
+- `docs/<harness>/README.md` → `slug: <harness>`（例: `slug: app` → `/app/`）。
+- `docs/<locale>/README.md` → `slug: <locale>`（例: `slug: es-es` → `/es-es/`）。
+- `docs/<locale>/<harness>/README.md` → `slug: <locale>/<harness>`（例: `slug: es-es/app` → `/es-es/app/`）。
 
-When you add a new harness or locale landing, name it `README.md` and set its `slug:` to match the folder path. Localized landings must use the locale-prefixed slug, never the English one.
+新しいハーネスやロケールのランディングを追加するときは、`README.md` という名前にし、その `slug:` をフォルダーパスに一致させます。ローカライズされたランディングは、英語のスラッグではなく、必ずロケールを接頭辞に付けたスラッグを使う必要があります。
 
-### Add an image
+### 画像を追加する
 
-1. **Drop the file** in `docs/_images/` (or a path-scoped `cli/_images/` etc. when the image is path-specific). Use lowercase-with-hyphens filenames; prefix with `shared-` if the image is referenced from multiple harnesses.
-2. **Reference it** with a relative path from the consuming Markdown page:
+1. **ファイルを配置します。** `docs/_images/`（画像がパス固有の場合は `cli/_images/` などパススコープのディレクトリ）に置きます。ファイル名は小文字とハイフンを使い、複数のハーネスから参照される画像には `shared-` を接頭辞として付けます。
+2. **参照します。** それを利用する Markdown ページからの相対パスで参照します:
    ```markdown
    ![Description of the screenshot](../_images/my-screenshot.png)
    ```
-3. **Always include alt text.** Starlight treats the alt text as required.
-4. **Preview locally** to confirm the image resolves.
+3. **必ず代替テキスト（alt text）を含めます。** Starlight は代替テキストを必須として扱います。
+4. **ローカルでプレビュー** し、画像が正しく解決されることを確認します。
 
-### Edit an existing lesson
+### 既存のレッスンを編集する
 
-1. **Find the file** under `docs/` (use the published URL as a hint — `/cli/3-generating-code/` lives at `docs/cli/3-generating-code.md`).
-2. **Edit the Markdown.** Same conventions apply — see **Style essentials** below.
-3. **Preview** with `npm run dev` in `website/`.
-4. **Commit, PR, merge.**
+1. **ファイルを見つけます。** `docs/` 配下で探します（公開 URL がヒントになります — `/cli/3-generating-code/` は `docs/cli/3-generating-code.md` にあります）。
+2. **Markdown を編集します。** 同じ規約が適用されます — 後述の **スタイルの要点** を参照。
+3. **プレビュー** は `website/` で `npm run dev` を実行します。
+4. **コミット、PR、マージ** します。
 
-### Reuse prose across paths
+### パスをまたいで散文を再利用する
 
-When the same lesson text applies to multiple harnesses (CLI, VS Code, Cloud), copy the prose inline into each consuming `.md` lesson. There is intentionally no single-source import layer: each lesson should be readable and editable as standalone Markdown.
+同じレッスンのテキストが複数のハーネス（CLI、VS Code、Cloud）に当てはまる場合は、それを利用する各 `.md` レッスンに散文をインラインでコピーします。単一ソースのインポート層は意図的に用意していません。各レッスンは、単独の Markdown として読めて編集できるべきだからです。
 
-Because copied prose can drift, run the `check-content-alignment` skill when you change a duplicated section so it can scan the diff for related content that needs the same update. The `.github/workflows/content-alignment.md` agentic workflow runs the same analysis on PRs as an additional safety net, but authors still own keeping aligned copies consistent.
+コピーした散文はずれていく可能性があるため、重複するセクションを変更したときは `check-content-alignment` スキルを実行してください。差分をスキャンし、同じ更新が必要な関連コンテンツを見つけてくれます。`.github/workflows/content-alignment.md` のエージェント型ワークフローは、追加のセーフティネットとして PR 上で同じ分析を実行しますが、整合したコピーの一貫性を保つ責任は依然として執筆者にあります。
 
-## Building and verifying
+## ビルドと検証
 
-Before opening a PR, preview the site and run the full verification sequence. The canonical commands live in the [`build-and-verify-docs`](./.github/skills/build-and-verify-docs/SKILL.md) skill — the summary below mirrors it.
+PR を作成する前に、サイトをプレビューし、一連の検証を実行してください。正式なコマンドは [`build-and-verify-docs`](./.github/skills/build-and-verify-docs/SKILL.md) スキルにあり、以下の要約はそれを反映したものです。
 
-**Preview** with the Astro dev server (hot reload):
+Astro 開発サーバー（ホットリロード）で **プレビュー** します:
 
 ```bash
 cd website
@@ -108,54 +108,54 @@ npm install
 npm run dev
 ```
 
-The site runs at <http://localhost:4321/copilot-workshops/>.
+サイトは <http://localhost:4321/copilot-workshops/> で起動します。
 
-**Verify** before committing:
+コミット前に **検証** します:
 
-1. **Build** — `cd website && rm -rf dist && npm run build`. Must succeed.
-2. **Page-count invariant** — Starlight emits 36 workshop routes for English and each of the five configured locales, then adds the legacy redirect. This equals 217 built `index.html` pages when excluding the 404 page; the build reports 218 HTML files including the 404 page.
-3. **Link check** — lychee (offline) against the built `website/dist/`. Catches broken internal links/images.
+1. **ビルド** — `cd website && rm -rf dist && npm run build`。成功する必要があります。
+2. **ページ数の不変条件** — Starlight は英語と、設定された 5 つのロケールそれぞれについて 36 のワークショップルートを出力し、さらに従来のリダイレクトを追加します。これは 404 ページを除くと 217 個のビルド済み `index.html` ページに相当し、ビルドは 404 ページを含めて 218 個の HTML ファイルを報告します。
+3. **リンクチェック** — ビルドされた `website/dist/` に対する lychee（オフライン）。内部リンクや画像の切れを検出します。
 
-**What CI enforces vs. what you run locally:** CI (`pages.yml`) runs the **build** and the **lychee** link check on every PR. It does not run browser validation or the content-alignment agentic workflow as part of the Pages build job. After merge to `main`, `pages.yml` deploys the site to GitHub Pages.
+**CI が強制するものと、ローカルで実行するもの:** CI（`pages.yml`）は、すべての PR で **ビルド** と **lychee** のリンクチェックを実行します。Pages ビルドジョブの一部として、ブラウザ検証やコンテンツ整合性のエージェント型ワークフローは実行しません。`main` へのマージ後、`pages.yml` がサイトを GitHub Pages にデプロイします。
 
-**Consistency pass.** When a change renames a file or folder, adds or removes a skill or instruction file, touches duplicated prose, or changes how the build works, also sweep for stale references — the structure trees and cross-doc pointers in `README.md`, `AUTHORING.md`, and `.github/copilot-instructions.md` aren't checked by the Astro build. The [`build-and-verify-docs`](./.github/skills/build-and-verify-docs/SKILL.md) skill has the full checklist, and the `check-content-alignment` skill plus `.github/workflows/content-alignment.md` help catch prose that needs aligned updates.
+**整合性チェック。** ファイルやフォルダーの名前変更、スキルや instruction ファイルの追加・削除、重複する散文への変更、またはビルドの仕組みの変更を行った場合は、古くなった参照がないかも点検してください。`README.md`、`AUTHORING.md`、`.github/copilot-instructions.md` にある構造ツリーやドキュメント間のポインターは、Astro のビルドではチェックされません。[`build-and-verify-docs`](./.github/skills/build-and-verify-docs/SKILL.md) スキルに完全なチェックリストがあり、`check-content-alignment` スキルと `.github/workflows/content-alignment.md` が、整合した更新を必要とする散文の検出に役立ちます。
 
-## Style essentials
+## スタイルの要点
 
-A short cheat sheet. For deeper conventions, see [`.github/instructions/`](./.github/instructions/).
+簡単なチートシートです。より詳しい規約は [`.github/instructions/`](./.github/instructions/) を参照してください。
 
-- **Reference-style links** for in-workshop pages and external docs. Define refs at the bottom of the page:
+- ワークショップ内のページと外部ドキュメントには **参照スタイルのリンク** を使います。参照はページ下部で定義します:
   ```markdown
   See [Exercise 1][exercise-1] for context. The [Copilot CLI docs][cli-docs] explain.
 
   [exercise-1]: ../1-install-copilot-cli/
   [cli-docs]: https://docs.github.com/copilot/github-copilot-in-the-cli
   ```
-- **Admonitions everywhere use GitHub syntax** — published lessons *and* repo docs. The `[!TYPE]` marker goes on its own quoted line, body on following quoted lines:
+- **admonition はどこでも GitHub 構文を使います** — 公開レッスン *と* リポジトリのドキュメントの両方です。`[!TYPE]` マーカーは独立した引用行に置き、本文は続く引用行に書きます:
   ```markdown
   > [!NOTE]
   > Use NOTE, TIP, IMPORTANT, WARNING, or CAUTION.
   ```
-  In published lessons under `docs/`, a remark plugin (wired in `website/astro.config.mjs`) converts these to Starlight asides at build time. GitHub syntax has no custom-title or nesting form, so put a heading on a **bold lead-in line** (`> **Title**`, then a blank `>` line, then the body), and emit "nested" callouts as sibling blockquotes separated by a blank line. See [`markdown.instructions.md`](.github/instructions/markdown.instructions.md) for the full mapping and patterns.
-- **No hard-wrapping** in repo-level Markdown files (READMEs, this file). Editors soft-wrap. Hard breaks are reserved for actual structural breaks.
-- **Cross-repo links** (the demo app): always use `https://github.com/github-samples/tailspin-toys/...`. Don't link to files in *this* repo as if they were the template.
+  `docs/` 配下の公開レッスンでは、remark プラグイン（`website/astro.config.mjs` で組み込み）がビルド時にこれらを Starlight のアサイドに変換します。GitHub 構文にはカスタムタイトルやネストの形式がないため、見出しは **太字の導入行**（`> **Title**` の後に空の `>` 行、その後に本文）に置き、「ネストされた」コールアウトは空行で区切った兄弟のブロッククォートとして出力します。完全な対応関係とパターンは [`markdown.instructions.md`](.github/instructions/markdown.instructions.md) を参照してください。
+- リポジトリレベルの Markdown ファイル（README 群やこのファイル）では **ハードラップしません**。エディターがソフトラップします。改行は実際の構造的な区切りにのみ使います。
+- **リポジトリ間のリンク**（デモアプリ）: 必ず `https://github.com/github-samples/tailspin-toys/...` を使います。*この* リポジトリ内のファイルを、あたかもテンプレートであるかのようにリンクしないでください。
 
-## Troubleshooting
+## トラブルシューティング
 
-- **"Module not found: `@astrojs/starlight/components`"** — run `npm install` inside `website/` if the site shell imports a Starlight component.
-- **Sidebar entry doesn't appear** — confirm you added it to `website/astro.config.mjs` (it's manually maintained).
-- **A new page appears in build output unexpectedly** — confirm the file belongs in the content collection and that underscore-prefixed support directories such as `_images/` are still excluded by `website/src/content.config.ts`.
-- **Lychee reports a broken link** — most often a renamed lesson breaking a `[ref]: ../old-name/` definition. Update both the link target and any cross-page refs.
+- **「Module not found: `@astrojs/starlight/components`」** — サイトのシェルが Starlight コンポーネントをインポートしている場合は、`website/` 内で `npm install` を実行します。
+- **サイドバーのエントリが表示されない** — `website/astro.config.mjs` に追加したか確認します（手動で管理されています）。
+- **新しいページがビルド出力に意図せず現れる** — そのファイルがコンテンツコレクションに属しているか、また `_images/` のようなアンダースコア接頭辞の補助ディレクトリが `website/src/content.config.ts` によって引き続き除外されているかを確認します。
+- **lychee がリンク切れを報告する** — 多くの場合、レッスンの名前変更によって `[ref]: ../old-name/` の定義が壊れたものです。リンク先とページ間の参照の両方を更新します。
 
-## Deeper conventions
+## より詳しい規約
 
-The `.github/instructions/*.md` files have `applyTo` frontmatter that targets specific file globs. Read these when you need depth on a specific area:
+`.github/instructions/*.md` ファイルには、特定のファイルグロブを対象とする `applyTo` フロントマターがあります。特定の分野の詳細が必要なときに読んでください:
 
-- [`markdown.instructions.md`](./.github/instructions/markdown.instructions.md) — Markdown conventions: no hard-wrap, admonitions, headings, filenames/UI formatting, and link style.
-- [`markdown-accessibility.instructions.md`](./.github/instructions/markdown-accessibility.instructions.md) — accessibility conventions: descriptive links, alt text, heading hierarchy, plain language, input-agnostic action verbs (**select** not "click").
-- [`astro.instructions.md`](./.github/instructions/astro.instructions.md) — `website/` site wrapper.
-- [`instructions.instructions.md`](./.github/instructions/instructions.instructions.md) — how to write and maintain the instruction files themselves.
+- [`markdown.instructions.md`](./.github/instructions/markdown.instructions.md) — Markdown 規約: ハードラップなし、admonition、見出し、ファイル名 / UI の書式、リンクスタイル。
+- [`markdown-accessibility.instructions.md`](./.github/instructions/markdown-accessibility.instructions.md) — アクセシビリティ規約: 説明的なリンク、代替テキスト、見出し階層、平易な言葉づかい、入力手段に依存しない動詞（「click」ではなく **select**）。
+- [`astro.instructions.md`](./.github/instructions/astro.instructions.md) — `website/` のサイトラッパー。
+- [`instructions.instructions.md`](./.github/instructions/instructions.instructions.md) — instruction ファイル自体の書き方と保守方法。
 
-Reusable task playbooks (build/verify, browser validation, contribution flow, content alignment) live as **skills** under `.github/skills/` — see the [skills index](./.github/skills/README.md) for what each one does and when to use it.
+再利用可能なタスクのプレイブック（ビルド / 検証、ブラウザ検証、コントリビューションフロー、コンテンツ整合性）は、`.github/skills/` 配下の **スキル** として存在します。各スキルの役割と使いどころは [スキル索引](./.github/skills/README.md) を参照してください。
 
-For the AI authoring playbook, see [`.github/copilot-instructions.md`](./.github/copilot-instructions.md).
+AI 向けの執筆プレイブックは [`.github/copilot-instructions.md`](./.github/copilot-instructions.md) を参照してください。
