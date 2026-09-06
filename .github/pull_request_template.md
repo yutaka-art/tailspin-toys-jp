@@ -1,56 +1,56 @@
-## Description
+## 概要
 
-<!-- Provide a brief summary of your changes and the motivation behind them. -->
+<!-- 変更内容とその目的を簡潔にまとめてください。 -->
 
-## Related Issue
+## 関連 Issue
 
-<!-- Optional: if this PR relates to an issue, link it below (e.g. "Closes #123"). -->
+<!-- 任意: この PR が Issue に関連する場合は、以下にリンクしてください（例: 「Closes #123」）。 -->
 
 
-## Type of Change
+## 変更の種類
 
-<!-- Check the relevant option(s) -->
+<!-- 該当する項目にチェックを入れてください -->
 
-- [ ] 🐛 Bug fix (non-breaking change that fixes an issue)
-- [ ] ✨ New feature (non-breaking change that adds functionality)
-- [ ] 💥 Breaking change (fix or feature that would cause existing functionality to change)
-- [ ] 📚 Documentation update
-- [ ] 🧪 Test update
-- [ ] 🔧 Refactor (no functional changes)
+- [ ] 🐛 バグ修正（既存の動作を壊さず、不具合を修正する変更）
+- [ ] ✨ 新機能（既存の動作を壊さず、機能を追加する変更）
+- [ ] 💥 破壊的変更（既存の動作に影響を与える修正または機能）
+- [ ] 📚 ドキュメントの更新
+- [ ] 🧪 テストの更新
+- [ ] 🔧 リファクタリング（機能的な変更なし）
 
-## Changes Made
+## 変更内容
 
-<!-- List the key changes in this PR -->
+<!-- この PR での主な変更点を列挙してください -->
 
 -
 
-## Testing
+## テスト
 
-<!-- Describe how you tested your changes -->
+<!-- 変更をどのようにテストしたか説明してください -->
 
-### Data Layer Changes
+### データレイヤーの変更
 
-- [ ] Ran `npm run test:unit` - all tests pass
-- [ ] Added/updated Vitest tests for data-layer changes
-- [ ] Generated a migration (`npm run db:generate`) for any schema change
+- [ ] `npm run test:unit` を実行し、すべてのテストがパスした
+- [ ] データレイヤーの変更に対して Vitest テストを追加/更新した
+- [ ] スキーマ変更に対してマイグレーションを生成した（`npm run db:generate`）
 
-### Frontend Changes
+### フロントエンドの変更
 
-- [ ] Ran `npm run test:e2e` - all tests pass
-- [ ] Added `data-testid` attributes to interactive elements
-- [ ] Verified build succeeds (`npm run build`)
+- [ ] `npm run test:e2e` を実行し、すべてのテストがパスした
+- [ ] インタラクティブな要素に `data-testid` 属性を追加した
+- [ ] ビルドが成功することを確認した（`npm run build`）
 
-## Checklist
+## チェックリスト
 
-<!-- Ensure all items are complete before requesting review -->
+<!-- レビューを依頼する前に、すべての項目が完了していることを確認してください -->
 
-- [ ] My code follows the project's coding standards
-- [ ] I have used explicit TypeScript types for function parameters and return values
-- [ ] I have built the UI with Astro components and Tailwind CSS utility classes (dark theme)
-- [ ] I have updated documentation (README, instruction files) if needed
-- [ ] My changes are focused on a single concern
-- [ ] I have written clear commit messages explaining what and why
+- [ ] コードがプロジェクトのコーディング規約に準拠している
+- [ ] 関数の引数と戻り値に明示的な TypeScript の型を使用している
+- [ ] UI を Astro コンポーネントと Tailwind CSS のユーティリティクラス（ダークテーマ）で構築している
+- [ ] 必要に応じてドキュメント（README、instruction ファイル）を更新した
+- [ ] 変更が単一の関心事に絞られている
+- [ ] 変更内容とその理由を説明する明確なコミットメッセージを記述した
 
-## Additional Notes
+## 補足事項
 
-<!-- Any additional context, concerns, or notes for reviewers -->
+<!-- レビュアー向けの追加のコンテキスト、懸念事項、メモがあれば記載してください -->
